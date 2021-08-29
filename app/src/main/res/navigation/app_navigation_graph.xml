@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation_graph.xml"
+    app:startDestination="@id/nav_weather_today">
+
+
+    <fragment
+        android:id="@+id/nav_weather_today"
+        android:name="com.github.zharovvv.open.source.weather.app.ui.weather.today.WeatherTodayFragment"
+        android:label="@string/menu_weather_today"
+        tools:layout="@layout/fragment_weather_today">
+        <action
+            android:id="@+id/action_nav_weather_today_to_nav_week_weather"
+            app:destination="@id/nav_week_weather"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_week_weather"
+        android:name="com.github.zharovvv.open.source.weather.app.ui.weather.week.WeekWeatherFragment"
+        android:label="@string/menu_week_weather"
+        tools:layout="@layout/fragment_week_weather" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.github.zharovvv.open.source.weather.app.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

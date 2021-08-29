@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherApiService {
-    @GET("weather?")
+    @GET("weather?units=metric")
     fun getCurrentWeatherByCoordinates(
         @Query(value = "lat")
         lat: Float,
