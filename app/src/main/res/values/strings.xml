@@ -3,4 +3,5 @@
     <string name="menu_weather_today">Сегодня</string>
     <string name="menu_week_weather">На неделе</string>
     <string name="menu_settings">Настройки</string>
+    <string name="menu_about_app">О приложении</string>
 </resources>
