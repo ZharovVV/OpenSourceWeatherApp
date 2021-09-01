@@ -11,7 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.github.zharovvv.open.source.weather.app.R
-import com.github.zharovvv.open.source.weather.app.util.setUpWithNavControllerCustom
+import com.github.zharovvv.open.source.weather.app.navigation.AppToolbarOnDestinationChangedListener
+import com.github.zharovvv.open.source.weather.app.navigation.setUpWithNavControllerCustom
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.main_toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         val drawerLayout: DrawerLayout = findViewById(R.id.main_drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavControllerByFragmentManager()
@@ -29,14 +30,11 @@ class MainActivity : AppCompatActivity() {
             setOf(R.id.nav_weather_today, R.id.nav_settings, R.id.nav_about_app),
             drawerLayout
         )
-        toolbar.setUpWithNavControllerCustom(navController, appBarConfiguration)
         navigationView.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-//            if (destination.id == R.id.nav_weather_today) {
-//                toolbar.visibility = View.GONE
-//            } else {
-//                toolbar.visibility = View.VISIBLE
-//            }
+        toolbar.setUpWithNavControllerCustom(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener(AppToolbarOnDestinationChangedListener(toolbar))
+        window?.apply {
+            statusBarColor = resources.getColor(R.color.transparent, theme)
         }
     }
 
