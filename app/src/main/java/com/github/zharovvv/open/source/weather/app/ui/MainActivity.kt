@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         navigationView.setupWithNavController(navController)
         toolbar.setupWithNavController(navController, drawerLayout)
         navController.addOnDestinationChangedListener(AppToolbarOnDestinationChangedListener(toolbar))
-        window?.apply {
-            statusBarColor = resources.getColor(R.color.transparent, theme)
-        }
     }
 
     /**

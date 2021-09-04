@@ -9,12 +9,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-
-<!--        <TextView-->
-<!--            android:id="@+id/text_view_toolbar_main"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
+        android:layout_height="?attr/actionBarSize"
+        android:background="?android:attr/windowBackground">
 
     </androidx.appcompat.widget.Toolbar>
 
