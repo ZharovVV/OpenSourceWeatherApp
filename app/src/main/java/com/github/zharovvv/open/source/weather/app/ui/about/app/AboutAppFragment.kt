@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentAboutAppBinding
+import com.github.zharovvv.open.source.weather.app.ui.BaseFragment
 
-class AboutAppFragment : Fragment() {
+class AboutAppFragment : BaseFragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentAboutAppBinding? = null

@@ -18,6 +18,11 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <dialog
+        android:id="@+id/nav_location_permission_explanation"
+        android:name="com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment"
+        tools:layout="@layout/dialog_fragment_location_permission_explanation" />
+
     <fragment
         android:id="@+id/nav_week_weather"
         android:name="com.github.zharovvv.open.source.weather.app.ui.weather.week.WeekWeatherFragment"
