@@ -5,15 +5,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_weather_today"
+            android:icon="@drawable/ic_baseline_today_24"
             android:title="@string/menu_weather_today" />
         <item
             android:id="@+id/nav_week_weather"
+            android:icon="@drawable/ic_baseline_date_range_24"
             android:title="@string/menu_week_weather" />
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/menu_settings" />
         <item
             android:id="@+id/nav_about_app"
+            android:icon="@drawable/ic_baseline_info_24"
             android:title="@string/menu_about_app" />
     </group>
 </menu>

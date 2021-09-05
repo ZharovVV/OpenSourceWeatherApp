@@ -8,10 +8,21 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
         <item name="colorOnSecondary">@color/white</item>
-
+        <!-- Surface color-->
+        <item name="colorOnPrimarySurface">@color/gray_light_dark_tint</item>
+        <item name="colorOnSurface">@color/black</item>
+        <!-- Navigation View -->
+        <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
+        <!-- Window -->
         <item name="android:windowBackground">@color/white</item>
+        <!-- Navigation Bar -->
         <item name="android:navigationBarColor">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.OpenSourceWeatherApp.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemIconTint">@color/navigation_item_color</item>
     </style>
 </resources>

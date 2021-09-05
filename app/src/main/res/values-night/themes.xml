@@ -8,8 +8,14 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray</item>
         <item name="colorOnSecondary">@color/white</item>
-
+        <!-- Surface color-->
+        <item name="colorOnPrimarySurface">@color/gray_light_light_tint</item>
+        <item name="colorOnSurface">@color/white</item>
+        <!-- Navigation View -->
+        <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
+        <!-- Window -->
         <item name="android:windowBackground">@color/gray_dark</item>
+        <!-- Navigation Bar -->
         <item name="android:navigationBarColor">@color/gray_dark</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/transparent</item>
