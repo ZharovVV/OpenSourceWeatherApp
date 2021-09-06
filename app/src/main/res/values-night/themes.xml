@@ -2,22 +2,24 @@
     <!-- Base application theme. -->
     <style name="Theme.OpenSourceWeatherApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="colorPrimaryDark">?android:attr/windowBackground</item>
         <item name="colorPrimary">@color/blue_light</item>
         <item name="colorOnPrimary">@color/gray_light_dark_tint</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Surface color-->
-        <item name="colorOnPrimarySurface">@color/gray_light_light_tint</item>
+        <item name="colorSurface">?android:attr/windowBackground</item>
         <item name="colorOnSurface">@color/white</item>
-        <!-- Navigation View -->
-        <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
+        <item name="colorPrimarySurface">?android:attr/windowBackground</item>
+        <item name="colorOnPrimarySurface">@color/gray_light_light_tint</item>
         <!-- Window -->
         <item name="android:windowBackground">@color/gray_dark</item>
         <!-- Navigation Bar -->
-        <item name="android:navigationBarColor">@color/gray_dark</item>
+        <item name="android:navigationBarColor">?android:attr/windowBackground</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/transparent</item>
+        <!-- Navigation View -->
+        <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
     </style>
 </resources>

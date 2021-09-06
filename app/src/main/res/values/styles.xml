@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Navigation View-->
+    <style name="Theme.OpenSourceWeatherApp.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView">
+        <item name="itemIconTint">@color/navigation_item_color</item>
+    </style>
+</resources>
