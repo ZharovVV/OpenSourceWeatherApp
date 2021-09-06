@@ -73,6 +73,6 @@ class LocationLiveData(context: Context) : LiveData<LocationModel>() {
 
     fun clear() {
         locationManager.removeUpdates(locationListener)
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
     }
 }
