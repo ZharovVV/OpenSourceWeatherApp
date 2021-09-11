@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/indent_normal">
+
+    <TextView
+        android:id="@+id/detailed_weather_params_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_large"
+        android:textAppearance="@style/TextAppearance.Secondary.SubTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/detailed_weather_params_icon_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/empty"
+        android:scaleType="center"
+        app:layout_constraintStart_toStartOf="@id/detailed_weather_params_name_text_view"
+        app:layout_constraintTop_toBottomOf="@id/detailed_weather_params_name_text_view" />
+
+    <TextView
+        android:id="@+id/detailed_weather_params_value_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/indent_large"
+        android:textAppearance="@style/TextAppearance.Secondary.Pain"
+        app:layout_constraintBottom_toBottomOf="@id/detailed_weather_params_icon_image_view"
+        app:layout_constraintStart_toEndOf="@id/detailed_weather_params_icon_image_view"
+        app:layout_constraintTop_toTopOf="@id/detailed_weather_params_icon_image_view" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

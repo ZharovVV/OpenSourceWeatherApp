@@ -7,7 +7,7 @@
     android:paddingTop="72dp">
 
     <ImageView
-        android:id="@+id/image_view_nav_header_app_icon"
+        android:id="@+id/nav_header_app_icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_view_nav_header_app_name"
+        android:id="@+id/nav_header_app_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -29,21 +29,21 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_view_nav_header_app_icon" />
+        app:layout_constraintTop_toBottomOf="@id/nav_header_app_icon_image_view" />
 
     <ImageView
-        android:id="@+id/image_view_nav_header_location_icon"
+        android:id="@+id/nav_header_location_icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_baseline_room_24"
-        app:layout_constraintEnd_toStartOf="@id/text_view_nav_header_location"
-        app:layout_constraintTop_toBottomOf="@id/text_view_nav_header_app_name"
+        app:layout_constraintEnd_toStartOf="@id/nav_header_location_text_view"
+        app:layout_constraintTop_toBottomOf="@id/nav_header_app_name_text_view"
         app:tint="?attr/colorPrimary" />
 
     <TextView
-        android:id="@+id/text_view_nav_header_location"
+        android:id="@+id/nav_header_location_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -51,7 +51,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_nav_header_app_name" />
+        app:layout_constraintTop_toBottomOf="@id/nav_header_app_name_text_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

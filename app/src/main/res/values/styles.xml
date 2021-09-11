@@ -4,4 +4,55 @@
     <style name="Theme.OpenSourceWeatherApp.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView">
         <item name="itemIconTint">@color/navigation_item_color</item>
     </style>
+
+    <!--Text styles-->
+    <style name="TextAppearance" />
+
+    <style name="TextAppearance.Primary" />
+
+    <style name="TextAppearance.Primary.Title">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="TextAppearance.Primary.SubTitle">
+        <item name="android:textColor">?attr/colorOnPrimarySurface</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Secondary" />
+
+    <style name="TextAppearance.Secondary.Title">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Secondary.SubTitle">
+        <item name="android:textColor">@color/white_50_alpha</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Secondary.Pain">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Surface" />
+
+    <style name="TextAppearance.Surface.Title">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Surface.Pain">
+        <item name="android:textColor">?attr/colorOnPrimarySurface</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

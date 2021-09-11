@@ -1,6 +1,7 @@
 package com.github.zharovvv.open.source.weather.app
 
 import android.app.Application
+import android.content.Context
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -10,6 +11,7 @@ class OpenSourceWeatherApp : Application() {
 
     companion object {
         lateinit var weatherApiService: WeatherApiService
+        lateinit var appContext: Context
     }
 
     override fun onCreate() {
@@ -20,5 +22,6 @@ class OpenSourceWeatherApp : Application() {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
         weatherApiService = retrofit.create(WeatherApiService::class.java)
+        appContext = applicationContext
     }
 }

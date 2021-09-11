@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar_main)
+        val toolbar: Toolbar = findViewById(R.id.main_toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.main_drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavControllerByFragmentManager()
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun FragmentActivity.findNavControllerByFragmentManager(): NavController {
         val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(
-            R.id.nav_host_fragment_container
+            R.id.nav_host_fragment
         ) as NavHostFragment
         return navHostFragment.navController
     }
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private fun NavigationView.observeLocation(locationLiveData: LiveData<LocationModel>) {
         val navigationHeader = getHeaderView(0)
         val textViewNavHeaderLocation: TextView =
-            navigationHeader.findViewById(R.id.text_view_nav_header_location)
+            navigationHeader.findViewById(R.id.nav_header_location_text_view)
         locationLiveData.observe(this@MainActivity) { locationModel: LocationModel ->
             textViewNavHeaderLocation.text = locationModel.cityName
         }

@@ -32,12 +32,12 @@ class LocationPermissionExplanationDialogFragment : DialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val button: Button = view.findViewById(R.id.button_request_location_permission)
+        val button: Button = view.findViewById(R.id.request_location_permission_button)
         val navController = findNavController()
         button.setOnClickListener {
             navController.setResultForPreviousDestination(
-                LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY,
-                DialogResult.SHOULD_REQUEST_LOCATION_PERMISSION
+                resultKey = LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY,
+                result = DialogResult.SHOULD_REQUEST_LOCATION_PERMISSION
             )
             dismiss()
         }
@@ -46,8 +46,8 @@ class LocationPermissionExplanationDialogFragment : DialogFragment() {
     override fun onCancel(dialog: DialogInterface) {
         val navController = findNavController()
         navController.setResultForPreviousDestination(
-            LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY,
-            DialogResult.CANCEL
+            resultKey = LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY,
+            result = DialogResult.CANCEL
         )
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- font sizes -->
+    <dimen name="font_largest">72sp</dimen>
+    <dimen name="font_large">24sp</dimen>
+    <dimen name="font_normal">18sp</dimen>
+    <dimen name="font_small">14sp</dimen>
+    <dimen name="font_smallest">12sp</dimen>
+
+    <!-- indents -->
+    <dimen name="indent_large">24dp</dimen>
+    <dimen name="indent_normal">18dp</dimen>
+    <dimen name="indent_small">9dp</dimen>
+
+    <!-- corner radius -->
+    <dimen name="corner_radius_large">18dp</dimen>
+    <dimen name="corner_radius_normal">9dp</dimen>
+</resources>

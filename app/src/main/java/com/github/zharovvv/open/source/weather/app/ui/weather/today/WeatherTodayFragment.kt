@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeatherTodayBinding
 import com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment.DialogResult
@@ -20,6 +21,7 @@ import com.github.zharovvv.open.source.weather.app.location.LocationPermissionEx
 import com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment.DialogResult.SHOULD_REQUEST_LOCATION_PERMISSION
 import com.github.zharovvv.open.source.weather.app.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
+import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.navigation.LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY
 import com.github.zharovvv.open.source.weather.app.navigation.setUpNavDialogResultCallback
 import com.github.zharovvv.open.source.weather.app.ui.BaseFragment
@@ -45,14 +47,35 @@ class WeatherTodayFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
+        val detailedWeatherParamsAdapter = DetailedWeatherParamsAdapter()
         with(binding) {
-            buttonToWeekWeather.setOnClickListener {
+            toWeekWeatherButton.setOnClickListener {
                 navController.navigate(R.id.action_nav_weather_today_to_nav_week_weather)
             }
+            detailedParamsRecyclerView.layoutManager =
+                GridLayoutManager(this@WeatherTodayFragment.context, 2)
+            detailedParamsRecyclerView.adapter = detailedWeatherParamsAdapter
         }
         configureRequestLocationPermission(navController)
         locationViewModel.locationData.observe(viewLifecycleOwner) { locationModel: LocationModel ->
-            binding.textViewTest1.text = "${locationModel.cityName}, ${locationModel.countryName}"
+            binding.cityNameTextView.text =
+                getString(R.string.delimiter_comma, locationModel.cityName)
+            binding.countryNameTextView.text = locationModel.countryName
+            if (savedInstanceState == null && !isRestoredFromBackStack) {
+                weatherTodayViewModel.updateWeatherToday(
+                    locationModel.latitude,
+                    locationModel.longitude
+                )
+            }
+        }
+        weatherTodayViewModel.weatherTodayData.observe(viewLifecycleOwner) { weatherTodayModel: WeatherTodayModel ->
+            with(binding) {
+                weatherTodayCardIconImageView.setImageResource(weatherTodayModel.iconId)
+                weatherDescriptionTextView.text = weatherTodayModel.description
+                todayDateTextView.text = weatherTodayModel.dateString
+                weatherTodayTemperatureTextView.text = weatherTodayModel.temperature
+            }
+            detailedWeatherParamsAdapter.submitList(weatherTodayModel.detailedWeatherParams)
         }
         if (savedInstanceState == null && !isRestoredFromBackStack) {
             requestLocation()
@@ -66,7 +89,7 @@ class WeatherTodayFragment : BaseFragment() {
             if (isGranted) {
                 requestLocation()
             } else {
-                binding.textViewTest1.text = "Доступ к локации не предоставлен"
+                binding.cityNameTextView.text = "Доступ к локации не предоставлен"
             }
         }
         setUpNavDialogResultCallback(

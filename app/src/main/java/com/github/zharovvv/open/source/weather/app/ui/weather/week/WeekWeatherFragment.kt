@@ -34,9 +34,9 @@ class WeekWeatherFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
-        binding.toolbarFragmentWeekWeather.setupWithNavController(navController)
+        binding.fragmentWeekWeatherToolbar.setupWithNavController(navController)
         locationViewModel.locationData.observe(viewLifecycleOwner) { locationModel: LocationModel ->
-            binding.toolbarFragmentWeekWeather.title =
+            binding.fragmentWeekWeatherToolbar.title =
                 "${locationModel.cityName}, ${locationModel.countryName}"
         }
     }

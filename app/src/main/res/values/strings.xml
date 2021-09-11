@@ -1,8 +1,37 @@
 <resources>
     <string name="app_name">OpenSourceWeatherApp</string>
+
     <string name="menu_weather_today">Сегодня</string>
     <string name="menu_week_weather">На неделе</string>
     <string name="menu_settings">Настройки</string>
     <string name="menu_about_app">О приложении</string>
+
+    <string name="delimiter_comma">%1$s,\u0020</string>
     <string name="empty" />
+
+    <string name="wind">ВЕТЕР</string>
+    <string name="feels_like">ОЩУЩАЕТСЯ КАК</string>
+    <string name="humidity">ВЛАЖНОСТЬ</string>
+    <string name="pressure">ДАВЛЕНИЕ</string>
+
+    <string name="thunderstorm_with_rain">Гроза с дождем</string>
+    <string name="thunderstorm">Гроза</string>
+    <string name="drizzle">Морось</string>
+    <string name="drizzle_rain">Моросящий дождь</string>
+    <string name="shower_drizzle">Изморось</string>
+    <string name="rain">Дождь</string>
+    <string name="heavy_rain">Ливень</string>
+    <string name="freezing_rain">Холодный дождь</string>
+    <string name="snow">Снег</string>
+    <string name="heavy_snow">Снегопад</string>
+    <string name="sleet">Мокрый снег</string>
+    <string name="rain_snow">Дождь со снегом</string>
+    <string name="mist">Туман</string>
+    <string name="dust">Песчано-пыльные вихри</string>
+    <string name="volcanic_ash">Вулканический пепел</string>
+    <string name="squalls">Шквалы</string>
+    <string name="tornado">Торнадо</string>
+    <string name="clear_sky">Ясно</string>
+    <string name="few_clouds">Переменная облачность</string>
+    <string name="clouds">Облачно</string>
 </resources>
