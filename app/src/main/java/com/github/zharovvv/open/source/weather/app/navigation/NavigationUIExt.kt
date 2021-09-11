@@ -1,6 +1,8 @@
 package com.github.zharovvv.open.source.weather.app.navigation
 
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.customview.widget.Openable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -8,6 +10,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
+import com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
+import com.google.android.material.navigation.NavigationView
 import java.io.Serializable
 
 fun Toolbar.setUpWithNavControllerCustom(
@@ -29,8 +34,9 @@ fun Toolbar.setUpWithNavControllerCustom(
 }
 
 /**
- * Получение данных в фрагменте, из которого был показан этот диалог,
- * после извлечения диалога из BackStack-а.
+ * Получение данных в фрагменте, из которого был показан диалог,
+ * после извлечения этого диалога из BackStack-а.
+ * [https://developer.android.com/guide/navigation/navigation-programmatic#additional_considerations]
  */
 inline fun <reified T : Serializable> Fragment.setUpNavDialogResultCallback(
     navBackStackEntry: NavBackStackEntry,
@@ -61,4 +67,24 @@ fun <T : Serializable> NavController.setResultForPreviousDestination(
     result: T
 ) {
     previousBackStackEntry?.savedStateHandle?.set(resultKey, result)
+}
+
+/**
+ * При совпадении menuItemId и currentDestination#id просто закрываем Openable.
+ * (Не создавая при этом нового фрагмента и заменяя им старый, как происходит по умолчанию)
+ * Костыльное решение, т.к. не нашел, как добиться того же поведения, используя Navigation AC.
+ */
+fun NavigationView.setUpWithNavControllerCustom(navController: NavController) {
+    this as CustomNavigationView
+    setupWithNavController(navController)
+    val sourceListener = sourceOnNavigationItemSelectedListener
+    setNavigationItemSelectedListener { menuItem: MenuItem ->
+        if (menuItem.itemId == navController.currentDestination?.id) {
+            val openableParent = this.parent as Openable
+            openableParent.close()
+            true
+        } else {
+            sourceListener.onNavigationItemSelected(menuItem)
+        }
+    }
 }

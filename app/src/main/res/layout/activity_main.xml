@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.navigation.NavigationView
+    <com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        style="@style/Theme.OpenSourceWeatherApp.NavigationView"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/nav_drawer_main" />
 
