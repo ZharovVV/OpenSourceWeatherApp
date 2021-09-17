@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:layout_marginTop="@dimen/indent_small"
         android:id="@+id/detailed_weather_params_icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

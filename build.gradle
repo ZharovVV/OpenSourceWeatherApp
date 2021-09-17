@@ -8,6 +8,7 @@ buildscript {
     ext.retrofit_gson_converter_version = "2.9.0"
     ext.retrofit_rxjava2_adapter_version = "2.9.0"
     ext.gson_version = "2.8.6"
+    ext.room_version = "2.3.0"
     repositories {
         google()
         jcenter()
