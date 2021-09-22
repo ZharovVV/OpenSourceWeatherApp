@@ -53,7 +53,7 @@ class LocationRepository {
         return distance > 2000f
     }
 
-    fun requestLocation(): Flowable<LocationModel> {
+    fun locationObservable(): Flowable<LocationModel> {
         return locationDao.getLocation()
             .map { locationEntity: LocationEntity ->
                 LocationModel(

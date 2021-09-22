@@ -4,7 +4,7 @@ import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.model.DetailedWeatherParamModel
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
-import com.github.zharovvv.open.source.weather.app.network.dto.WeatherResponse
+import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -97,8 +97,8 @@ class WeatherResponseToModelConverter {
         )
     }
 
-    fun convert(weatherResponse: WeatherResponse): WeatherTodayModel {
-        val weather = weatherResponse.weather.first()
+    fun convert(currentWeatherResponse: CurrentWeatherResponse): WeatherTodayModel {
+        val weather = currentWeatherResponse.weather.first()
         val iconId: Int = ICONS_MAP[weather.icon]!!
         val simpleDateFormat = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault())
         val appContext = OpenSourceWeatherApp.appContext
@@ -106,27 +106,27 @@ class WeatherResponseToModelConverter {
             iconId = iconId,
             description = appContext.getString(WEATHER_ID_DESCRIPTIONS[weather.id]!!),
             dateString = simpleDateFormat.format(Date()).capitalize(Locale.getDefault()),
-            temperature = ceil(weatherResponse.mainInfo.temp).toInt().toString() + "°",
+            temperature = ceil(currentWeatherResponse.mainInfo.temp).toInt().toString() + "°",
             detailedWeatherParams = listOf(
                 DetailedWeatherParamModel(
                     name = appContext.getString(R.string.wind),
                     iconId = R.drawable.ic_wind_speed_24,
-                    value = weatherResponse.wind.speed.toString() + " м/с"
+                    value = currentWeatherResponse.wind.speed.toString() + " м/с"
                 ),
                 DetailedWeatherParamModel(
                     name = appContext.getString(R.string.feels_like),
                     iconId = R.drawable.ic_feels_like_24,
-                    value = ceil(weatherResponse.mainInfo.feelsLike).toInt().toString() + "°"
+                    value = ceil(currentWeatherResponse.mainInfo.feelsLike).toInt().toString() + "°"
                 ),
                 DetailedWeatherParamModel(
                     name = appContext.getString(R.string.humidity),
                     iconId = R.drawable.ic_humidity_24,
-                    value = weatherResponse.mainInfo.humidity.toString() + " %"
+                    value = currentWeatherResponse.mainInfo.humidity.toString() + " %"
                 ),
                 DetailedWeatherParamModel(
                     name = appContext.getString(R.string.pressure),
                     iconId = R.drawable.ic_pressure_24,
-                    value = weatherResponse.mainInfo.pressure.toString() + " кПа"
+                    value = currentWeatherResponse.mainInfo.pressure.toString() + " кПа"
                 )
             )
         )

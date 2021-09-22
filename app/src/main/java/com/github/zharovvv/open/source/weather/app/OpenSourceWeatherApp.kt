@@ -5,8 +5,9 @@ import android.content.Context
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.database.AppDatabase
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class OpenSourceWeatherApp : Application() {
@@ -22,17 +23,33 @@ class OpenSourceWeatherApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-        WEATHER_API_SERVICE = retrofit.create(WeatherApiService::class.java)
+        configureRetrofit()
         _appContext = applicationContext
         APP_DATABASE = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "location_database"
-        ).build()
+            "weather_app_database"
+        )
+            .fallbackToDestructiveMigration()   //TODO Удалить при отведении релиза
+            .build()
+    }
+
+    private fun configureRetrofit() {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        WEATHER_API_SERVICE = retrofit.create(WeatherApiService::class.java)
     }
 }

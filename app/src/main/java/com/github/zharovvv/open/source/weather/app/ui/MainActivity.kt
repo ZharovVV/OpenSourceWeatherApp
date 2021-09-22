@@ -17,6 +17,7 @@ import com.github.zharovvv.open.source.weather.app.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.navigation.AppToolbarOnDestinationChangedListener
 import com.github.zharovvv.open.source.weather.app.navigation.setUpWithNavControllerCustom
+import com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.main_toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.main_drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        val navigationView: CustomNavigationView = findViewById(R.id.nav_view)
         val navController = findNavControllerByFragmentManager()
         navigationView.setUpWithNavControllerCustom(navController)
         navigationView.observeLocation(locationViewModel.locationData)

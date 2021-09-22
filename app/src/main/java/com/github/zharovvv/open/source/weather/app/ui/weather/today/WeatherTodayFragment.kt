@@ -61,12 +61,6 @@ class WeatherTodayFragment : BaseFragment() {
             binding.cityNameTextView.text =
                 getString(R.string.delimiter_comma, locationModel.cityName)
             binding.countryNameTextView.text = locationModel.countryName
-            if (savedInstanceState == null && !isRestoredFromBackStack) {
-                weatherTodayViewModel.updateWeatherToday(
-                    locationModel.latitude,
-                    locationModel.longitude
-                )
-            }
         }
         weatherTodayViewModel.weatherTodayData.observe(viewLifecycleOwner) { weatherTodayModel: WeatherTodayModel ->
             with(binding) {

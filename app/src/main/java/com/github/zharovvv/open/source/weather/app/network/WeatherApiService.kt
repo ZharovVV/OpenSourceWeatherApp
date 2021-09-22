@@ -1,7 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.network
 
-import com.github.zharovvv.open.source.weather.app.network.dto.WeatherResponse
-import io.reactivex.Single
+import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,5 +14,5 @@ interface WeatherApiService {
         lon: Float,
         @Query(value = "appid")
         apiKey: String
-    ): Single<WeatherResponse>
+    ): Call<CurrentWeatherResponse>
 }

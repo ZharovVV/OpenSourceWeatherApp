@@ -12,7 +12,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
-import com.google.android.material.navigation.NavigationView
 import java.io.Serializable
 
 fun Toolbar.setUpWithNavControllerCustom(
@@ -73,9 +72,9 @@ fun <T : Serializable> NavController.setResultForPreviousDestination(
  * При совпадении menuItemId и currentDestination#id просто закрываем Openable.
  * (Не создавая при этом нового фрагмента и заменяя им старый, как происходит по умолчанию)
  * Костыльное решение, т.к. не нашел, как добиться того же поведения, используя Navigation AC.
+ * Работает только с [CustomNavigationView].
  */
-fun NavigationView.setUpWithNavControllerCustom(navController: NavController) {
-    this as CustomNavigationView
+fun CustomNavigationView.setUpWithNavControllerCustom(navController: NavController) {
     setupWithNavController(navController)
     val sourceListener = sourceOnNavigationItemSelectedListener
     setNavigationItemSelectedListener { menuItem: MenuItem ->

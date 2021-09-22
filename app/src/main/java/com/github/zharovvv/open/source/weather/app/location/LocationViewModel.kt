@@ -25,8 +25,9 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     private val compositeDisposable = CompositeDisposable()
 
     fun requestLocation() {
-        compositeDisposable += locationRepository.requestLocation()
+        compositeDisposable += locationRepository.locationObservable()
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { }
             .subscribe { _locationLiveData.value = it }
         getApplication<OpenSourceWeatherApp>().startService<LocationService>()
     }
