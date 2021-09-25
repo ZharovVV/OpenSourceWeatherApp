@@ -10,10 +10,10 @@ import com.github.zharovvv.open.source.weather.app.model.DetailedWeatherParamMod
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
+import com.github.zharovvv.open.source.weather.app.util.isFresh
 import io.reactivex.Flowable
 import retrofit2.Response
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class WeatherTodayRepository {
 
@@ -23,6 +23,7 @@ class WeatherTodayRepository {
     private val weatherDtoToModelConverter = WeatherResponseToModelConverter()
 
     fun weatherTodayObservable(): Flowable<WeatherTodayModel> = weatherTodayDao.getWeatherToday()
+        .filter { it.isFresh }
         .map { weatherTodayEntity: WeatherTodayEntity ->
             WeatherTodayModel(
                 iconId = weatherTodayEntity.iconId,
@@ -75,6 +76,8 @@ class WeatherTodayRepository {
         }
     }
 
+    private val WeatherTodayEntity.isFresh: Boolean get() = time.isFresh(freshPeriodInMinutes = 2)
+
     private fun shouldFetchData(
         weatherTodayEntity: WeatherTodayEntity?,
         newLat: Float,
@@ -91,20 +94,12 @@ class WeatherTodayRepository {
             )
             return floatArray[0] > 2000f
         }
-
-        fun checkTime(oldTime: Date, newTime: Date): Boolean {
-            val diffInMilliseconds = newTime.time - oldTime.time
-            return TimeUnit.MINUTES.convert(
-                diffInMilliseconds,
-                TimeUnit.MILLISECONDS
-            ) > 2L //TODO fix calculate diff time
-        }
         return weatherTodayEntity == null || checkLocation(
             weatherTodayEntity.latitude,
             weatherTodayEntity.longitude,
             newLat,
             newLon
-        ) || checkTime(weatherTodayEntity.time, Date())
+        ) || weatherTodayEntity.isFresh
     }
 
 }
