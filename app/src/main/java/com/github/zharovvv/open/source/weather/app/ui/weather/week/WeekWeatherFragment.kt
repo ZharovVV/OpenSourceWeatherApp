@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeekWeatherBinding
 import com.github.zharovvv.open.source.weather.app.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
-import com.github.zharovvv.open.source.weather.app.ui.BaseFragment
+import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
 
 class WeekWeatherFragment : BaseFragment() {
 

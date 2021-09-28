@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.ui.weather.today
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.repository.LocationRepositoryProvider
 import com.github.zharovvv.open.source.weather.app.repository.WeatherTodayRepositoryProvider
@@ -16,8 +17,8 @@ class WeatherTodayViewModel : ViewModel() {
 
     private val locationRepository = LocationRepositoryProvider.locationRepository
     private val weatherRepository = WeatherTodayRepositoryProvider.weatherRepository
-    private val _weatherTodayData = MutableLiveData<WeatherTodayModel>()
-    val weatherTodayData: LiveData<WeatherTodayModel> get() = _weatherTodayData
+    private val _weatherTodayData = MutableLiveData<DataState<WeatherTodayModel>>()
+    val weatherTodayData: LiveData<DataState<WeatherTodayModel>> get() = _weatherTodayData
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -25,16 +26,20 @@ class WeatherTodayViewModel : ViewModel() {
         compositeDisposable += locationRepository.locationObservable()
             .observeOn(Schedulers.io())
             .subscribe {
-                weatherRepository.requestTodayWeather(it.latitude, it.longitude)
+                weatherRepository.requestTodayWeather(
+                    it.latitude,
+                    it.longitude,
+                    withLoadingStatus = false
+                )
             }
-        compositeDisposable += weatherRepository.weatherTodayObservable()
+        compositeDisposable += weatherRepository.weatherTodayObservable(compositeDisposable)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { _weatherTodayData.value = it }
     }
 
     fun requestWeatherToday(lat: Float, lon: Float) {
         compositeDisposable += Single.fromCallable {
-            weatherRepository.requestTodayWeather(lat, lon)
+            weatherRepository.requestTodayWeather(lat, lon, withLoadingStatus = true)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

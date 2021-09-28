@@ -1,4 +1,4 @@
-package com.github.zharovvv.open.source.weather.app.ui
+package com.github.zharovvv.open.source.weather.app.ui.view
 
 import android.os.Bundle
 import android.util.Log

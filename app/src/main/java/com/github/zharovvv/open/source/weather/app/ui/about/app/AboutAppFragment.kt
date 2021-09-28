@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentAboutAppBinding
-import com.github.zharovvv.open.source.weather.app.ui.BaseFragment
+import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
 
 class AboutAppFragment : BaseFragment() {
 

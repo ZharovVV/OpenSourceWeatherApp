@@ -39,6 +39,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/city_name_text_view">
 
+            <ProgressBar
+                android:id="@+id/weather_today_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminateTint="?attr/colorOnSecondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/weather_today_card_icon_image_view"
                 android:layout_width="60dp"
@@ -87,11 +98,11 @@
                 android:id="@+id/detailed_params_recycler_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginBottom="@dimen/indent_large"
-                app:layout_constraintStart_toStartOf="parent"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/weather_today_temperature_text_view" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
