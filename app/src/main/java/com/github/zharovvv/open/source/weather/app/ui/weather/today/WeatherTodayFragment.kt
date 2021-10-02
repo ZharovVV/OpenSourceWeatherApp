@@ -36,6 +36,7 @@ class WeatherTodayFragment : BaseFragment() {
     private var requestLocationPermissionLauncher: ActivityResultLauncher<String>? = null
     private val locationViewModel: LocationViewModel by activityViewModels()
     private val weatherTodayViewModel: WeatherTodayViewModel by viewModels()
+    private val hourlyWeatherViewModel: HourlyWeatherViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,11 +60,13 @@ class WeatherTodayFragment : BaseFragment() {
             detailedParamsRecyclerView.adapter = detailedWeatherParamsAdapter
         }
         configureRequestLocationPermission(navController)
+
         locationViewModel.locationData.observe(viewLifecycleOwner) { locationModel: LocationModel ->
             binding.cityNameTextView.text =
                 getString(R.string.delimiter_comma, locationModel.cityName)
             binding.countryNameTextView.text = locationModel.countryName
         }
+
         weatherTodayViewModel.weatherTodayData.observe(viewLifecycleOwner) { dataState: DataState<WeatherTodayModel> ->
             when (dataState) {
                 is DataState.Success -> {
@@ -86,6 +89,11 @@ class WeatherTodayFragment : BaseFragment() {
                 }
             }
         }
+
+        hourlyWeatherViewModel.hourlyWeatherData.observe(viewLifecycleOwner) {
+
+        }
+
         if (savedInstanceState == null && !isRestoredFromBackStack) {
             requestLocation()
         }

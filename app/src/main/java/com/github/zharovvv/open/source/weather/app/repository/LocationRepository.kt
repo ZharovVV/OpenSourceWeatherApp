@@ -65,4 +65,15 @@ class LocationRepository {
             }
             .doOnError { it.printStackTrace() }
     }
+
+    fun getLastKnownLocation(): LocationModel? {
+        return locationDao.getLastKnownLocation()?.let { locationEntity: LocationEntity ->
+            LocationModel(
+                latitude = locationEntity.latitude,
+                longitude = locationEntity.longitude,
+                cityName = locationEntity.cityName,
+                countryName = locationEntity.countryName
+            )
+        }
+    }
 }

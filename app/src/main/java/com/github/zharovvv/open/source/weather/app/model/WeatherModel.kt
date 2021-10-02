@@ -17,3 +17,15 @@ data class DetailedWeatherParamModel(
     val iconId: Int,
     val value: String
 )
+
+data class HourlyWeatherModel(
+    val items: List<HourlyWeatherItemModel>
+)
+
+data class HourlyWeatherItemModel(
+    val now: Boolean,
+    val timeString: String,
+    @DrawableRes
+    val iconId: Int,
+    val value: String
+)

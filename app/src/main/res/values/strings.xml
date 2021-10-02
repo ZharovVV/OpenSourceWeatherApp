@@ -34,4 +34,5 @@
     <string name="clear_sky">Ясно</string>
     <string name="few_clouds">Переменная облачность</string>
     <string name="clouds">Облачно</string>
+    <string name="now">Сейчас</string>
 </resources>

@@ -4,22 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.zharovvv.open.source.weather.app.model.DataState
+import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
-import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
+import com.github.zharovvv.open.source.weather.app.repository.HourlyWeatherRepositoryProvider
 import com.github.zharovvv.open.source.weather.app.repository.LocationRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.repository.WeatherTodayRepositoryProvider
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 
-class WeatherTodayViewModel : ViewModel() {
+class HourlyWeatherViewModel : ViewModel() {
 
     private val locationRepository = LocationRepositoryProvider.locationRepository
-    private val weatherRepository = WeatherTodayRepositoryProvider.weatherRepository
-    private val _weatherTodayData = MutableLiveData<DataState<WeatherTodayModel>>()
-    val weatherTodayData: LiveData<DataState<WeatherTodayModel>> get() = _weatherTodayData
+    private val hourlyWeatherRepository = HourlyWeatherRepositoryProvider.hourlyWeatherRepository
+    private val _hourlyWeatherData = MutableLiveData<DataState<HourlyWeatherModel>>()
+    val hourlyWeatherData: LiveData<DataState<HourlyWeatherModel>> get() = _hourlyWeatherData
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -27,24 +27,24 @@ class WeatherTodayViewModel : ViewModel() {
         compositeDisposable += locationRepository.locationObservable()
             .observeOn(Schedulers.io())
             .subscribe {
-                weatherRepository.requestTodayWeather(
+                hourlyWeatherRepository.requestHourlyWeather(
                     it.latitude,
                     it.longitude,
                     withLoadingStatus = false
                 )
             }
-        compositeDisposable += weatherRepository.weatherTodayObservable()
+        compositeDisposable += hourlyWeatherRepository.hourlyWeatherObservable()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { _weatherTodayData.value = it }
+            .subscribe { _hourlyWeatherData.value = it }
     }
 
-    fun requestWeatherToday() {
+    fun requestHourlyWeather() {
         compositeDisposable += Single.fromCallable {
             locationRepository.getLastKnownLocation()
         }
             .filter { locationModel: LocationModel? -> locationModel != null }
             .map {
-                weatherRepository.requestTodayWeather(
+                hourlyWeatherRepository.requestHourlyWeather(
                     it.latitude,
                     it.longitude,
                     withLoadingStatus = true
@@ -59,5 +59,4 @@ class WeatherTodayViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.clear()
     }
-
 }

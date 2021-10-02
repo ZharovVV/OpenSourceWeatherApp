@@ -14,7 +14,7 @@ import kotlin.math.ceil
 class WeatherTodayConverter {
 
     companion object {
-        private val ICONS_MAP: Map<String, Int> = mapOf(
+        private val ICONS_MAP: Map<String, Int> = hashMapOf(
             "01d" to R.drawable.ic_clear_sky_60,
             "02d" to R.drawable.ic_few_clouds_60,
             "03d" to R.drawable.ic_clouds_60,
@@ -35,7 +35,7 @@ class WeatherTodayConverter {
             "13n" to R.drawable.ic_snow_60,
             "50n" to R.drawable.ic_clouds_60
         )
-        private val WEATHER_ID_DESCRIPTIONS: Map<Int, Int> = mapOf(
+        private val WEATHER_ID_DESCRIPTIONS: Map<Int, Int> = hashMapOf(
             200 to R.string.thunderstorm_with_rain,
             201 to R.string.thunderstorm_with_rain,
             202 to R.string.thunderstorm_with_rain,

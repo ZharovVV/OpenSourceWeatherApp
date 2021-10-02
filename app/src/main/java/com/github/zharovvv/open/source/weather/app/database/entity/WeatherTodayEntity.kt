@@ -52,13 +52,4 @@ class DetailedWeatherParamPojoEntityConverter {
     }
 }
 
-class DateConverter {
-
-    @TypeConverter
-    fun dateToLong(date: Date): Long = date.time
-
-    @TypeConverter
-    fun longToDate(timeLong: Long): Date = Date(timeLong)
-}
-
 
