@@ -14,3 +14,19 @@ fun Date.isFresh(freshPeriodInMinutes: Int): Boolean {
     return now.before(expired)
 }
 
+fun Date.between(startDate: Date, endDate: Date): Boolean {
+    return this.before(endDate) && this.after(startDate)
+}
+
+operator fun Date.plus(plusValue: Int): DatePlusOperator = DatePlusOperator(this, plusValue)
+
+class DatePlusOperator(private val date: Date, private val plusValue: Int) {
+
+    infix fun of(calendarField: Int): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(calendarField, plusValue)
+        return calendar.time
+    }
+}
+

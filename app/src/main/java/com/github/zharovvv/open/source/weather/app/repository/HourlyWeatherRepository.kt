@@ -9,14 +9,16 @@ import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import com.github.zharovvv.open.source.weather.app.network.dto.HourlyWeatherResponse
+import com.github.zharovvv.open.source.weather.app.util.between
 import com.github.zharovvv.open.source.weather.app.util.isFresh
+import com.github.zharovvv.open.source.weather.app.util.plus
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.BehaviorSubject
 import retrofit2.Response
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar.HOUR
 
 class HourlyWeatherRepository {
 
@@ -44,10 +46,10 @@ class HourlyWeatherRepository {
 
     private val HourlyWeatherEntity.isFresh: Boolean
         get() {
-            val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            return time.isFresh(freshPeriodInMinutes = 60)
-                    && items.first().timeString.substringBefore(':') == simpleDateFormat.format(Date())
-                .substringBefore(':')
+            val firstItemTime = items.first().time
+            val now = Date()
+            return updateTime.isFresh(freshPeriodInMinutes = 60)
+                    && now.between(firstItemTime, firstItemTime + 1 of HOUR)
         }
 
     fun requestHourlyWeather(lat: Float, lon: Float, withLoadingStatus: Boolean = true) {

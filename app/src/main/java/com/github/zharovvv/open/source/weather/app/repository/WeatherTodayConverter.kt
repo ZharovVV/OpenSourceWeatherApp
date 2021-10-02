@@ -129,7 +129,7 @@ class WeatherTodayConverter {
             id = entityId,
             latitude = latitude,
             longitude = longitude,
-            time = Date(),
+            updateTime = Date(),
             iconId = iconId,
             description = appContext.getString(WEATHER_ID_DESCRIPTIONS[weather.id]!!),
             dateString = simpleDateFormat.format(Date()).capitalize(Locale.getDefault()),

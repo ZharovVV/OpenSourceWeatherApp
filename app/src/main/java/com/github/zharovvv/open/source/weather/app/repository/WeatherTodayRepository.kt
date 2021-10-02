@@ -40,7 +40,7 @@ class WeatherTodayRepository {
         return behaviorSubject
     }
 
-    private val WeatherTodayEntity.isFresh: Boolean get() = time.isFresh(freshPeriodInMinutes = 2)
+    private val WeatherTodayEntity.isFresh: Boolean get() = updateTime.isFresh(freshPeriodInMinutes = 2)
 
     fun requestTodayWeather(lat: Float, lon: Float, withLoadingStatus: Boolean = true) {
         val previousValue = behaviorSubject.value

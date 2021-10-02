@@ -16,7 +16,7 @@ data class WeatherTodayEntity(
     val id: Int,
     val latitude: Float,
     val longitude: Float,
-    val time: Date,
+    val updateTime: Date,
     @DrawableRes
     val iconId: Int,
     val description: String,

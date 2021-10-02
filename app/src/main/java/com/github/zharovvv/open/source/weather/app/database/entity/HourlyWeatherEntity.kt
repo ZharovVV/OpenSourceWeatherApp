@@ -16,13 +16,13 @@ data class HourlyWeatherEntity(
     val id: Int,
     val latitude: Float,
     val longitude: Float,
-    val time: Date,
+    val updateTime: Date,
     val items: List<HourlyWeatherItemPojoEntity>
 )
 
 data class HourlyWeatherItemPojoEntity(
     val now: Boolean,
-    val timeString: String,
+    val time: Date,
     @DrawableRes
     val iconId: Int,
     val value: String

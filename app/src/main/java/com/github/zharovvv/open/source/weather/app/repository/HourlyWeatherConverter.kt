@@ -60,11 +60,12 @@ class HourlyWeatherConverter {
 
 
     fun convertToModel(hourlyWeatherEntity: HourlyWeatherEntity): HourlyWeatherModel {
+        val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         return HourlyWeatherModel(
             items = hourlyWeatherEntity.items.map { itemEntity ->
                 HourlyWeatherItemModel(
                     now = itemEntity.now,
-                    timeString = itemEntity.timeString,
+                    timeString = simpleDateFormat.format(itemEntity.time),
                     iconId = itemEntity.iconId,
                     value = itemEntity.value
                 )
@@ -78,20 +79,20 @@ class HourlyWeatherConverter {
         longitude: Float,
         response: HourlyWeatherResponse
     ): HourlyWeatherEntity {
-        val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
         val appContext = OpenSourceWeatherApp.appContext
         return HourlyWeatherEntity(
             id = entityId,
             latitude = latitude,
             longitude = longitude,
-            time = Date(),
+            updateTime = Date(),
             items = response.hourly.mapIndexed { index, hourlyWeatherRs ->
                 val now = index == 0
                 val weather = hourlyWeatherRs.weather.first()
                 val temperature = ceil(hourlyWeatherRs.temp).toInt().toString() + "°"
                 HourlyWeatherItemPojoEntity(
                     now = now,
-                    timeString = simpleDateFormat.format(Date(hourlyWeatherRs.dt)),
+                    time = Date(hourlyWeatherRs.dt),
                     iconId = if (now) ICONS_MAP[weather.icon]!! else ICONS_MAP_DARK[weather.icon]!!,
                     value = if (now) appContext.getString(R.string.now) else temperature
                 )
