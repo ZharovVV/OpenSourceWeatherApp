@@ -43,8 +43,8 @@
                 android:id="@+id/weather_today_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:indeterminateTint="?attr/colorOnSecondary"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,14 +107,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/to_week_weather_button"
+        <TextView
+            android:id="@+id/time_indicator_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/indent_normal"
-            android:text="@string/menu_week_weather"
+            android:text="@string/today"
+            android:textAppearance="@style/TextAppearance.Surface.Title"
+            app:layout_constraintBottom_toBottomOf="@id/to_week_weather_button"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/to_week_weather_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_week_weather_button"
+            style="@style/Theme.OpenSourceWeatherApp.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/indent_large"
+            android:layout_marginEnd="@dimen/indent_normal"
+            android:text="@string/menu_week_weather"
+            app:icon="@drawable/ic_baseline_arrow_forward_24"
+            app:iconGravity="end"
+            app:iconPadding="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/weather_today_card_layout_container" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hourly_weather_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:padding="@dimen/indent_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/to_week_weather_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

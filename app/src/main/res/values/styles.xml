@@ -5,6 +5,13 @@
         <item name="itemIconTint">@color/navigation_item_color</item>
     </style>
 
+    <style name="Theme.OpenSourceWeatherApp.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/TextAppearance.Primary.SubTitle</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnPrimarySurface</item>
+        <item name="iconTint">?attr/colorOnPrimarySurface</item>
+    </style>
+
     <!--Text styles-->
     <style name="TextAppearance" />
 
