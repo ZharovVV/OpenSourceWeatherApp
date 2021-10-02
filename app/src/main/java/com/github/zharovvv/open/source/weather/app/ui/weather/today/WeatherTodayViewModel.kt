@@ -32,7 +32,7 @@ class WeatherTodayViewModel : ViewModel() {
                     withLoadingStatus = false
                 )
             }
-        compositeDisposable += weatherRepository.weatherTodayObservable(compositeDisposable)
+        compositeDisposable += weatherRepository.weatherTodayObservable()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { _weatherTodayData.value = it }
     }

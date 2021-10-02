@@ -12,8 +12,6 @@ import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherRes
 import com.github.zharovvv.open.source.weather.app.util.isFresh
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
 import retrofit2.Response
 import java.io.IOException
@@ -27,8 +25,8 @@ class WeatherTodayRepository {
     private val behaviorSubject: BehaviorSubject<DataState<WeatherTodayModel>> =
         BehaviorSubject.createDefault(DataState.Loading())
 
-    fun weatherTodayObservable(compositeDisposable: CompositeDisposable): Observable<DataState<WeatherTodayModel>> {
-        compositeDisposable += weatherTodayDao.getWeatherToday()
+    init {
+        @Suppress("UNUSED_VARIABLE") val connection = weatherTodayDao.getWeatherToday()
             .filter { entity -> entity.isFresh }
             .map { entity -> weatherTodayConverter.convertToModel(entity) }
             .subscribeOn(AndroidSchedulers.mainThread())
@@ -36,6 +34,9 @@ class WeatherTodayRepository {
                 { behaviorSubject.onNext(DataState.Success(it)) },
                 { behaviorSubject.onNext(DataState.Error(it.message ?: "")) }
             )
+    }
+
+    fun weatherTodayObservable(): Observable<DataState<WeatherTodayModel>> {
         return behaviorSubject
     }
 
