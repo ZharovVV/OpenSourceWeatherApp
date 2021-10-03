@@ -7,6 +7,7 @@ import com.github.zharovvv.open.source.weather.app.database.entity.HourlyWeather
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherItemModel
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.network.dto.HourlyWeatherResponse
+import com.github.zharovvv.open.source.weather.app.util.timeIndicator
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -65,6 +66,7 @@ class HourlyWeatherConverter {
             items = hourlyWeatherEntity.items.map { itemEntity ->
                 HourlyWeatherItemModel(
                     now = itemEntity.now,
+                    timeIndicator = itemEntity.timeIndicator,
                     timeString = simpleDateFormat.format(itemEntity.time),
                     iconId = itemEntity.iconId,
                     value = itemEntity.value
@@ -89,9 +91,11 @@ class HourlyWeatherConverter {
                 val now = index == 0
                 val weather = hourlyWeatherRs.weather.first()
                 val temperature = ceil(hourlyWeatherRs.temp).toInt().toString() + "°"
+                val forecastDate = Date(hourlyWeatherRs.dt * 1000L)    //convert to milliseconds
                 HourlyWeatherItemPojoEntity(
                     now = now,
-                    time = Date(hourlyWeatherRs.dt * 1000L),    //convert to milliseconds
+                    timeIndicator = forecastDate.timeIndicator,
+                    time = forecastDate,
                     iconId = if (now) ICONS_MAP[weather.icon]!! else ICONS_MAP_DARK[weather.icon]!!,
                     value = if (now) appContext.getString(R.string.now) else temperature
                 )

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OpenSourceWeatherApp</string>
+    <string name="app_name">Погода</string>
 
     <string name="menu_weather_today">Сегодня</string>
     <string name="menu_week_weather">На неделе</string>
@@ -36,4 +36,6 @@
     <string name="clouds">Облачно</string>
     <string name="now">Сейчас</string>
     <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="day_after_tomorrow">Послезавтра</string>
 </resources>

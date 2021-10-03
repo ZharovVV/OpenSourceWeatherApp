@@ -20,7 +20,8 @@ class HourlyWeatherAdapter :
                     oldItem: HourlyWeatherItemModel,
                     newItem: HourlyWeatherItemModel
                 ): Boolean {
-                    return oldItem == newItem
+                    return oldItem.timeString == newItem.timeString
+                            && oldItem.timeIndicator == newItem.timeIndicator
                 }
 
                 override fun areContentsTheSame(

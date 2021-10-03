@@ -1,6 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.model
 
 import androidx.annotation.DrawableRes
+import com.github.zharovvv.open.source.weather.app.util.TimeIndicator
 
 data class WeatherTodayModel(
     @DrawableRes
@@ -24,6 +25,7 @@ data class HourlyWeatherModel(
 
 data class HourlyWeatherItemModel(
     val now: Boolean,
+    val timeIndicator: TimeIndicator,
     val timeString: String,
     @DrawableRes
     val iconId: Int,

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.github.zharovvv.open.source.weather.app.util.TimeIndicator
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.*
@@ -22,6 +23,7 @@ data class HourlyWeatherEntity(
 
 data class HourlyWeatherItemPojoEntity(
     val now: Boolean,
+    val timeIndicator: TimeIndicator,
     val time: Date,
     @DrawableRes
     val iconId: Int,
