@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.ui.weather.today
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,7 @@ class WeatherTodayFragment : BaseFragment() {
         val navController = findNavController()
         val detailedWeatherParamsAdapter = DetailedWeatherParamsAdapter()
         val hourlyWeatherAdapter = HourlyWeatherAdapter()
+        val hourlyWeatherItemOnScrollListener = HourlyWeatherItemOnScrollListener()
         with(binding) {
             toWeekWeatherButton.setOnClickListener {
                 navController.navigate(R.id.action_nav_weather_today_to_nav_week_weather)
@@ -67,7 +69,16 @@ class WeatherTodayFragment : BaseFragment() {
                     false
                 )
             hourlyWeatherRecyclerView.adapter = hourlyWeatherAdapter
+            hourlyWeatherRecyclerView.addOnScrollListener(hourlyWeatherItemOnScrollListener)
         }
+
+        hourlyWeatherItemOnScrollListener.timeIndicatorData.observe(viewLifecycleOwner) {
+            binding.timeIndicatorTextView.text = it.data.description
+            if (!it.isFirstValue) {
+                binding.timeIndicatorTextView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            }
+        }
+
         configureRequestLocationPermission(navController)
 
         locationViewModel.locationData.observe(viewLifecycleOwner) { locationModel: LocationModel ->
