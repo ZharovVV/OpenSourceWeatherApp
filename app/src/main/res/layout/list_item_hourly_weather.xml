@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/hourly_weather_card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:layout_marginStart="@dimen/indent_small"
+    android:layout_marginEnd="@dimen/indent_small"
+    app:cardBackgroundColor="@color/surface_card_color"
+    app:cardCornerRadius="@dimen/indent_small"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/hourly_weather_item_time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/indent_small"
+            android:duplicateParentState="true"
+            android:textAppearance="@style/TextAppearance.Surface.Pain"
+            android:textColor="@color/on_surface_card_color" />
+
+        <ImageView
+            android:id="@+id/hourly_weather_item_icon_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:scaleType="center" />
+
+        <TextView
+            android:id="@+id/hourly_weather_item_value_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/indent_small"
+            android:duplicateParentState="true"
+            android:textAppearance="@style/TextAppearance.Surface.Pain"
+            android:textColor="@color/on_surface_card_color"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

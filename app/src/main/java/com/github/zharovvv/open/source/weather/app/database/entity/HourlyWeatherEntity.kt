@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.*
 
@@ -31,7 +31,7 @@ data class HourlyWeatherItemPojoEntity(
 class HourlyWeatherItemPojoEntityConverter {
 
     companion object {
-        private val GSON = Gson()
+        private val GSON = GsonBuilder().setDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").create()
     }
 
     @TypeConverter

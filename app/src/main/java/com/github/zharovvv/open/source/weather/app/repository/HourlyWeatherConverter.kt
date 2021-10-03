@@ -79,7 +79,6 @@ class HourlyWeatherConverter {
         longitude: Float,
         response: HourlyWeatherResponse
     ): HourlyWeatherEntity {
-
         val appContext = OpenSourceWeatherApp.appContext
         return HourlyWeatherEntity(
             id = entityId,
@@ -92,7 +91,7 @@ class HourlyWeatherConverter {
                 val temperature = ceil(hourlyWeatherRs.temp).toInt().toString() + "°"
                 HourlyWeatherItemPojoEntity(
                     now = now,
-                    time = Date(hourlyWeatherRs.dt),
+                    time = Date(hourlyWeatherRs.dt * 1000L),    //convert to milliseconds
                     iconId = if (now) ICONS_MAP[weather.icon]!! else ICONS_MAP_DARK[weather.icon]!!,
                     value = if (now) appContext.getString(R.string.now) else temperature
                 )

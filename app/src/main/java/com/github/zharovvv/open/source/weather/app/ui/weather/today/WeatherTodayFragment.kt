@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeatherTodayBinding
 import com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment.DialogResult
@@ -51,6 +52,7 @@ class WeatherTodayFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
         val detailedWeatherParamsAdapter = DetailedWeatherParamsAdapter()
+        val hourlyWeatherAdapter = HourlyWeatherAdapter()
         with(binding) {
             toWeekWeatherButton.setOnClickListener {
                 navController.navigate(R.id.action_nav_weather_today_to_nav_week_weather)
@@ -58,6 +60,13 @@ class WeatherTodayFragment : BaseFragment() {
             detailedParamsRecyclerView.layoutManager =
                 GridLayoutManager(this@WeatherTodayFragment.context, 2)
             detailedParamsRecyclerView.adapter = detailedWeatherParamsAdapter
+            hourlyWeatherRecyclerView.layoutManager =
+                LinearLayoutManager(
+                    this@WeatherTodayFragment.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+            hourlyWeatherRecyclerView.adapter = hourlyWeatherAdapter
         }
         configureRequestLocationPermission(navController)
 
@@ -90,8 +99,15 @@ class WeatherTodayFragment : BaseFragment() {
             }
         }
 
-        hourlyWeatherViewModel.hourlyWeatherData.observe(viewLifecycleOwner) {
+        hourlyWeatherViewModel.hourlyWeatherData.observe(viewLifecycleOwner) { dataState ->
+            when (dataState) {
+                is DataState.Success -> {
+                    hourlyWeatherAdapter.submitList(dataState.data.items)
+                }
+                else -> {
 
+                }
+            }
         }
 
         if (savedInstanceState == null && !isRestoredFromBackStack) {
