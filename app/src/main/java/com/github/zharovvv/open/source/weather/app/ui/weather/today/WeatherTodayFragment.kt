@@ -3,6 +3,8 @@ package com.github.zharovvv.open.source.weather.app.ui.weather.today
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,7 @@ import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.navigation.LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY
 import com.github.zharovvv.open.source.weather.app.navigation.setUpNavDialogResultCallback
 import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
+import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
 class WeatherTodayFragment : BaseFragment() {
 
@@ -70,6 +73,22 @@ class WeatherTodayFragment : BaseFragment() {
                 )
             hourlyWeatherRecyclerView.adapter = hourlyWeatherAdapter
             hourlyWeatherRecyclerView.addOnScrollListener(hourlyWeatherItemOnScrollListener)
+
+            weatherTodaySwipeRefreshLayout.setOnRefreshListener {
+                weatherTodayViewModel.requestWeatherToday()
+                hourlyWeatherViewModel.requestHourlyWeather()
+                if (weatherTodaySwipeRefreshLayout.isRefreshing) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        weatherTodaySwipeRefreshLayout.isRefreshing = false
+                    }, 1000L)
+                }
+            }
+            weatherTodaySwipeRefreshLayout.setColorSchemeColors(requireContext().getColorFromAttr(R.attr.colorPrimary))
+            weatherTodaySwipeRefreshLayout.setProgressBackgroundColorSchemeColor(
+                requireContext().getColorFromAttr(
+                    R.attr.colorPrimaryDark
+                )
+            )
         }
 
         hourlyWeatherItemOnScrollListener.timeIndicatorData.observe(viewLifecycleOwner) {
