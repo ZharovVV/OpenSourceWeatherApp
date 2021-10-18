@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.github.zharovvv.open.source.weather.app.util.TimeIndicator
+import com.github.zharovvv.open.source.weather.app.util.between
+import com.github.zharovvv.open.source.weather.app.util.isFresh
+import com.github.zharovvv.open.source.weather.app.util.plus
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.*
@@ -14,12 +17,21 @@ import java.util.*
 @TypeConverters(HourlyWeatherItemPojoEntityConverter::class, DateConverter::class)
 data class HourlyWeatherEntity(
     @PrimaryKey
-    val id: Int,
+    override val id: Int,
     val latitude: Float,
     val longitude: Float,
     val updateTime: Date,
     val items: List<HourlyWeatherItemPojoEntity>
-)
+) : PerishableEntity {
+    override val isFresh: Boolean
+        get() {
+            val firstItemTime = items.first().time
+            val now = Date()
+            return updateTime.isFresh(freshPeriodInMinutes = 60)
+                    && now.between(firstItemTime, firstItemTime + 1 of Calendar.HOUR)
+        }
+
+}
 
 data class HourlyWeatherItemPojoEntity(
     val now: Boolean,

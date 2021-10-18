@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.github.zharovvv.open.source.weather.app.util.isFresh
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
@@ -13,7 +14,7 @@ import java.util.*
 @TypeConverters(DetailedWeatherParamPojoEntityConverter::class, DateConverter::class)
 data class WeatherTodayEntity(
     @PrimaryKey
-    val id: Int,
+    override val id: Int,
     val latitude: Float,
     val longitude: Float,
     val updateTime: Date,
@@ -23,7 +24,10 @@ data class WeatherTodayEntity(
     val dateString: String,
     val temperature: String,
     val detailedWeatherParams: List<DetailedWeatherParamPojoEntity>
-)
+) : PerishableEntity {
+    override val isFresh: Boolean
+        get() = updateTime.isFresh(freshPeriodInMinutes = 2)
+}
 
 data class DetailedWeatherParamPojoEntity(
     val name: String,

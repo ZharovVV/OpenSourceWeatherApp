@@ -12,7 +12,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
 
-class HourlyWeatherConverter {
+class HourlyWeatherConverter :
+    BaseConverter<HourlyWeatherResponse, HourlyWeatherEntity, HourlyWeatherModel> {
 
     companion object {
         private val ICONS_MAP: Map<String, Int> = hashMapOf(
@@ -60,10 +61,10 @@ class HourlyWeatherConverter {
     }
 
 
-    fun convertToModel(hourlyWeatherEntity: HourlyWeatherEntity): HourlyWeatherModel {
+    override fun convertToModel(entity: HourlyWeatherEntity): HourlyWeatherModel {
         val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         return HourlyWeatherModel(
-            items = hourlyWeatherEntity.items.map { itemEntity ->
+            items = entity.items.map { itemEntity ->
                 HourlyWeatherItemModel(
                     now = itemEntity.now,
                     timeIndicator = itemEntity.timeIndicator,
@@ -75,7 +76,7 @@ class HourlyWeatherConverter {
         )
     }
 
-    fun convertToEntity(
+    override fun convertToEntity(
         entityId: Int,
         latitude: Float,
         longitude: Float,

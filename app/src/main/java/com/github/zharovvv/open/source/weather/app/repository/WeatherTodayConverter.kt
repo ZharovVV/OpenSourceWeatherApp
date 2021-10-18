@@ -11,7 +11,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
 
-class WeatherTodayConverter {
+class WeatherTodayConverter :
+    BaseConverter<CurrentWeatherResponse, WeatherTodayEntity, WeatherTodayModel> {
 
     companion object {
         private val ICONS_MAP: Map<String, Int> = hashMapOf(
@@ -99,13 +100,13 @@ class WeatherTodayConverter {
         )
     }
 
-    fun convertToModel(weatherTodayEntity: WeatherTodayEntity): WeatherTodayModel {
+    override fun convertToModel(entity: WeatherTodayEntity): WeatherTodayModel {
         return WeatherTodayModel(
-            iconId = weatherTodayEntity.iconId,
-            description = weatherTodayEntity.description,
-            dateString = weatherTodayEntity.dateString,
-            temperature = weatherTodayEntity.temperature,
-            detailedWeatherParams = weatherTodayEntity.detailedWeatherParams.map { weatherParamPojoEntity ->
+            iconId = entity.iconId,
+            description = entity.description,
+            dateString = entity.dateString,
+            temperature = entity.temperature,
+            detailedWeatherParams = entity.detailedWeatherParams.map { weatherParamPojoEntity ->
                 DetailedWeatherParamModel(
                     name = weatherParamPojoEntity.name,
                     iconId = weatherParamPojoEntity.iconId,
@@ -115,7 +116,7 @@ class WeatherTodayConverter {
         )
     }
 
-    fun convertToEntity(
+    override fun convertToEntity(
         entityId: Int,
         latitude: Float,
         longitude: Float,

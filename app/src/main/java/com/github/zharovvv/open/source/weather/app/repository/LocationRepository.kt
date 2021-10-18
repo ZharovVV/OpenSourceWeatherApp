@@ -1,10 +1,10 @@
 package com.github.zharovvv.open.source.weather.app.repository
 
-import android.location.Location
 import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.database.dao.LocationDao
 import com.github.zharovvv.open.source.weather.app.database.entity.LocationEntity
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
+import com.github.zharovvv.open.source.weather.app.util.distanceBetween
 import io.reactivex.Flowable
 
 class LocationRepository {
@@ -41,15 +41,7 @@ class LocationRepository {
         val oldLongitude = oldLocationEntity.longitude
         val newLatitude = newLocationEntity.latitude
         val newLongitude = newLocationEntity.longitude
-        val floatArray = FloatArray(1)
-        Location.distanceBetween(
-            oldLatitude.toDouble(),
-            oldLongitude.toDouble(),
-            newLatitude.toDouble(),
-            newLongitude.toDouble(),
-            floatArray
-        )
-        val distance: Float = floatArray[0]
+        val distance: Float = distanceBetween(oldLatitude, oldLongitude, newLatitude, newLongitude)
         return distance > 2000f
     }
 

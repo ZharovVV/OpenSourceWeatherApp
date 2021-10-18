@@ -27,13 +27,13 @@ class WeatherTodayViewModel : ViewModel() {
         compositeDisposable += locationRepository.locationObservable()
             .observeOn(Schedulers.io())
             .subscribe {
-                weatherRepository.requestTodayWeather(
+                weatherRepository.requestData(
                     it.latitude,
                     it.longitude,
                     withLoadingStatus = false
                 )
             }
-        compositeDisposable += weatherRepository.weatherTodayObservable()
+        compositeDisposable += weatherRepository.observableData()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { _weatherTodayData.value = it }
     }
@@ -44,7 +44,7 @@ class WeatherTodayViewModel : ViewModel() {
         }
             .filter { locationModel: LocationModel? -> locationModel != null }
             .map {
-                weatherRepository.requestTodayWeather(
+                weatherRepository.requestData(
                     it.latitude,
                     it.longitude,
                     withLoadingStatus = true

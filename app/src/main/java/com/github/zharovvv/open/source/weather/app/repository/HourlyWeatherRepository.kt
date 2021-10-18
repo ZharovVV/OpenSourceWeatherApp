@@ -1,124 +1,53 @@
 package com.github.zharovvv.open.source.weather.app.repository
 
-import android.location.Location
 import com.github.zharovvv.open.source.weather.app.BuildConfig
-import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.database.dao.HourlyWeatherDao
 import com.github.zharovvv.open.source.weather.app.database.entity.HourlyWeatherEntity
-import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import com.github.zharovvv.open.source.weather.app.network.dto.HourlyWeatherResponse
-import com.github.zharovvv.open.source.weather.app.util.between
-import com.github.zharovvv.open.source.weather.app.util.isFresh
-import com.github.zharovvv.open.source.weather.app.util.plus
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.subjects.BehaviorSubject
-import retrofit2.Response
-import java.io.IOException
-import java.util.*
-import java.util.Calendar.HOUR
+import com.github.zharovvv.open.source.weather.app.util.distanceBetween
+import retrofit2.Call
 
-class HourlyWeatherRepository {
+class HourlyWeatherRepository(
+    private val hourlyWeatherDao: HourlyWeatherDao,
+    private val weatherApiService: WeatherApiService,
+    hourlyWeatherConverter: HourlyWeatherConverter
+) : BaseObservableRepository<HourlyWeatherResponse, HourlyWeatherEntity, HourlyWeatherModel>(
+    observableDataFromDatabase = hourlyWeatherDao.getHourlyWeather(),
+    converter = hourlyWeatherConverter
+) {
 
-    private val hourlyWeatherDao: HourlyWeatherDao =
-        OpenSourceWeatherApp.appDatabase.hourlyWeatherDao()
-    private val weatherApiService: WeatherApiService = OpenSourceWeatherApp.weatherApiService
-    private val hourlyWeatherConverter = HourlyWeatherConverter()
-    private val behaviorSubject: BehaviorSubject<DataState<HourlyWeatherModel>> =
-        BehaviorSubject.createDefault(DataState.Loading())
-
-    init {
-        @Suppress("UNUSED_VARIABLE") val connection = hourlyWeatherDao.getHourlyWeather()
-            .filter { entity -> entity.isFresh }
-            .map { entity -> hourlyWeatherConverter.convertToModel(entity) }
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { behaviorSubject.onNext(DataState.Success(it)) },
-                { behaviorSubject.onNext(DataState.Error(it.message ?: "")) }
-            )
+    override fun getLastKnownDataFromDatabase(): HourlyWeatherEntity? {
+        return hourlyWeatherDao.getLastKnownHourlyWeather()
     }
 
-    fun hourlyWeatherObservable(): Observable<DataState<HourlyWeatherModel>> {
-        return behaviorSubject
-    }
-
-    private val HourlyWeatherEntity.isFresh: Boolean
-        get() {
-            val firstItemTime = items.first().time
-            val now = Date()
-            return updateTime.isFresh(freshPeriodInMinutes = 60)
-                    && now.between(firstItemTime, firstItemTime + 1 of HOUR)
-        }
-
-    fun requestHourlyWeather(lat: Float, lon: Float, withLoadingStatus: Boolean = true) {
-        val previousValue = behaviorSubject.value
-        if (withLoadingStatus) {
-            behaviorSubject.onNext(DataState.Loading())
-        }
-        val hourlyWeatherEntity: HourlyWeatherEntity? = hourlyWeatherDao.getLastKnownHourlyWeather()
-        if (shouldFetchData(hourlyWeatherEntity, lat, lon)) {
-            try {
-                fetchData(hourlyWeatherEntity, lat, lon)
-            } catch (e: IOException) {
-                behaviorSubject.onNext(DataState.Error(e.message ?: ""))
-                return
-            }
-        } else {
-            if (withLoadingStatus) {
-                behaviorSubject.onNext(previousValue!!)
-            }
-        }
-    }
-
-    private fun fetchData(hourlyWeatherEntity: HourlyWeatherEntity?, lat: Float, lon: Float) {
-//        Thread.sleep(3000L) //TODO test loading
-        val response: Response<HourlyWeatherResponse> =
-            weatherApiService.getHourlyWeatherByCoordinates(
-                lat,
-                lon,
-                BuildConfig.WEATHER_API_KEY
-            ).execute()
-        if (response.isSuccessful) {
-            val hourlyWeatherResponse = response.body()!!
-            val newHourlyWeatherEntity = hourlyWeatherConverter.convertToEntity(
-                entityId = hourlyWeatherEntity?.id ?: 0,
-                latitude = lat,
-                longitude = lon,
-                response = hourlyWeatherResponse
-            )
-            if (hourlyWeatherEntity == null) {
-                hourlyWeatherDao.insertHourlyWeather(newHourlyWeatherEntity)
-            } else {
-                hourlyWeatherDao.updateHourlyWeather(newHourlyWeatherEntity)
-            }
-        } else {
-            behaviorSubject.onNext(DataState.Error(response.message()))
-        }
-    }
-
-    private fun shouldFetchData(
-        weatherTodayEntity: HourlyWeatherEntity?,
+    override fun shouldFetchData(
+        lastKnownEntity: HourlyWeatherEntity?,
         newLat: Float,
         newLon: Float
     ): Boolean {
-        fun checkLocation(oldLat: Float, oldLon: Float, newLat: Float, newLon: Float): Boolean {
-            val floatArray = FloatArray(1)
-            Location.distanceBetween(
-                oldLat.toDouble(),
-                oldLon.toDouble(),
-                newLat.toDouble(),
-                newLon.toDouble(),
-                floatArray
-            )
-            return floatArray[0] > 2000f
-        }
-        return weatherTodayEntity == null || checkLocation(
-            weatherTodayEntity.latitude,
-            weatherTodayEntity.longitude,
+        return lastKnownEntity == null || distanceBetween(
+            lastKnownEntity.latitude,
+            lastKnownEntity.longitude,
             newLat,
             newLon
-        ) || !weatherTodayEntity.isFresh
+        ) > 2000f || !lastKnownEntity.isFresh
+    }
+
+    override fun callApiService(lat: Float, lon: Float): Call<HourlyWeatherResponse> {
+        return weatherApiService.getHourlyWeatherByCoordinates(
+            lat,
+            lon,
+            BuildConfig.WEATHER_API_KEY
+        )
+    }
+
+    override fun insertDataToDatabase(newEntity: HourlyWeatherEntity) {
+        hourlyWeatherDao.insertHourlyWeather(newEntity)
+    }
+
+    override fun updateDataInDatabase(entity: HourlyWeatherEntity) {
+        hourlyWeatherDao.updateHourlyWeather(entity)
     }
 }

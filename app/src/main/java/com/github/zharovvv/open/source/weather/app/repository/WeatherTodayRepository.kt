@@ -1,115 +1,54 @@
 package com.github.zharovvv.open.source.weather.app.repository
 
-import android.location.Location
 import com.github.zharovvv.open.source.weather.app.BuildConfig
-import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.database.dao.WeatherTodayDao
 import com.github.zharovvv.open.source.weather.app.database.entity.WeatherTodayEntity
-import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
-import com.github.zharovvv.open.source.weather.app.util.isFresh
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.subjects.BehaviorSubject
-import retrofit2.Response
-import java.io.IOException
+import com.github.zharovvv.open.source.weather.app.util.distanceBetween
+import retrofit2.Call
 
-class WeatherTodayRepository {
+class WeatherTodayRepository(
+    private val weatherTodayDao: WeatherTodayDao,
+    private val weatherApiService: WeatherApiService,
+    weatherTodayConverter: WeatherTodayConverter
+) : BaseObservableRepository<CurrentWeatherResponse, WeatherTodayEntity, WeatherTodayModel>(
+    observableDataFromDatabase = weatherTodayDao.getWeatherToday(),
+    converter = weatherTodayConverter
+) {
 
-    private val weatherTodayDao: WeatherTodayDao =
-        OpenSourceWeatherApp.appDatabase.weatherTodayDao()
-    private val weatherApiService: WeatherApiService = OpenSourceWeatherApp.weatherApiService
-    private val weatherTodayConverter = WeatherTodayConverter()
-    private val behaviorSubject: BehaviorSubject<DataState<WeatherTodayModel>> =
-        BehaviorSubject.createDefault(DataState.Loading())
-
-    init {
-        @Suppress("UNUSED_VARIABLE") val connection = weatherTodayDao.getWeatherToday()
-            .filter { entity -> entity.isFresh }
-            .map { entity -> weatherTodayConverter.convertToModel(entity) }
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { behaviorSubject.onNext(DataState.Success(it)) },
-                { behaviorSubject.onNext(DataState.Error(it.message ?: "")) }
-            )
+    override fun getLastKnownDataFromDatabase(): WeatherTodayEntity? {
+        return weatherTodayDao.getLastKnownWeatherToday()
     }
 
-    fun weatherTodayObservable(): Observable<DataState<WeatherTodayModel>> {
-        return behaviorSubject
-    }
-
-    private val WeatherTodayEntity.isFresh: Boolean get() = updateTime.isFresh(freshPeriodInMinutes = 2)
-
-    fun requestTodayWeather(lat: Float, lon: Float, withLoadingStatus: Boolean = true) {
-        val previousValue = behaviorSubject.value
-        if (withLoadingStatus) {
-            behaviorSubject.onNext(DataState.Loading())
-        }
-        val weatherTodayEntity: WeatherTodayEntity? = weatherTodayDao.getLastKnownWeatherToday()
-        if (shouldFetchData(weatherTodayEntity, lat, lon)) {
-            try {
-                fetchData(weatherTodayEntity, lat, lon)
-            } catch (e: IOException) {
-                behaviorSubject.onNext(DataState.Error(e.message ?: ""))
-                return
-            }
-        } else {
-            if (withLoadingStatus) {
-                behaviorSubject.onNext(previousValue!!)
-            }
-        }
-    }
-
-    private fun fetchData(weatherTodayEntity: WeatherTodayEntity?, lat: Float, lon: Float) {
-//        Thread.sleep(3000L) //TODO test loading
-        val response: Response<CurrentWeatherResponse> =
-            weatherApiService.getCurrentWeatherByCoordinates(
-                lat,
-                lon,
-                BuildConfig.WEATHER_API_KEY
-            ).execute()
-        if (response.isSuccessful) {
-            val currentWeatherResponse = response.body()!!
-            val newWeatherTodayEntity = weatherTodayConverter.convertToEntity(
-                entityId = weatherTodayEntity?.id ?: 0,
-                latitude = lat,
-                longitude = lon,
-                response = currentWeatherResponse
-            )
-            if (weatherTodayEntity == null) {
-                weatherTodayDao.insertWeatherToday(newWeatherTodayEntity)
-            } else {
-                weatherTodayDao.updateWeatherToday(newWeatherTodayEntity)
-            }
-        } else {
-            behaviorSubject.onNext(DataState.Error(response.message()))
-        }
-    }
-
-    private fun shouldFetchData(
-        weatherTodayEntity: WeatherTodayEntity?,
+    override fun shouldFetchData(
+        lastKnownEntity: WeatherTodayEntity?,
         newLat: Float,
         newLon: Float
     ): Boolean {
-        fun checkLocation(oldLat: Float, oldLon: Float, newLat: Float, newLon: Float): Boolean {
-            val floatArray = FloatArray(1)
-            Location.distanceBetween(
-                oldLat.toDouble(),
-                oldLon.toDouble(),
-                newLat.toDouble(),
-                newLon.toDouble(),
-                floatArray
-            )
-            return floatArray[0] > 2000f
-        }
-        return weatherTodayEntity == null || checkLocation(
-            weatherTodayEntity.latitude,
-            weatherTodayEntity.longitude,
+        return lastKnownEntity == null || distanceBetween(
+            lastKnownEntity.latitude,
+            lastKnownEntity.longitude,
             newLat,
             newLon
-        ) || !weatherTodayEntity.isFresh
+        ) > 2000f || !lastKnownEntity.isFresh
+    }
+
+    override fun callApiService(lat: Float, lon: Float): Call<CurrentWeatherResponse> {
+        return weatherApiService.getCurrentWeatherByCoordinates(
+            lat,
+            lon,
+            BuildConfig.WEATHER_API_KEY
+        )
+    }
+
+    override fun insertDataToDatabase(newEntity: WeatherTodayEntity) {
+        weatherTodayDao.insertWeatherToday(newEntity)
+    }
+
+    override fun updateDataInDatabase(entity: WeatherTodayEntity) {
+        weatherTodayDao.updateWeatherToday(entity)
     }
 
 }
