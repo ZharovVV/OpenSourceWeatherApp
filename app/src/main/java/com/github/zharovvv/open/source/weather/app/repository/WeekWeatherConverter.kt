@@ -6,6 +6,7 @@ import com.github.zharovvv.open.source.weather.app.model.WeekWeatherItemModel
 import com.github.zharovvv.open.source.weather.app.model.WeekWeatherModel
 import com.github.zharovvv.open.source.weather.app.network.dto.WeekWeatherItem
 import com.github.zharovvv.open.source.weather.app.network.dto.WeekWeatherResponse
+import com.github.zharovvv.open.source.weather.app.util.setZeroTime
 import com.github.zharovvv.open.source.weather.app.util.toTitleCase
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +49,7 @@ class WeekWeatherConverter :
             items = response.daily.map { weekWeatherItemRs: WeekWeatherItem ->
                 val weather = weekWeatherItemRs.weather.first()
                 WeekWeatherItemPojoEntity(
-                    forecastDate = Date(weekWeatherItemRs.dt * 1000),
+                    forecastDate = Date(weekWeatherItemRs.dt * 1000).setZeroTime(),
                     iconId = weather.icon,
                     maxTemperature = ceil(weekWeatherItemRs.temp.max).toInt(),
                     minTemperature = ceil(weekWeatherItemRs.temp.min).toInt()

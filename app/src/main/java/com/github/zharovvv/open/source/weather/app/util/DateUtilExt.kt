@@ -21,6 +21,16 @@ fun Date.between(startDate: Date, endDate: Date): Boolean {
 }
 
 /**
+ * Устанавливает для даты время 00:00:00
+ */
+fun Date.setZeroTime(): Date {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    calendar.setZeroTime()
+    return calendar.time
+}
+
+/**
  * DSL for Date
  */
 operator fun Date.plus(plusValue: Int): DatePlusOperator = DatePlusOperator(this, plusValue)
