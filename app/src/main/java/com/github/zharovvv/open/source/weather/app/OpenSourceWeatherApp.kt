@@ -30,7 +30,7 @@ class OpenSourceWeatherApp : Application() {
             AppDatabase::class.java,
             "weather_app_database"
         )
-            .fallbackToDestructiveMigration()   //TODO Удалить при отведении релиза
+            .fallbackToDestructiveMigration()
             .build()
     }
 

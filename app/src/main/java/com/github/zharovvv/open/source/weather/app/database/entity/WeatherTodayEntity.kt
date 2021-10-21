@@ -1,13 +1,12 @@
 package com.github.zharovvv.open.source.weather.app.database.entity
 
-import androidx.annotation.DrawableRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.github.zharovvv.open.source.weather.app.util.fromJson
 import com.github.zharovvv.open.source.weather.app.util.isFresh
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.util.*
 
 @Entity(tableName = "weather_today_table")
@@ -18,8 +17,7 @@ data class WeatherTodayEntity(
     val latitude: Float,
     val longitude: Float,
     val updateTime: Date,
-    @DrawableRes
-    val iconId: Int,
+    val iconId: String,
     val description: String,
     val dateString: String,
     val temperature: String,
@@ -31,8 +29,7 @@ data class WeatherTodayEntity(
 
 data class DetailedWeatherParamPojoEntity(
     val name: String,
-    @DrawableRes
-    val iconId: Int,
+    val iconId: String,
     val value: String
 )
 
@@ -49,10 +46,7 @@ class DetailedWeatherParamPojoEntityConverter {
 
     @TypeConverter
     fun jsonStringToPojo(jsonString: String): List<DetailedWeatherParamPojoEntity> {
-        return GSON.fromJson(
-            jsonString,
-            object : TypeToken<List<DetailedWeatherParamPojoEntity>>() {}.type
-        )
+        return GSON.fromJson(jsonString)
     }
 }
 

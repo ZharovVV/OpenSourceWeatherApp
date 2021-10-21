@@ -6,7 +6,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.BehaviorSubject
 import retrofit2.Call
-import java.io.IOException
 
 abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Model>(
     observableDataFromDatabase: Observable<Entity>,
@@ -23,7 +22,10 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { behaviorSubject.onNext(DataState.Success(it)) },
-                { behaviorSubject.onNext(DataState.Error(it.message ?: "")) }
+                {
+                    it.printStackTrace()
+                    behaviorSubject.onNext(DataState.Error(it.message ?: ""))
+                }
             )
     }
 
@@ -40,7 +42,8 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
         if (shouldFetchData(lastKnownEntity, lat, lon)) {
             try {
                 fetchData(lastKnownEntity, lat, lon)
-            } catch (e: IOException) {
+            } catch (e: Exception) {
+                e.printStackTrace()
                 behaviorSubject.onNext(DataState.Error(e.message ?: ""))
                 return
             }

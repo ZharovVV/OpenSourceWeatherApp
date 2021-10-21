@@ -7,6 +7,7 @@ import com.github.zharovvv.open.source.weather.app.database.entity.WeatherTodayE
 import com.github.zharovvv.open.source.weather.app.model.DetailedWeatherParamModel
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
+import com.github.zharovvv.open.source.weather.app.util.toTitleCase
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.ceil
@@ -15,6 +16,10 @@ class WeatherTodayConverter :
     BaseConverter<CurrentWeatherResponse, WeatherTodayEntity, WeatherTodayModel> {
 
     companion object {
+        private const val IC_WIND_SPEED = "ic_wind_speed"
+        private const val IC_FEELS_LIKE = "ic_feels_like"
+        private const val IC_HUMIDITY = "ic_humidity"
+        private const val IC_PRESSURE = "ic_pressure"
         private val ICONS_MAP: Map<String, Int> = hashMapOf(
             "01d" to R.drawable.ic_clear_sky_60,
             "02d" to R.drawable.ic_few_clouds_60,
@@ -34,7 +39,12 @@ class WeatherTodayConverter :
             "10n" to R.drawable.ic_rain_60,
             "11n" to R.drawable.ic_thunderstorm_60,
             "13n" to R.drawable.ic_snow_60,
-            "50n" to R.drawable.ic_clouds_60
+            "50n" to R.drawable.ic_clouds_60,
+
+            IC_WIND_SPEED to R.drawable.ic_wind_speed_24,
+            IC_FEELS_LIKE to R.drawable.ic_feels_like_24,
+            IC_HUMIDITY to R.drawable.ic_humidity_24,
+            IC_PRESSURE to R.drawable.ic_pressure_24
         )
         private val WEATHER_ID_DESCRIPTIONS: Map<Int, Int> = hashMapOf(
             200 to R.string.thunderstorm_with_rain,
@@ -101,15 +111,16 @@ class WeatherTodayConverter :
     }
 
     override fun convertToModel(entity: WeatherTodayEntity): WeatherTodayModel {
+        val iconId: Int = ICONS_MAP[entity.iconId]!!
         return WeatherTodayModel(
-            iconId = entity.iconId,
+            iconId = iconId,
             description = entity.description,
             dateString = entity.dateString,
             temperature = entity.temperature,
             detailedWeatherParams = entity.detailedWeatherParams.map { weatherParamPojoEntity ->
                 DetailedWeatherParamModel(
                     name = weatherParamPojoEntity.name,
-                    iconId = weatherParamPojoEntity.iconId,
+                    iconId = ICONS_MAP[weatherParamPojoEntity.iconId]!!,
                     value = weatherParamPojoEntity.value
                 )
             }
@@ -122,38 +133,38 @@ class WeatherTodayConverter :
         longitude: Float,
         response: CurrentWeatherResponse,
     ): WeatherTodayEntity {
+        val updateTime = Date()
         val weather = response.weather.first()
-        val iconId: Int = ICONS_MAP[weather.icon]!!
         val simpleDateFormat = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault())
         val appContext = OpenSourceWeatherApp.appContext
         return WeatherTodayEntity(
             id = entityId,
             latitude = latitude,
             longitude = longitude,
-            updateTime = Date(),
-            iconId = iconId,
+            updateTime = updateTime,
+            iconId = weather.icon,
             description = appContext.getString(WEATHER_ID_DESCRIPTIONS[weather.id]!!),
-            dateString = simpleDateFormat.format(Date()).capitalize(Locale.getDefault()),
+            dateString = simpleDateFormat.format(updateTime).toTitleCase(),
             temperature = ceil(response.mainInfo.temp).toInt().toString() + "°",
             detailedWeatherParams = listOf(
                 DetailedWeatherParamPojoEntity(
                     name = appContext.getString(R.string.wind),
-                    iconId = R.drawable.ic_wind_speed_24,
+                    iconId = IC_WIND_SPEED,
                     value = response.wind.speed.toString() + " м/с"
                 ),
                 DetailedWeatherParamPojoEntity(
                     name = appContext.getString(R.string.feels_like),
-                    iconId = R.drawable.ic_feels_like_24,
+                    iconId = IC_FEELS_LIKE,
                     value = ceil(response.mainInfo.feelsLike).toInt().toString() + "°"
                 ),
                 DetailedWeatherParamPojoEntity(
                     name = appContext.getString(R.string.humidity),
-                    iconId = R.drawable.ic_humidity_24,
+                    iconId = IC_HUMIDITY,
                     value = response.mainInfo.humidity.toString() + " %"
                 ),
                 DetailedWeatherParamPojoEntity(
                     name = appContext.getString(R.string.pressure),
-                    iconId = R.drawable.ic_pressure_24,
+                    iconId = IC_PRESSURE,
                     value = response.mainInfo.pressure.toString() + " кПа"
                 )
             )

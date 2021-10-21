@@ -3,10 +3,10 @@ package com.github.zharovvv.open.source.weather.app.network.dto
 import com.google.gson.annotations.SerializedName
 
 data class HourlyWeatherResponse(
-    val hourly: List<HourlyWeather>
+    val hourly: List<HourlyWeatherItem>
 )
 
-data class HourlyWeather(
+data class HourlyWeatherItem(
     val dt: Long,
     val temp: Float,
     @SerializedName(value = "feels_like")

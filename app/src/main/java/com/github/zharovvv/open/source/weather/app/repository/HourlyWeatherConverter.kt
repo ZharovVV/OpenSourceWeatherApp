@@ -16,7 +16,8 @@ class HourlyWeatherConverter :
     BaseConverter<HourlyWeatherResponse, HourlyWeatherEntity, HourlyWeatherModel> {
 
     companion object {
-        private val ICONS_MAP: Map<String, Int> = hashMapOf(
+        //TODO Вынести получение иконок в другое место
+        val ICONS_MAP: Map<String, Int> = hashMapOf(
             "01d" to R.drawable.ic_clear_sky_24,
             "02d" to R.drawable.ic_few_clouds_24,
             "03d" to R.drawable.ic_clouds_24,
@@ -62,15 +63,17 @@ class HourlyWeatherConverter :
 
 
     override fun convertToModel(entity: HourlyWeatherEntity): HourlyWeatherModel {
+        val appContext = OpenSourceWeatherApp.appContext
         val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         return HourlyWeatherModel(
             items = entity.items.map { itemEntity ->
+                val now = itemEntity.now
                 HourlyWeatherItemModel(
-                    now = itemEntity.now,
+                    now = now,
                     timeIndicator = itemEntity.timeIndicator,
                     timeString = simpleDateFormat.format(itemEntity.time),
-                    iconId = itemEntity.iconId,
-                    value = itemEntity.value
+                    iconId = if (now) ICONS_MAP[itemEntity.iconId]!! else ICONS_MAP_DARK[itemEntity.iconId]!!,
+                    value = if (now) appContext.getString(R.string.now) else itemEntity.value
                 )
             }
         )
@@ -82,23 +85,22 @@ class HourlyWeatherConverter :
         longitude: Float,
         response: HourlyWeatherResponse
     ): HourlyWeatherEntity {
-        val appContext = OpenSourceWeatherApp.appContext
         return HourlyWeatherEntity(
             id = entityId,
             latitude = latitude,
             longitude = longitude,
             updateTime = Date(),
-            items = response.hourly.mapIndexed { index, hourlyWeatherRs ->
+            items = response.hourly.mapIndexed { index, hourlyWeatherItemRs ->
                 val now = index == 0
-                val weather = hourlyWeatherRs.weather.first()
-                val temperature = ceil(hourlyWeatherRs.temp).toInt().toString() + "°"
-                val forecastDate = Date(hourlyWeatherRs.dt * 1000L)    //convert to milliseconds
+                val weather = hourlyWeatherItemRs.weather.first()
+                val temperature = ceil(hourlyWeatherItemRs.temp).toInt().toString() + "°"
+                val forecastDate = Date(hourlyWeatherItemRs.dt * 1000L)    //convert to milliseconds
                 HourlyWeatherItemPojoEntity(
                     now = now,
                     timeIndicator = forecastDate.timeIndicator,
                     time = forecastDate,
-                    iconId = if (now) ICONS_MAP[weather.icon]!! else ICONS_MAP_DARK[weather.icon]!!,
-                    value = if (now) appContext.getString(R.string.now) else temperature
+                    iconId = weather.icon,
+                    value = temperature
                 )
             }
         )

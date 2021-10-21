@@ -17,7 +17,7 @@ fun Date.isFresh(freshPeriodInMinutes: Int): Boolean {
 }
 
 fun Date.between(startDate: Date, endDate: Date): Boolean {
-    return this.before(endDate) && this.after(startDate)
+    return this >= startDate && this < endDate
 }
 
 /**
