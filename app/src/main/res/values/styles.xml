@@ -13,7 +13,7 @@
 
     <!--Text Button-->
     <style name="Theme.OpenSourceWeatherApp.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textAppearance">@style/TextAppearance.Primary.SubTitle</item>
+        <item name="android:textAppearance">@style/TextAppearance.Primary.Subtitle</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
         <item name="iconTint">?attr/colorOnPrimarySurface</item>
@@ -30,7 +30,7 @@
         <item name="android:textSize">@dimen/font_large</item>
     </style>
 
-    <style name="TextAppearance.Primary.SubTitle">
+    <style name="TextAppearance.Primary.Subtitle">
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
         <item name="android:textSize">@dimen/font_normal</item>
         <item name="android:textStyle">normal</item>
@@ -44,7 +44,7 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="TextAppearance.Secondary.SubTitle">
+    <style name="TextAppearance.Secondary.Subtitle">
         <item name="android:textColor">@color/white_50_alpha</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textStyle">normal</item>
@@ -61,6 +61,12 @@
     <style name="TextAppearance.Surface.Title">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Surface.Subtitle">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textStyle">bold</item>
     </style>
 

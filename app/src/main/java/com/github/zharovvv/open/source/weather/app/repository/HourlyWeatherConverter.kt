@@ -38,7 +38,7 @@ class HourlyWeatherConverter :
             "13n" to R.drawable.ic_snow_24,
             "50n" to R.drawable.ic_clouds_24
         )
-        private val ICONS_MAP_DARK: Map<String, Int> = hashMapOf(
+        val ICONS_MAP_DARK: Map<String, Int> = hashMapOf(
             "01d" to R.drawable.ic_clear_sky_24,
             "02d" to R.drawable.ic_few_clouds_24_dark,
             "03d" to R.drawable.ic_clouds_24_dark,

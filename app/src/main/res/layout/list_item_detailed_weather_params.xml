@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/indent_large"
-        android:textAppearance="@style/TextAppearance.Secondary.SubTitle"
+        android:textAppearance="@style/TextAppearance.Secondary.Subtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -22,7 +22,7 @@ class WeekWeatherConverter :
                 val dateString = simpleDateFormat.format(weekWeatherItemEntity.forecastDate)
                     .toTitleCase()
                 WeekWeatherItemModel(
-                    iconId = HourlyWeatherConverter.ICONS_MAP[weekWeatherItemEntity.iconId]!!,
+                    iconId = HourlyWeatherConverter.ICONS_MAP_DARK[weekWeatherItemEntity.iconId]!!,
                     dayOfWeekOfForecast = dateString.substring(
                         startIndex = 0,
                         endIndex = dateString.indexOf(',') + 1

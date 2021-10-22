@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:gravity="start"
-                android:textAppearance="@style/TextAppearance.Primary.SubTitle"
+                android:textAppearance="@style/TextAppearance.Primary.Subtitle"
                 app:layout_constraintBottom_toBottomOf="@id/city_name_text_view"
                 app:layout_constraintStart_toEndOf="@id/city_name_text_view" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/indent_small"
                     android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.Secondary.SubTitle"
+                    android:textAppearance="@style/TextAppearance.Secondary.Subtitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/weather_description_text_view" />
