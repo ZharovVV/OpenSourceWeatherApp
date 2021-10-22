@@ -5,6 +5,13 @@
         <item name="itemIconTint">@color/navigation_item_color</item>
     </style>
 
+    <!--Bottom Navigation View-->
+    <style name="Theme.OpenSourceWeatherApp.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="labelVisibilityMode">auto</item>
+        <!--<item name="labelVisibilityMode">labeled</item> Если нужны label в невыделенном состоянии item-а-->
+    </style>
+
+    <!--Text Button-->
     <style name="Theme.OpenSourceWeatherApp.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAppearance">@style/TextAppearance.Primary.SubTitle</item>
         <item name="android:textStyle">bold</item>

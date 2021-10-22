@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.github.zharovvv.open.source.weather.app.ui.view.CustomBottomNavigationView
 import com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
 import java.io.Serializable
 
@@ -81,6 +82,22 @@ fun CustomNavigationView.setUpWithNavControllerCustom(navController: NavControll
         if (menuItem.itemId == navController.currentDestination?.id) {
             val openableParent = this.parent as Openable
             openableParent.close()
+            true
+        } else {
+            sourceListener.onNavigationItemSelected(menuItem)
+        }
+    }
+}
+
+/**
+ * При совпадении menuItemId и currentDestination#id ничего не делаем.
+ * Метод аналогичный [setUpWithNavControllerCustom], но для [CustomBottomNavigationView].
+ */
+fun CustomBottomNavigationView.setUpWithNavControllerCustom(navController: NavController) {
+    setupWithNavController(navController)
+    val sourceListener = sourceItemSelectedListener
+    setOnItemSelectedListener { menuItem: MenuItem ->
+        if (menuItem.itemId == navController.currentDestination?.id) {
             true
         } else {
             sourceListener.onNavigationItemSelected(menuItem)

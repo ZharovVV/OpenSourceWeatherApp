@@ -10,13 +10,15 @@
         android:layout_height="match_parent"
         android:background="?attr/colorSecondary">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/fragment_week_weather_toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
+            android:background="?android:attr/windowBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleCentered="true" />
 
         <TextView
             android:id="@+id/week_weather_title_text_view"

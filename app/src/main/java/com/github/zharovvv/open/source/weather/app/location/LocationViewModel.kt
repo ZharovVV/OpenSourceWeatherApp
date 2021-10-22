@@ -23,13 +23,20 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
     val locationData: LiveData<LocationModel> get() = _locationLiveData
 
     private val compositeDisposable = CompositeDisposable()
+    private var locationServiceStarted: Boolean = false
 
-    fun requestLocation() {
+    init {
         compositeDisposable += locationRepository.locationObservable()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { }
             .subscribe { _locationLiveData.value = it }
-        getApplication<OpenSourceWeatherApp>().startService<LocationService>()
+    }
+
+    fun requestLocation() {
+        if (!locationServiceStarted) {
+            getApplication<OpenSourceWeatherApp>().startService<LocationService>()
+            locationServiceStarted = true
+        }
     }
 
     override fun onCleared() {

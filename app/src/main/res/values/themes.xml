@@ -22,5 +22,6 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Navigation View -->
         <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
+        <item name="bottomNavigationStyle">@style/Theme.OpenSourceWeatherApp.BottomNavigationView</item>
     </style>
 </resources>

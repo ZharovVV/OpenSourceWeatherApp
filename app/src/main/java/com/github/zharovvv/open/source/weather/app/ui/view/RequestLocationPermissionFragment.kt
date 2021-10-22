@@ -50,7 +50,7 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
             }
         }
         setUpNavDialogResultCallback(
-            navBackStackEntry = navController.getBackStackEntry(R.id.nav_weather_today),
+            navBackStackEntry = navController.currentBackStackEntry!!,
             resultKey = LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY
         ) { result: LocationPermissionExplanationDialogFragment.DialogResult ->
             when (result) {
