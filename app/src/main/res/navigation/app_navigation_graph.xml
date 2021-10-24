@@ -9,7 +9,6 @@
     <fragment
         android:id="@+id/nav_weather_today"
         android:name="com.github.zharovvv.open.source.weather.app.ui.weather.today.WeatherTodayFragment"
-        android:label="@string/empty"
         tools:layout="@layout/fragment_weather_today">
         <action
             android:id="@+id/action_nav_weather_today_to_nav_week_weather"
@@ -26,23 +25,16 @@
     <fragment
         android:id="@+id/nav_week_weather"
         android:name="com.github.zharovvv.open.source.weather.app.ui.weather.week.WeekWeatherFragment"
-        tools:layout="@layout/fragment_week_weather">
-        <argument
-            android:name="useFragmentToolbar"
-            android:defaultValue="true"
-            app:argType="boolean" />
-    </fragment>
+        tools:layout="@layout/fragment_week_weather" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.github.zharovvv.open.source.weather.app.ui.settings.SettingsFragment"
-        android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:name="com.github.zharovvv.open.source.weather.app.ui.settings.SettingsContainerFragment"
+        tools:layout="@layout/fragment_settings_container" />
 
     <fragment
         android:id="@+id/nav_about_app"
         android:name="com.github.zharovvv.open.source.weather.app.ui.about.app.AboutAppFragment"
-        android:label="@string/menu_about_app"
         tools:layout="@layout/fragment_about_app" />
 
 </navigation>

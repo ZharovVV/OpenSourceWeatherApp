@@ -23,5 +23,9 @@
         <!-- Navigation View -->
         <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
         <item name="bottomNavigationStyle">@style/Theme.OpenSourceWeatherApp.BottomNavigationView</item>
+        <!--Если не указывать тему Preference, то при создании PreferenceFragmentCompat
+        будет использоваться тема PreferenceThemeOverlay (т.е. изменяется тема для Activity).
+        Что в свою очередь влияет на отображение WeatherTodayFragment-а.-->
+        <item name="preferenceTheme">@style/Theme.OpenSourceWeatherApp</item>
     </style>
 </resources>

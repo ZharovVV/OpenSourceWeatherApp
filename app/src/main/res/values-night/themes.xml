@@ -22,5 +22,6 @@
         <!-- Navigation View -->
         <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
         <item name="bottomNavigationStyle">@style/Theme.OpenSourceWeatherApp.BottomNavigationView</item>
+        <item name="preferenceTheme">@style/Theme.OpenSourceWeatherApp</item>
     </style>
 </resources>

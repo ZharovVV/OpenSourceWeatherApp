@@ -2,6 +2,9 @@ package com.github.zharovvv.open.source.weather.app
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.database.AppDatabase
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
@@ -22,6 +25,8 @@ class OpenSourceWeatherApp : Application() {
     }
 
     override fun onCreate() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        setUpAppTheme(sharedPreferences)
         super.onCreate()
         configureRetrofit()
         _appContext = applicationContext
@@ -32,6 +37,24 @@ class OpenSourceWeatherApp : Application() {
         )
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    private fun setUpAppTheme(sharedPreferences: SharedPreferences) {
+        val themeCodeArray = resources.getStringArray(R.array.preference_theme_value_entries)
+        val dayThemeCode = themeCodeArray[0]
+        val nightThemeCode = themeCodeArray[1]
+        val defaultThemeCode = themeCodeArray[2]
+        when (sharedPreferences.getString("app_theme", defaultThemeCode)) {
+            dayThemeCode -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            nightThemeCode -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            else -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+        }
     }
 
     private fun configureRetrofit() {
