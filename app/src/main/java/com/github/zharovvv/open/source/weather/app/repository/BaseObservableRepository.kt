@@ -19,7 +19,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
         @Suppress("UNUSED_VARIABLE") val connection = observableDataFromDatabase
             .filter { entity -> entity.isFresh }
             .map { entity -> converter.convertToModel(entity) }
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { behaviorSubject.onNext(DataState.Success(it)) },
                 {
