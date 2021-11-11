@@ -116,6 +116,7 @@ class WeatherTodayConverter :
             iconId = iconId,
             description = entity.description,
             dateString = entity.dateString,
+            shortDateString = entity.shortDateString,
             temperature = entity.temperature,
             detailedWeatherParams = entity.detailedWeatherParams.map { weatherParamPojoEntity ->
                 DetailedWeatherParamModel(
@@ -136,6 +137,7 @@ class WeatherTodayConverter :
         val updateTime = Date()
         val weather = response.weather.first()
         val simpleDateFormat = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault())
+        val shortDateFormat = SimpleDateFormat("dd.MM, HH:mm", Locale.getDefault())
         val appContext = OpenSourceWeatherApp.appContext
         return WeatherTodayEntity(
             id = entityId,
@@ -145,6 +147,7 @@ class WeatherTodayConverter :
             iconId = weather.icon,
             description = appContext.getString(WEATHER_ID_DESCRIPTIONS[weather.id]!!),
             dateString = simpleDateFormat.format(updateTime).toTitleCase(),
+            shortDateString = shortDateFormat.format(updateTime),
             temperature = ceil(response.mainInfo.temp).toInt().toString() + "°",
             detailedWeatherParams = listOf(
                 DetailedWeatherParamPojoEntity(

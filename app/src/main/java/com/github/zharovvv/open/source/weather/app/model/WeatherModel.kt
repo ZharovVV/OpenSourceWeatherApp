@@ -10,7 +10,14 @@ data class WeatherTodayModel(
     @DrawableRes
     val iconId: Int,
     val description: String,
+    /**
+     * Дата прогноза в формате "EEEE, dd MMM"
+     */
     val dateString: String,
+    /**
+     * Дата прогноза в формате "dd.MM, HH:mm"
+     */
+    val shortDateString: String,
     val temperature: String,
     val detailedWeatherParams: List<DetailedWeatherParamModel>
 )

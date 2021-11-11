@@ -20,6 +20,7 @@ data class WeatherTodayEntity(
     val iconId: String,
     val description: String,
     val dateString: String,
+    val shortDateString: String,
     val temperature: String,
     val detailedWeatherParams: List<DetailedWeatherParamPojoEntity>
 ) : PerishableEntity {
