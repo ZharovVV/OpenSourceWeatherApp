@@ -39,6 +39,7 @@
     <string name="tomorrow">Завтра</string>
     <string name="day_after_tomorrow">Послезавтра</string>
     <string name="widget_label">Виджет погоды</string>
+    <string name="initial_text_widget">Загрузка...</string>
 
     <string-array name="preference_theme_name_entries">
         <item>Светлая</item>

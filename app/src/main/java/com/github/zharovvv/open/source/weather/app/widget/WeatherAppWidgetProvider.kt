@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.github.zharovvv.open.source.weather.app.repository.WidgetWeatherRepositoryProvider
 import com.github.zharovvv.open.source.weather.app.widget.work.manager.CurrentWeatherWorker
 import java.util.concurrent.TimeUnit
 
@@ -17,15 +18,12 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
+        updateWidgetImmediately(context!!)
     }
 
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         schedulePeriodicWork(context!!)
-    }
-
-    override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
-        super.onDeleted(context, appWidgetIds)
     }
 
     override fun onDisabled(context: Context?) {
@@ -37,8 +35,8 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
         val uniqueWorkName = CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME
         val existingWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
         val periodicWorkRequest = PeriodicWorkRequestBuilder<CurrentWeatherWorker>(
-            repeatInterval = 1L,
-            repeatIntervalTimeUnit = TimeUnit.HOURS,
+            repeatInterval = 60L,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES,
             flexTimeInterval = 5L,
             flexTimeIntervalUnit = TimeUnit.MINUTES
         ).build()
@@ -53,5 +51,19 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
     private fun cancelPeriodicWork(context: Context) {
         val workManager = WorkManager.getInstance(context)
         workManager.cancelUniqueWork(CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME)
+    }
+
+    private fun updateWidgetImmediately(context: Context) {
+        val pendingResult = goAsync()
+        Thread {
+            val widgetWeatherRepository = WidgetWeatherRepositoryProvider.widgetWeatherRepository
+            val data = widgetWeatherRepository.requestDataSync()
+            updateWidget(
+                context = context,
+                widgetModelDataState = data,
+                appWidgetManager = AppWidgetManager.getInstance(context)
+            )
+            pendingResult.finish()
+        }.start()
     }
 }

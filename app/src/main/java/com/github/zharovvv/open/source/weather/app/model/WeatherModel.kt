@@ -66,3 +66,14 @@ data class WeekWeatherItemModel(
     val maxTemperature: String,
     val minTemperature: String
 )
+
+/**
+ * Модель виджета погоды
+ */
+data class WidgetWeatherModel(
+    @DrawableRes
+    val weatherIconId: Int,
+    val temperature: String,
+    val locationDescription: String,
+    val forecastDateString: String
+)

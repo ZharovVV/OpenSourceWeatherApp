@@ -6,10 +6,8 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.github.zharovvv.open.source.weather.app.model.DataState
-import com.github.zharovvv.open.source.weather.app.model.LocationModel
-import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
-import com.github.zharovvv.open.source.weather.app.repository.LocationRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.repository.WeatherTodayRepositoryProvider
+import com.github.zharovvv.open.source.weather.app.model.WidgetWeatherModel
+import com.github.zharovvv.open.source.weather.app.repository.WidgetWeatherRepositoryProvider
 import com.github.zharovvv.open.source.weather.app.widget.updateWidget
 
 class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
@@ -27,19 +25,13 @@ class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
         Log.i(LOG_TAG, "CurrentWeatherWorker#doWork")
-        val locationRepository = LocationRepositoryProvider.locationRepository
-        val weatherRepository = WeatherTodayRepositoryProvider.weatherRepository
-        val locationModel: LocationModel? = locationRepository.getLastKnownLocation()
-        val result: DataState<WeatherTodayModel> =
-            if (locationModel != null) {
-                weatherRepository.requestDataSync(locationModel.latitude, locationModel.longitude)
-            } else {
-                DataState.Error("Для определения местоположения зайдите в приложение")
-            }
+        val widgetWeatherRepository = WidgetWeatherRepositoryProvider.widgetWeatherRepository
+        val widgetModelDataState: DataState<WidgetWeatherModel> =
+            widgetWeatherRepository.requestDataSync()
         updateWidget(
             context = applicationContext,
-            modelDataState = result,
-            AppWidgetManager.getInstance(applicationContext)
+            widgetModelDataState = widgetModelDataState,
+            appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         )
         return Result.success()
     }
