@@ -14,6 +14,8 @@ import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment
 import com.github.zharovvv.open.source.weather.app.location.LocationService
 import com.github.zharovvv.open.source.weather.app.location.LocationViewModel
+import com.github.zharovvv.open.source.weather.app.model.DataState
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.navigation.LOCATION_PERMISSION_EXPLANATION_DIALOG_RESULT_KEY
 import com.github.zharovvv.open.source.weather.app.navigation.setUpNavDialogResultCallback
 
@@ -46,7 +48,11 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
             if (isGranted) {
                 requestLocation()
             } else {
-                onLocationPermissionIsNotGranted()
+                onLocationPermissionIsNotGranted(
+                    DataState.Error.buildLocationPermissionError(
+                        errorMessage = "Доступ к геоданнм не предоставлен!"
+                    )
+                )
             }
         }
         setUpNavDialogResultCallback(
@@ -76,9 +82,10 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
     }
 
     /**
+     * Вызывается, когда пользователь запретил доступ к приложению.
      * TODO Возможно метод не нужен.
      */
-    abstract fun onLocationPermissionIsNotGranted()
+    protected abstract fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>)
 
     private fun checkLocationPermission(): Boolean {
         val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -95,8 +102,7 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
             }
 
             else -> {
-                //requestLocationPermissionLauncher?.launch(locationPermission)
-                findNavController().navigate(R.id.nav_location_permission_explanation)
+                requestLocationPermissionLauncher?.launch(locationPermission)
             }
         }
         return false

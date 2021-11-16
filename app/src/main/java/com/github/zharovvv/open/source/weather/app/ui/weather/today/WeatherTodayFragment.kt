@@ -17,6 +17,7 @@ import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
+import com.github.zharovvv.open.source.weather.app.ui.error.showError
 import com.github.zharovvv.open.source.weather.app.ui.view.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
@@ -65,8 +66,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
         )
         with(binding.weatherTodaySwipeRefreshLayout) {
             setOnRefreshListener {
-                weatherTodayViewModel.requestWeatherToday()
-                hourlyWeatherViewModel.requestHourlyWeather()
+                refreshData()
             }
         }
     }
@@ -111,8 +111,14 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
                     }
                     is DataState.Error -> {
                         weatherTodayProgressBar.isVisible = false
-                        weatherDescriptionTextView.text = dataState.message
                         weatherTodaySwipeRefreshLayout.isRefreshing = false
+                        showError(
+                            errorModel = dataState,
+                            errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
+                            onHideErrorListener = { _, _ ->
+                                refreshData()
+                            }
+                        )
                     }
                 }
             }
@@ -149,15 +155,31 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
                 is DataState.Success -> {
                     hourlyWeatherAdapter.submitList(dataState.data.items)
                 }
-                else -> {
-
+                is DataState.Error -> {
+                    showError(
+                        errorModel = dataState,
+                        errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
+                        onHideErrorListener = { _, _ ->
+                            refreshData()
+                        }
+                    )
+                }
+                is DataState.Loading -> {
                 }
             }
         }
     }
 
-    override fun onLocationPermissionIsNotGranted() {
-        binding.cityNameTextView.text = "Доступ к локации не предоставлен"
+    private fun refreshData() {
+        weatherTodayViewModel.requestWeatherToday()
+        hourlyWeatherViewModel.requestHourlyWeather()
+    }
+
+    override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
+        showError(
+            errorModel = errorModel,
+            errorContainerId = binding.fragmentWeatherTodayErrorContainer.id
+        )
     }
 
     override fun onDestroyView() {

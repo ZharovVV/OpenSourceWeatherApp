@@ -29,7 +29,14 @@ class LocationViewModel(application: Application) : AndroidViewModel(application
         compositeDisposable += locationRepository.locationObservable()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { }
-            .subscribe { _locationLiveData.value = it }
+            .subscribe(
+                { locationModel: LocationModel ->
+                    _locationLiveData.value = locationModel
+                },
+                { throwable: Throwable ->
+                    throwable.printStackTrace()
+                }
+            )
     }
 
     fun requestLocation() {

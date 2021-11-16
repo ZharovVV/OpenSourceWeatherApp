@@ -41,12 +41,13 @@ fun updateWidget(
                 R.id.forecast_date_widget_text_view, widgetWeatherModel.forecastDateString
             )
         }
-        else -> {
-            val errorText = widgetModelDataState.message
-            errorText?.let {
-                widgetRemoteViews.setTextViewText(R.id.weather_temperature_widget_text_view, it)
-            }
+        is DataState.Error -> {
+            widgetRemoteViews.setTextViewText(
+                R.id.weather_temperature_widget_text_view,//TODO Отрисовка ошибок в виджете
+                widgetModelDataState.errorTitle
+            )
         }
+        is DataState.Loading -> return
     }
     val startActivityPendingIntent =
         PendingIntent.getActivity(

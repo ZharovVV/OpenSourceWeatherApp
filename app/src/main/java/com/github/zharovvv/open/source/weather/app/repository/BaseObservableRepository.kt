@@ -24,7 +24,11 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                 { behaviorSubject.onNext(DataState.Success(it)) },
                 {
                     it.printStackTrace()
-                    behaviorSubject.onNext(DataState.Error(it.message ?: ""))
+                    behaviorSubject.onNext(
+                        DataState.Error.buildUnexpectedError(
+                            errorMessage = it.message ?: ""
+                        )
+                    )
                 }
             )
     }
@@ -51,7 +55,9 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                 fetchData(lastKnownEntity, lat, lon)
             } catch (e: Exception) {
                 e.printStackTrace()
-                behaviorSubject.onNext(DataState.Error(e.message ?: ""))
+                behaviorSubject.onNext(
+                    DataState.Error.buildNetworkError(errorMessage = e.message ?: "")
+                )
                 return
             }
         } else {
@@ -86,7 +92,9 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                 updateDataInDatabase(newEntity)
             }
         } else {
-            behaviorSubject.onNext(DataState.Error(retrofitResponse.message()))
+            behaviorSubject.onNext(
+                DataState.Error.buildNetworkError(errorMessage = retrofitResponse.message())
+            )
         }
     }
 
@@ -109,7 +117,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                 fetchDataSync(lastKnownEntity, lat, lon)
             } catch (e: Exception) {
                 e.printStackTrace()
-                DataState.Error(e.message ?: "")
+                DataState.Error.buildNetworkError(errorMessage = e.message ?: "")
             }
         } else {
             DataState.Success(converter.convertToModel(lastKnownEntity!!))
@@ -135,7 +143,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
             }
             DataState.Success(converter.convertToModel(newEntity))
         } else {
-            DataState.Error(retrofitResponse.message())
+            DataState.Error.buildNetworkError(errorMessage = retrofitResponse.message())
         }
         return result
     }

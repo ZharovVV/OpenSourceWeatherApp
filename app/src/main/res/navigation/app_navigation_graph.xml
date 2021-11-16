@@ -12,9 +12,7 @@
         tools:layout="@layout/fragment_weather_today">
         <action
             android:id="@+id/action_nav_weather_today_to_nav_week_weather"
-            app:destination="@id/nav_week_weather"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="true" />
+            app:destination="@id/nav_week_weather" />
     </fragment>
 
     <dialog

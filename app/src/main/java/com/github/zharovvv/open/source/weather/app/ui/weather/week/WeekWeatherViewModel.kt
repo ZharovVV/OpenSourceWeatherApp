@@ -11,6 +11,7 @@ import com.github.zharovvv.open.source.weather.app.repository.WeekWeatherReposit
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.internal.functions.Functions
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 
@@ -52,7 +53,7 @@ class WeekWeatherViewModel : ViewModel() {
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe(Functions.emptyConsumer(), { it.printStackTrace() })
     }
 
     override fun onCleared() {

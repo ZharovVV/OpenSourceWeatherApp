@@ -39,7 +39,13 @@
     <string name="tomorrow">Завтра</string>
     <string name="day_after_tomorrow">Послезавтра</string>
     <string name="widget_label">Виджет погоды</string>
-    <string name="initial_text_widget">Загрузка...</string>
+    <string name="initial_text_widget">Загрузка…</string>
+
+    <string name="error_title">Ошибка</string>
+    <string name="network_error_description">Отсутствует интернет-соединение. Проверьте подключение к Wi-Fi или сотовой сети и повторите попытку.</string>
+    <string name="location_permission_error_description">Для работы приложения необходим доступ к геоданным. Предоставить доступ вы можете в настройках приложения.</string>
+    <string name="unexpected_error_description">Произошла непредвиденная ошибка.</string>
+    <string name="repeat">Повторить</string>
 
     <string-array name="preference_theme_name_entries">
         <item>Светлая</item>

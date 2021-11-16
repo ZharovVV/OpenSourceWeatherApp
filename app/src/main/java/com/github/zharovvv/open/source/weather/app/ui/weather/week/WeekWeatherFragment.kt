@@ -5,25 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeekWeatherBinding
-import com.github.zharovvv.open.source.weather.app.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
-import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
+import com.github.zharovvv.open.source.weather.app.ui.error.showError
+import com.github.zharovvv.open.source.weather.app.ui.view.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
-class WeekWeatherFragment : BaseFragment() {
+class WeekWeatherFragment : RequestLocationPermissionFragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentWeekWeatherBinding? = null
     private val binding: FragmentWeekWeatherBinding get() = _binding!!
-    private val locationViewModel: LocationViewModel by activityViewModels()
     private val weekWeatherViewModel: WeekWeatherViewModel by viewModels()
 
     override fun onCreateView(
@@ -48,6 +46,7 @@ class WeekWeatherFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
         binding.fragmentWeekWeatherToolbar.setupWithNavController(navController)
         val weekWeatherLayoutManager = LinearLayoutManager(context)
@@ -73,15 +72,32 @@ class WeekWeatherFragment : BaseFragment() {
                 is DataState.Error -> {
                     binding.weekWeatherProgressBar.isVisible = false
                     binding.weekWeatherSwipeRefreshLayout.isRefreshing = false
-                    binding.weekWeatherTitleTextView.text = dataState.message
+                    showError(
+                        errorModel = dataState,
+                        errorContainerId = binding.fragmentWeekWeatherErrorContainer.id,
+                        onHideErrorListener = { _, _ ->
+                            refreshData()
+                        }
+                    )
                 }
             }
         }
         with(binding.weekWeatherSwipeRefreshLayout) {
             setOnRefreshListener {
-                weekWeatherViewModel.requestWeatherToday()
+                refreshData()
             }
         }
+    }
+
+    private fun refreshData() {
+        weekWeatherViewModel.requestWeatherToday()
+    }
+
+    override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
+        showError(
+            errorModel = errorModel,
+            errorContainerId = binding.fragmentWeekWeatherErrorContainer.id
+        )
     }
 
     override fun onDestroyView() {

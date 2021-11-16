@@ -11,7 +11,9 @@ class WidgetWeatherRepository(
 
     fun requestDataSync(): DataState<WidgetWeatherModel> {
         val locationModel = locationRepository.getLastKnownLocation()
-            ?: return DataState.Error(message = "Для определения местоположения зайдите в приложение.")
+            ?: return DataState.Error.buildWidgetError(
+                errorTitle = "Для определения местоположения зайдите в приложение."
+            )
         val weatherModelDataState: DataState<WeatherTodayModel> =
             weatherTodayRepository.requestDataSync(
                 lat = locationModel.latitude,
@@ -30,7 +32,7 @@ class WidgetWeatherRepository(
                 )
             }
             else -> {
-                DataState.Error(message = weatherModelDataState.message ?: "")
+                DataState.Error.buildWidgetError(errorTitle = weatherModelDataState.message ?: "")
             }
         }
     }
