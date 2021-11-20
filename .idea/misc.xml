@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/drawable/dialog_shape_background.xml" value="0.5615384615384615" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/drawable/ripple_selector_example.xml" value="0.5615384615384615" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/drawable/shape_background_dialog.xml" value="0.5615384615384615" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/drawable/shape_background_weather_today_card.xml" value="0.5615384615384615" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/layout/dialog_fragment_location_permission_explanation.xml" value="0.5" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/layout/fragment_error.xml" value="0.5203703703703704" />
+        <entry key="..\:/Program Files/Android/Android Studio Projects/OpenSourceWeatherApp/app/src/main/res/layout/fragment_settings_container.xml" value="0.5203703703703704" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

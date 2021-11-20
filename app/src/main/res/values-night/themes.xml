@@ -23,5 +23,12 @@
         <item name="navigationViewStyle">@style/Theme.OpenSourceWeatherApp.NavigationView</item>
         <item name="bottomNavigationStyle">@style/Theme.OpenSourceWeatherApp.BottomNavigationView</item>
         <item name="preferenceTheme">@style/Theme.OpenSourceWeatherApp</item>
+        <item name="alertDialogTheme">@style/Theme.AlertDialog</item>
+    </style>
+
+    <style name="Theme.AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/blue_light</item>
+        <item name="colorSecondary">@color/blue_light</item>
+        <item name="android:windowBackground">@color/gray_dark</item>
     </style>
 </resources>

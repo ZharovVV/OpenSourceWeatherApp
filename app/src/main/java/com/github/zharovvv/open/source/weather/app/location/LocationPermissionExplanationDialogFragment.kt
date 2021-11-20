@@ -1,10 +1,13 @@
 package com.github.zharovvv.open.source.weather.app.location
 
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
@@ -24,11 +27,16 @@ class LocationPermissionExplanationDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(
+        val view = inflater.inflate(
             R.layout.dialog_fragment_location_permission_explanation,
             container,
             false
         )
+        dialog?.window?.let { window: Window ->
+            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window.requestFeature(Window.FEATURE_NO_TITLE)
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

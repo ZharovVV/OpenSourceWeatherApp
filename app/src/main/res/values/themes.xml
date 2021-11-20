@@ -27,5 +27,12 @@
         будет использоваться тема PreferenceThemeOverlay (т.е. изменяется тема для Activity).
         Что в свою очередь влияет на отображение WeatherTodayFragment-а.-->
         <item name="preferenceTheme">@style/Theme.OpenSourceWeatherApp</item>
+        <item name="alertDialogTheme">@style/Theme.AlertDialog</item>
+    </style>
+
+    <style name="Theme.AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorSecondary">@color/blue</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>
