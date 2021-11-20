@@ -8,6 +8,8 @@ import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentErrorBinding
 import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
@@ -43,7 +45,17 @@ class ErrorFragment : BaseFragment() {
     }
 
     private fun hideError() {
-        parentFragmentManager.setFragmentResult(ERROR_REQUEST_KEY, Bundle.EMPTY)
+        val viewLifecycle = viewLifecycleOwner.lifecycle
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                // Так как фрагмент будет удален не сразу (commit = Handler.post)
+                // вызываем setFragmentResult именно таким образом, чтобы
+                // начать действие, переданное в onHideErrorListener, только тогда,
+                // когда ErrorFragment быдет скрыт.
+                parentFragmentManager.setFragmentResult(ERROR_REQUEST_KEY, Bundle.EMPTY)
+            }
+        }
+        viewLifecycle.addObserver(observer)
         parentFragmentManager.beginTransaction()
             .remove(this)
             .commit()
@@ -64,17 +76,25 @@ fun <T> Fragment.showError(
     errorContainerId: Int,
     onHideErrorListener: FragmentResultListener? = null
 ) {
-    onHideErrorListener?.let {
-        childFragmentManager.setFragmentResultListener(ERROR_REQUEST_KEY, viewLifecycleOwner, it)
+    val showsRightNow = childFragmentManager.findFragmentByTag(ERROR_FRAGMENT_TAG) != null
+    if (!showsRightNow) {
+        onHideErrorListener?.let {
+            childFragmentManager.setFragmentResultListener(
+                ERROR_REQUEST_KEY,
+                viewLifecycleOwner,
+                it
+            )
+        }
+        childFragmentManager.beginTransaction()
+            .replace(
+                errorContainerId,
+                ErrorFragment::class.java,
+                errorModel.toBundle(),
+                ERROR_FRAGMENT_TAG
+            )
+            .commitAllowingStateLoss()  //Не самое хорошее решение.
+        // Фиксит проблему, когда вызывается showError из закрывающегося фрагмента.
     }
-    childFragmentManager.beginTransaction()
-        .replace(
-            errorContainerId,
-            ErrorFragment::class.java,
-            errorModel.toBundle(),
-            ERROR_FRAGMENT_TAG
-        )
-        .commit()
 }
 
 /**

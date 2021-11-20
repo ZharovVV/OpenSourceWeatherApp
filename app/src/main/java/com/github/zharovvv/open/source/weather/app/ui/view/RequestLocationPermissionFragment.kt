@@ -36,9 +36,9 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
         val navController = findNavController()
         configureRequestLocationPermission(navController)
         //Вызываем метод только один раз при первом запуске фрагмента
-        if (savedInstanceState == null && !isRestoredFromBackStack) {
-            requestLocation()
-        }
+//        if (savedInstanceState == null && !isRestoredFromBackStack) {
+        requestLocation()
+//        }
     }
 
     private fun configureRequestLocationPermission(navController: NavController) {

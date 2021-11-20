@@ -49,7 +49,7 @@ sealed class DataState<T>(
             fun <T> buildUnexpectedError(errorMessage: String): Error<T> {
                 val appContext = OpenSourceWeatherApp.appContext
                 return Error(
-                    errorIconId = 0,
+                    errorIconId = R.drawable.ic_baseline_error_outline_24,
                     errorTitle = appContext.getString(R.string.error_title),
                     errorDescription = appContext.getString(R.string.unexpected_error_description),
                     isBlocking = false,

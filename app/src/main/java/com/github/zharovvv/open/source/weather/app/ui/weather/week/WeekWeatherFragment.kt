@@ -70,15 +70,17 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
                     binding.weekWeatherProgressBar.isVisible = true
                 }
                 is DataState.Error -> {
-                    binding.weekWeatherProgressBar.isVisible = false
-                    binding.weekWeatherSwipeRefreshLayout.isRefreshing = false
-                    showError(
-                        errorModel = dataState,
-                        errorContainerId = binding.fragmentWeekWeatherErrorContainer.id,
-                        onHideErrorListener = { _, _ ->
-                            refreshData()
-                        }
-                    )
+                    handler.postDelayed({
+                        binding.weekWeatherProgressBar.isVisible = false
+                        binding.weekWeatherSwipeRefreshLayout.isRefreshing = false
+                        showError(
+                            errorModel = dataState,
+                            errorContainerId = binding.fragmentWeekWeatherErrorContainer.id,
+                            onHideErrorListener = { _, _ ->
+                                refreshData()
+                            }
+                        )
+                    }, 300L)
                 }
             }
         }
@@ -94,10 +96,12 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
     }
 
     override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
-        showError(
-            errorModel = errorModel,
-            errorContainerId = binding.fragmentWeekWeatherErrorContainer.id
-        )
+        handler.postDelayed({
+            showError(
+                errorModel = errorModel,
+                errorContainerId = binding.fragmentWeekWeatherErrorContainer.id
+            )
+        }, 300L)
     }
 
     override fun onDestroyView() {

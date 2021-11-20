@@ -82,5 +82,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     //Apache Commons
     implementation "org.apache.commons:commons-text:$apache_commons_text_version"
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
 
 }

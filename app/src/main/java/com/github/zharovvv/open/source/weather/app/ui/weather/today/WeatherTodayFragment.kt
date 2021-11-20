@@ -110,15 +110,17 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
                         weatherTodayProgressBar.isVisible = true
                     }
                     is DataState.Error -> {
-                        weatherTodayProgressBar.isVisible = false
-                        weatherTodaySwipeRefreshLayout.isRefreshing = false
-                        showError(
-                            errorModel = dataState,
-                            errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
-                            onHideErrorListener = { _, _ ->
-                                refreshData()
-                            }
-                        )
+                        handler.postDelayed({
+                            weatherTodayProgressBar.isVisible = false
+                            weatherTodaySwipeRefreshLayout.isRefreshing = false
+                            showError(
+                                errorModel = dataState,
+                                errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
+                                onHideErrorListener = { _, _ ->
+                                    refreshData()
+                                }
+                            )
+                        }, 300L)
                     }
                 }
             }
@@ -156,13 +158,15 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
                     hourlyWeatherAdapter.submitList(dataState.data.items)
                 }
                 is DataState.Error -> {
-                    showError(
-                        errorModel = dataState,
-                        errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
-                        onHideErrorListener = { _, _ ->
-                            refreshData()
-                        }
-                    )
+                    handler.postDelayed({
+                        showError(
+                            errorModel = dataState,
+                            errorContainerId = viewBinding.fragmentWeatherTodayErrorContainer.id,
+                            onHideErrorListener = { _, _ ->
+                                refreshData()
+                            }
+                        )
+                    }, 300L)
                 }
                 is DataState.Loading -> {
                 }
@@ -176,10 +180,12 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
     }
 
     override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
-        showError(
-            errorModel = errorModel,
-            errorContainerId = binding.fragmentWeatherTodayErrorContainer.id
-        )
+        handler.postDelayed({
+            showError(
+                errorModel = errorModel,
+                errorContainerId = binding.fragmentWeatherTodayErrorContainer.id
+            )
+        }, 300L)
     }
 
     override fun onDestroyView() {
