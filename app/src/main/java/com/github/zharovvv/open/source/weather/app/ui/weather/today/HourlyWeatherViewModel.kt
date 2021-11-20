@@ -29,8 +29,7 @@ class HourlyWeatherViewModel : ViewModel() {
             .observeOn(Schedulers.io())
             .subscribe {
                 hourlyWeatherRepository.requestData(
-                    it.latitude,
-                    it.longitude,
+                    locationModel = it,
                     withLoadingStatus = false
                 )
             }
@@ -46,8 +45,7 @@ class HourlyWeatherViewModel : ViewModel() {
             .filter { locationModel: LocationModel? -> locationModel != null }
             .map {
                 hourlyWeatherRepository.requestData(
-                    it.latitude,
-                    it.longitude,
+                    locationModel = it,
                     withLoadingStatus = true
                 )
             }

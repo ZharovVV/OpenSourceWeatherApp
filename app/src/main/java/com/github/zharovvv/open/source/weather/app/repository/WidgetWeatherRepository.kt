@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.repository
 import com.github.zharovvv.open.source.weather.app.model.DataState
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.model.WidgetWeatherModel
+import io.reactivex.Observable
 
 class WidgetWeatherRepository(
     private val locationRepository: LocationRepository,
@@ -15,10 +16,7 @@ class WidgetWeatherRepository(
                 errorTitle = "Для определения местоположения зайдите в приложение."
             )
         val weatherModelDataState: DataState<WeatherTodayModel> =
-            weatherTodayRepository.requestDataSync(
-                lat = locationModel.latitude,
-                lon = locationModel.longitude
-            )
+            weatherTodayRepository.requestDataSync(locationModel)
         return when (weatherModelDataState) {
             is DataState.Success -> {
                 val weatherModel = weatherModelDataState.data
@@ -26,7 +24,7 @@ class WidgetWeatherRepository(
                     data = WidgetWeatherModel(
                         weatherIconId = weatherModel.iconId,
                         temperature = weatherModel.temperature,
-                        locationDescription = locationModel.cityName,
+                        locationDescription = weatherModel.locationModel.cityName,
                         forecastDateString = weatherModel.shortDateString
                     )
                 )
@@ -35,5 +33,22 @@ class WidgetWeatherRepository(
                 DataState.Error.buildWidgetError(errorTitle = weatherModelDataState.message ?: "")
             }
         }
+    }
+
+    fun observableData(): Observable<DataState<WidgetWeatherModel>> {
+        return weatherTodayRepository.observableData()
+            .filter { it is DataState.Success }
+            .map { weatherTodayModelDataState: DataState<WeatherTodayModel> ->
+                weatherTodayModelDataState as DataState.Success
+                val weatherModel = weatherTodayModelDataState.data
+                DataState.Success(
+                    data = WidgetWeatherModel(
+                        weatherIconId = weatherModel.iconId,
+                        temperature = weatherModel.temperature,
+                        locationDescription = weatherModel.locationModel.cityName,
+                        forecastDateString = weatherModel.shortDateString
+                    )
+                )
+            }
     }
 }

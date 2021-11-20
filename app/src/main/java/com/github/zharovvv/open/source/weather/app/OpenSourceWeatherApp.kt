@@ -47,14 +47,20 @@ class OpenSourceWeatherApp : Application() {
         val dayThemeCode = themeCodeArray[0]
         val nightThemeCode = themeCodeArray[1]
         val defaultThemeCode = themeCodeArray[2]
-        when (sharedPreferences.getString("app_theme", defaultThemeCode)) {
+        when (sharedPreferences.getString("app_theme", null)) {
             dayThemeCode -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
             nightThemeCode -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
+            defaultThemeCode -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
             else -> {
+                sharedPreferences.edit()
+                    .putString("app_theme", defaultThemeCode)
+                    .apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }

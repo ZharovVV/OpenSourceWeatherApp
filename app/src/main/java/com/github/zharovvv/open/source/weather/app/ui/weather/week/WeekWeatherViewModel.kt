@@ -29,8 +29,7 @@ class WeekWeatherViewModel : ViewModel() {
             .observeOn(Schedulers.io())
             .subscribe {
                 weekWeatherRepository.requestData(
-                    it.latitude,
-                    it.longitude,
+                    locationModel = it,
                     withLoadingStatus = false
                 )
             }
@@ -46,8 +45,7 @@ class WeekWeatherViewModel : ViewModel() {
             .filter { locationModel: LocationModel? -> locationModel != null }
             .map {
                 weekWeatherRepository.requestData(
-                    it.latitude,
-                    it.longitude,
+                    locationModel = it,
                     withLoadingStatus = true
                 )
             }

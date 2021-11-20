@@ -2,6 +2,7 @@ package com.github.zharovvv.open.source.weather.app.repository
 
 import com.github.zharovvv.open.source.weather.app.database.entity.WeekWeatherEntity
 import com.github.zharovvv.open.source.weather.app.database.entity.WeekWeatherItemPojoEntity
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.model.WeekWeatherItemModel
 import com.github.zharovvv.open.source.weather.app.model.WeekWeatherModel
 import com.github.zharovvv.open.source.weather.app.network.dto.WeekWeatherItem
@@ -37,14 +38,13 @@ class WeekWeatherConverter :
 
     override fun convertToEntity(
         entityId: Int,
-        latitude: Float,
-        longitude: Float,
+        locationModel: LocationModel,
         response: WeekWeatherResponse
     ): WeekWeatherEntity {
         return WeekWeatherEntity(
             id = entityId,
-            latitude = latitude,
-            longitude = longitude,
+            latitude = locationModel.latitude,
+            longitude = locationModel.longitude,
             updateTime = Date(),
             items = response.daily.map { weekWeatherItemRs: WeekWeatherItem ->
                 val weather = weekWeatherItemRs.weather.first()

@@ -6,6 +6,7 @@ import com.github.zharovvv.open.source.weather.app.database.entity.HourlyWeather
 import com.github.zharovvv.open.source.weather.app.database.entity.HourlyWeatherItemPojoEntity
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherItemModel
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.network.dto.HourlyWeatherResponse
 import com.github.zharovvv.open.source.weather.app.util.timeIndicator
 import java.text.SimpleDateFormat
@@ -81,14 +82,13 @@ class HourlyWeatherConverter :
 
     override fun convertToEntity(
         entityId: Int,
-        latitude: Float,
-        longitude: Float,
+        locationModel: LocationModel,
         response: HourlyWeatherResponse
     ): HourlyWeatherEntity {
         return HourlyWeatherEntity(
             id = entityId,
-            latitude = latitude,
-            longitude = longitude,
+            latitude = locationModel.latitude,
+            longitude = locationModel.longitude,
             updateTime = Date(),
             items = response.hourly.mapIndexed { index, hourlyWeatherItemRs ->
                 val now = index == 0

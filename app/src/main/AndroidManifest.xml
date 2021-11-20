@@ -18,17 +18,22 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".location.LocationService" />
+        <service android:name=".widget.UpdateWeatherWidgetService" />
+
         <receiver
             android:name=".widget.WeatherAppWidgetProvider"
             android:icon="@drawable/ic_weather_app_icon"
-            android:label="@string/widget_label">
+            android:label="@string/widget_label"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

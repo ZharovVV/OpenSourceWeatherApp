@@ -19,7 +19,11 @@ data class WeatherTodayModel(
      */
     val shortDateString: String,
     val temperature: String,
-    val detailedWeatherParams: List<DetailedWeatherParamModel>
+    val detailedWeatherParams: List<DetailedWeatherParamModel>,
+    /**
+     * Данные о местоположении, для которого была определена текущая погода.
+     */
+    val locationModel: LocationModel
 )
 
 data class DetailedWeatherParamModel(

@@ -2,6 +2,7 @@ package com.github.zharovvv.open.source.weather.app.repository
 
 import com.github.zharovvv.open.source.weather.app.database.entity.PerishableEntity
 import com.github.zharovvv.open.source.weather.app.model.DataState
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.BehaviorSubject
@@ -44,15 +45,15 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
      * Запрос данных из репозитория.
      * Данные придут в [observableData].
      */
-    fun requestData(lat: Float, lon: Float, withLoadingStatus: Boolean = true) {
+    fun requestData(locationModel: LocationModel, withLoadingStatus: Boolean = true) {
         val previousValue = behaviorSubject.value
         if (withLoadingStatus) {
             behaviorSubject.onNext(DataState.Loading())
         }
         val lastKnownEntity: Entity? = getLastKnownDataFromDatabase()
-        if (shouldFetchData(lastKnownEntity, lat, lon)) {
+        if (shouldFetchData(lastKnownEntity, locationModel)) {
             try {
-                fetchData(lastKnownEntity, lat, lon)
+                fetchData(lastKnownEntity, locationModel)
             } catch (e: Exception) {
                 e.printStackTrace()
                 behaviorSubject.onNext(
@@ -71,19 +72,18 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
 
     protected abstract fun shouldFetchData(
         lastKnownEntity: Entity?,
-        newLat: Float,
-        newLon: Float
+        newLocationModel: LocationModel
     ): Boolean
 
-    private fun fetchData(lastKnownEntity: Entity?, lat: Float, lon: Float) {
+    private fun fetchData(lastKnownEntity: Entity?, locationModel: LocationModel) {
         //Thread.sleep(3000L) //test loading
-        val retrofitResponse: retrofit2.Response<Response> = callApiService(lat, lon).execute()
+        val retrofitResponse: retrofit2.Response<Response> =
+            callApiService(lat = locationModel.latitude, lon = locationModel.longitude).execute()
         if (retrofitResponse.isSuccessful) {
             val response = retrofitResponse.body()!!
             val newEntity = converter.convertToEntity(
                 entityId = lastKnownEntity?.id ?: 0,
-                latitude = lat,
-                longitude = lon,
+                locationModel = locationModel,
                 response = response
             )
             if (lastKnownEntity == null) {
@@ -109,12 +109,12 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
      * Возвращает объект [DataState].
      * Если данные будут получены с сервера, то полученный результат сохранится в БД.
      */
-    fun requestDataSync(lat: Float, lon: Float): DataState<Model> {
+    fun requestDataSync(locationModel: LocationModel): DataState<Model> {
         val result: DataState<Model>
         val lastKnownEntity: Entity? = getLastKnownDataFromDatabase()
-        result = if (shouldFetchData(lastKnownEntity, lat, lon)) {
+        result = if (shouldFetchData(lastKnownEntity, locationModel)) {
             try {
-                fetchDataSync(lastKnownEntity, lat, lon)
+                fetchDataSync(lastKnownEntity, locationModel)
             } catch (e: Exception) {
                 e.printStackTrace()
                 DataState.Error.buildNetworkError(errorMessage = e.message ?: "")
@@ -125,15 +125,18 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
         return result
     }
 
-    private fun fetchDataSync(lastKnownEntity: Entity?, lat: Float, lon: Float): DataState<Model> {
+    private fun fetchDataSync(
+        lastKnownEntity: Entity?,
+        locationModel: LocationModel
+    ): DataState<Model> {
         val result: DataState<Model>
-        val retrofitResponse: retrofit2.Response<Response> = callApiService(lat, lon).execute()
+        val retrofitResponse: retrofit2.Response<Response> =
+            callApiService(lat = locationModel.latitude, lon = locationModel.longitude).execute()
         result = if (retrofitResponse.isSuccessful) {
             val response = retrofitResponse.body()!!
             val newEntity = converter.convertToEntity(
                 entityId = lastKnownEntity?.id ?: 0,
-                latitude = lat,
-                longitude = lon,
+                locationModel = locationModel,
                 response = response
             )
             if (lastKnownEntity == null) {

@@ -65,3 +65,13 @@ fun updateWidget(
     )
     appWidgetManager.updateAppWidget(widgetIds, widgetRemoteViews)
 }
+
+fun AppWidgetManager.hasAnyWidget(context: Context): Boolean {
+    val widgetIds = getAppWidgetIds(
+        ComponentName(
+            context,
+            WeatherAppWidgetProvider::class.java
+        )
+    )
+    return widgetIds != null && widgetIds.isNotEmpty()
+}

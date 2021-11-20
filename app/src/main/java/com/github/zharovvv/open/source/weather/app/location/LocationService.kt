@@ -22,47 +22,53 @@ class LocationService : Service() {
 
     private lateinit var locationManager: LocationManager
     private lateinit var geoCoder: Geocoder
+    private var _locationListener: LocationListener? = null
+    private val locationListener: LocationListener get() = _locationListener!!
 
     private val locationRepository: LocationRepository =
         LocationRepositoryProvider.locationRepository
     private val compositeDisposable = CompositeDisposable()
-    private val locationListener = LocationListener { location: Location ->
-        Log.d(
-            "Location_debug", "locationListener#onLocationChanged\n" +
-                    "latitude=${location.latitude};\n" +
-                    "longitude=${location.longitude};\n" +
-                    "speed=${location.speed};\n"
-        )
-        val latitude = location.latitude
-        val longitude = location.longitude
-        compositeDisposable += Single.fromCallable {
-            geoCoder.getFromLocation(latitude, longitude, 1).first()
-        }
-            .map { address: Address ->
-                LocationModel(
-                    latitude = latitude.toFloat(),
-                    longitude = longitude.toFloat(),
-                    cityName = address.locality,
-                    countryName = address.countryName
-                )
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe(
-                { locationModel: LocationModel ->
-                    locationRepository.updateLocation(locationModel)
-                },
-                { throwable: Throwable ->
-                    throwable.printStackTrace()
-                }
-            )
-    }
 
     override fun onCreate() {
         Log.i("ServiceLifecycle", "$this#onCreate;")
         super.onCreate()
         locationManager = applicationContext.getSystemService(LOCATION_SERVICE) as LocationManager
         geoCoder = Geocoder(applicationContext)
+        _locationListener = initLocationListener()
+    }
+
+    private fun initLocationListener(): LocationListener {
+        return LocationListener { location: Location ->
+            Log.d(
+                "Location_debug", "locationListener#onLocationChanged\n" +
+                        "latitude=${location.latitude};\n" +
+                        "longitude=${location.longitude};\n" +
+                        "speed=${location.speed};\n"
+            )
+            val latitude = location.latitude
+            val longitude = location.longitude
+            compositeDisposable += Single.fromCallable {
+                geoCoder.getFromLocation(latitude, longitude, 1).first()
+            }
+                .map { address: Address ->
+                    LocationModel(
+                        latitude = latitude.toFloat(),
+                        longitude = longitude.toFloat(),
+                        cityName = address.locality,
+                        countryName = address.countryName
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(
+                    { locationModel: LocationModel ->
+                        locationRepository.updateLocation(locationModel)
+                    },
+                    { throwable: Throwable ->
+                        throwable.printStackTrace()
+                    }
+                )
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -97,5 +103,6 @@ class LocationService : Service() {
         super.onDestroy()
         locationManager.removeUpdates(locationListener)
         compositeDisposable.clear()
+        _locationListener = null
     }
 }

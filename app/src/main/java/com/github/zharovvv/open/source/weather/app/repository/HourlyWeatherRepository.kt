@@ -4,6 +4,7 @@ import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.database.dao.HourlyWeatherDao
 import com.github.zharovvv.open.source.weather.app.database.entity.HourlyWeatherEntity
 import com.github.zharovvv.open.source.weather.app.model.HourlyWeatherModel
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
 import com.github.zharovvv.open.source.weather.app.network.dto.HourlyWeatherResponse
 import com.github.zharovvv.open.source.weather.app.util.distanceBetween
@@ -24,14 +25,13 @@ class HourlyWeatherRepository(
 
     override fun shouldFetchData(
         lastKnownEntity: HourlyWeatherEntity?,
-        newLat: Float,
-        newLon: Float
+        newLocationModel: LocationModel
     ): Boolean {
         return lastKnownEntity == null || distanceBetween(
-            lastKnownEntity.latitude,
-            lastKnownEntity.longitude,
-            newLat,
-            newLon
+            oldLat = lastKnownEntity.latitude,
+            oldLon = lastKnownEntity.longitude,
+            newLat = newLocationModel.latitude,
+            newLon = newLocationModel.longitude
         ) > 2000f || !lastKnownEntity.isFresh
     }
 

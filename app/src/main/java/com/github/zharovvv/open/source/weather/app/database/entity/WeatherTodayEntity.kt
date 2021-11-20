@@ -1,9 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.database.entity
 
+import androidx.room.*
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.github.zharovvv.open.source.weather.app.util.fromJson
 import com.github.zharovvv.open.source.weather.app.util.isFresh
 import com.google.gson.Gson
@@ -16,6 +14,10 @@ data class WeatherTodayEntity(
     override val id: Int,
     val latitude: Float,
     val longitude: Float,
+    @ColumnInfo(name = "city_name")
+    val cityName: String,
+    @ColumnInfo(name = "country_name")
+    val countryName: String,
     val updateTime: Date,
     val iconId: String,
     val description: String,

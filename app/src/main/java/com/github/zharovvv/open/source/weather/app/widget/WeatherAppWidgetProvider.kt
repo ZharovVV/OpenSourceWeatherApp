@@ -3,12 +3,9 @@ package com.github.zharovvv.open.source.weather.app.widget
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.github.zharovvv.open.source.weather.app.repository.WidgetWeatherRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.widget.work.manager.CurrentWeatherWorker
-import java.util.concurrent.TimeUnit
+import com.github.zharovvv.open.source.weather.app.widget.work.manager.cancelPeriodicWork
+import com.github.zharovvv.open.source.weather.app.widget.work.manager.schedulePeriodicWork
 
 class WeatherAppWidgetProvider : AppWidgetProvider() {
 
@@ -29,28 +26,6 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
         cancelPeriodicWork(context!!)
-    }
-
-    private fun schedulePeriodicWork(context: Context) {
-        val uniqueWorkName = CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME
-        val existingWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
-        val periodicWorkRequest = PeriodicWorkRequestBuilder<CurrentWeatherWorker>(
-            repeatInterval = 60L,
-            repeatIntervalTimeUnit = TimeUnit.MINUTES,
-            flexTimeInterval = 5L,
-            flexTimeIntervalUnit = TimeUnit.MINUTES
-        ).build()
-        val workManager = WorkManager.getInstance(context)
-        workManager.enqueueUniquePeriodicWork(
-            uniqueWorkName,
-            existingWorkPolicy,
-            periodicWorkRequest
-        )
-    }
-
-    private fun cancelPeriodicWork(context: Context) {
-        val workManager = WorkManager.getInstance(context)
-        workManager.cancelUniqueWork(CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME)
     }
 
     private fun updateWidgetImmediately(context: Context) {

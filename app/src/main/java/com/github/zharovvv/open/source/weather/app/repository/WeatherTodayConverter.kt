@@ -5,6 +5,7 @@ import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.database.entity.DetailedWeatherParamPojoEntity
 import com.github.zharovvv.open.source.weather.app.database.entity.WeatherTodayEntity
 import com.github.zharovvv.open.source.weather.app.model.DetailedWeatherParamModel
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.model.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.network.dto.CurrentWeatherResponse
 import com.github.zharovvv.open.source.weather.app.util.toTitleCase
@@ -124,15 +125,20 @@ class WeatherTodayConverter :
                     iconId = ICONS_MAP[weatherParamPojoEntity.iconId]!!,
                     value = weatherParamPojoEntity.value
                 )
-            }
+            },
+            locationModel = LocationModel(
+                latitude = entity.latitude,
+                longitude = entity.longitude,
+                cityName = entity.cityName,
+                countryName = entity.countryName
+            )
         )
     }
 
     override fun convertToEntity(
         entityId: Int,
-        latitude: Float,
-        longitude: Float,
-        response: CurrentWeatherResponse,
+        locationModel: LocationModel,
+        response: CurrentWeatherResponse
     ): WeatherTodayEntity {
         val updateTime = Date()
         val weather = response.weather.first()
@@ -141,8 +147,10 @@ class WeatherTodayConverter :
         val appContext = OpenSourceWeatherApp.appContext
         return WeatherTodayEntity(
             id = entityId,
-            latitude = latitude,
-            longitude = longitude,
+            latitude = locationModel.latitude,
+            longitude = locationModel.longitude,
+            cityName = locationModel.cityName,
+            countryName = locationModel.countryName,
             updateTime = updateTime,
             iconId = weather.icon,
             description = appContext.getString(WEATHER_ID_DESCRIPTIONS[weather.id]!!),

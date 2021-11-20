@@ -1,13 +1,14 @@
 package com.github.zharovvv.open.source.weather.app.repository
 
+import com.github.zharovvv.open.source.weather.app.model.LocationModel
+
 interface BaseConverter<Response, Entity, Model> {
 
     fun convertToModel(entity: Entity): Model
 
     fun convertToEntity(
         entityId: Int,
-        latitude: Float,
-        longitude: Float,
+        locationModel: LocationModel,
         response: Response,
     ): Entity
 }
