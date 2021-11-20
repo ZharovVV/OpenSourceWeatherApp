@@ -29,8 +29,16 @@ class WidgetWeatherRepository(
                     )
                 )
             }
-            else -> {
-                DataState.Error.buildWidgetError(errorTitle = weatherModelDataState.message ?: "")
+            is DataState.Error -> {
+                DataState.Error.buildWidgetError(
+                    errorTitle = weatherModelDataState.errorDescription
+                )
+            }
+            is DataState.Loading -> {
+                DataState.Error.buildWidgetError(
+                    errorTitle = weatherModelDataState.message
+                        ?: "При запросе данных о погоде произошла ошибка."
+                )
             }
         }
     }
