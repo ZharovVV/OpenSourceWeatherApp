@@ -2,7 +2,6 @@ package com.github.zharovvv.open.source.weather.app.widget.work.manager
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.github.zharovvv.open.source.weather.app.model.DataState
@@ -19,12 +18,7 @@ class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
         private const val LOG_TAG = "WorkManagerLifecycle"
     }
 
-    init {
-        Log.i(LOG_TAG, "CurrentWeatherWorker#<init>")
-    }
-
     override fun doWork(): Result {
-        Log.i(LOG_TAG, "CurrentWeatherWorker#doWork")
         val widgetWeatherRepository = WidgetWeatherRepositoryProvider.widgetWeatherRepository
         val widgetModelDataState: DataState<WidgetWeatherModel> =
             widgetWeatherRepository.requestDataSync()

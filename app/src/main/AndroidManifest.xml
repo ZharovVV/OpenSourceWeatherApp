@@ -18,8 +18,9 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:exported="true">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,9 +32,9 @@
 
         <receiver
             android:name=".widget.WeatherAppWidgetProvider"
+            android:exported="true"
             android:icon="@drawable/ic_weather_app_icon"
-            android:label="@string/widget_label"
-            android:exported="true">
+            android:label="@string/widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

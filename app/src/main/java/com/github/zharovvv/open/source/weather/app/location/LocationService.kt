@@ -8,7 +8,6 @@ import android.location.*
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.github.zharovvv.open.source.weather.app.model.LocationModel
 import com.github.zharovvv.open.source.weather.app.repository.LocationRepository
@@ -30,7 +29,6 @@ class LocationService : Service() {
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate() {
-        Log.i("ServiceLifecycle", "$this#onCreate;")
         super.onCreate()
         locationManager = applicationContext.getSystemService(LOCATION_SERVICE) as LocationManager
         geoCoder = Geocoder(applicationContext)
@@ -39,12 +37,6 @@ class LocationService : Service() {
 
     private fun initLocationListener(): LocationListener {
         return LocationListener { location: Location ->
-            Log.d(
-                "Location_debug", "locationListener#onLocationChanged\n" +
-                        "latitude=${location.latitude};\n" +
-                        "longitude=${location.longitude};\n" +
-                        "speed=${location.speed};\n"
-            )
             val latitude = location.latitude
             val longitude = location.longitude
             compositeDisposable += Single.fromCallable {
@@ -72,7 +64,6 @@ class LocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i("ServiceLifecycle", "$this#onStartCommand;")
         if (
             ContextCompat.checkSelfPermission(
                 applicationContext,
@@ -83,7 +74,6 @@ class LocationService : Service() {
                 ?.let { location: Location ->
                     locationListener.onLocationChanged(location)
                 }
-            Log.d("Location_debug", "locationManager#requestLocationUpdates")
             locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER,
                 600_000L,
@@ -99,7 +89,6 @@ class LocationService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
-        Log.i("ServiceLifecycle", "$this#onDestroy;")
         super.onDestroy()
         locationManager.removeUpdates(locationListener)
         compositeDisposable.clear()
