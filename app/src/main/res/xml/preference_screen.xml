@@ -3,8 +3,15 @@
     <ListPreference
         app:entries="@array/preference_theme_name_entries"
         app:entryValues="@array/preference_theme_value_entries"
-        app:key="app_theme"
+        app:key="@string/preference_theme_key"
         app:summary="Выбор темы приложения"
         app:title="Тема" />
+
+    <ListPreference
+        app:entries="@array/preference_auto_update_name_entries"
+        app:entryValues="@array/preference_auto_update_value_entries"
+        app:key="@string/preference_auto_update_key"
+        app:summary="Выбор периодичности автообновления"
+        app:title="Автообновление" />
 
 </PreferenceScreen>

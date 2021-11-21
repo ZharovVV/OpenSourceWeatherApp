@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.database.AppDatabase
 import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
+import com.github.zharovvv.open.source.weather.app.ui.settings.PreferencesKeyProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,11 +29,12 @@ class OpenSourceWeatherApp : Application() {
 
     override fun onCreate() {
         Log.i(LOG_TAG, "OpenSourceWeatherApp#onCreate")
+        _appContext = applicationContext
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        setUpDefaultPreferencesIfNotExists(sharedPreferences)
         setUpAppTheme(sharedPreferences)
         super.onCreate()
         configureRetrofit()
-        _appContext = applicationContext
         APP_DATABASE = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -42,25 +44,43 @@ class OpenSourceWeatherApp : Application() {
             .build()
     }
 
+    private fun setUpDefaultPreferencesIfNotExists(sharedPreferences: SharedPreferences) {
+        val themeCodeArray = resources.getStringArray(R.array.preference_theme_value_entries)
+        val defaultThemeCode = themeCodeArray[2]
+        val themePreference =
+            sharedPreferences.getString(PreferencesKeyProvider.preferenceThemeKey, null)
+        if (themePreference == null) {
+            sharedPreferences.edit()
+                .putString(PreferencesKeyProvider.preferenceThemeKey, defaultThemeCode)
+                .apply()
+        }
+        val autoUpdateCodeArray = resources.getStringArray(R.array.preference_auto_update_value_entries)
+        val defaultAutoUpdateCode = autoUpdateCodeArray[0]
+        val autoUpdatePreference =
+            sharedPreferences.getString(PreferencesKeyProvider.preferenceAutoUpdateKey, null)
+        if (autoUpdatePreference == null) {
+            sharedPreferences.edit()
+                .putString(PreferencesKeyProvider.preferenceAutoUpdateKey, defaultAutoUpdateCode)
+                .apply()
+        }
+    }
+
     private fun setUpAppTheme(sharedPreferences: SharedPreferences) {
         val themeCodeArray = resources.getStringArray(R.array.preference_theme_value_entries)
         val dayThemeCode = themeCodeArray[0]
         val nightThemeCode = themeCodeArray[1]
         val defaultThemeCode = themeCodeArray[2]
-        when (sharedPreferences.getString("app_theme", null)) {
+        when (sharedPreferences.getString(
+            PreferencesKeyProvider.preferenceThemeKey,
+            defaultThemeCode
+        )) {
             dayThemeCode -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
             nightThemeCode -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
-            defaultThemeCode -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
             else -> {
-                sharedPreferences.edit()
-                    .putString("app_theme", defaultThemeCode)
-                    .apply()
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }

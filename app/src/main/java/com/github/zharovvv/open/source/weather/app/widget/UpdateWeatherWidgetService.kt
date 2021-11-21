@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import com.github.zharovvv.open.source.weather.app.repository.WidgetWeatherRepositoryProvider
+import com.github.zharovvv.open.source.weather.app.widget.work.manager.schedulePeriodicWork
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
@@ -36,6 +37,7 @@ class UpdateWeatherWidgetService : Service() {
                             widgetModelDataState = it,
                             appWidgetManager = appWidgetManager
                         )
+                        schedulePeriodicWork(applicationContext)
                     }
                 },
                 { it.printStackTrace() }

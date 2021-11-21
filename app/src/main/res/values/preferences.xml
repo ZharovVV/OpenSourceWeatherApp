@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Тема-->
+    <string name="preference_theme_key">app_theme</string>
+    <string-array name="preference_theme_name_entries">
+        <item>Светлая</item>
+        <item>Темная</item>
+        <item>По умолчанию</item>
+    </string-array>
+    <string-array name="preference_theme_value_entries">
+        <item>Day</item>
+        <item>Night</item>
+        <item>Default</item>
+    </string-array>
+    <!--Автообновление-->
+    <string name="preference_auto_update_key">auto_update_preference_key</string>
+    <string-array name="preference_auto_update_name_entries">
+        <item>Каждый час</item>
+        <item>Каждые 3 часа</item>
+        <item>Каждые 6 часов</item>
+        <item>Каждые 12 часов</item>
+        <item>Каждые 24 часа</item>
+    </string-array>
+    <string-array name="preference_auto_update_value_entries">
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
+</resources>

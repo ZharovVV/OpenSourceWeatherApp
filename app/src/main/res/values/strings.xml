@@ -48,15 +48,4 @@
     <string name="location_permission_error_description">Для работы приложения необходим доступ к геоданным. Предоставить доступ вы можете в настройках приложения.</string>
     <string name="unexpected_error_description">Произошла непредвиденная ошибка.</string>
     <string name="repeat">Повторить</string>
-
-    <string-array name="preference_theme_name_entries">
-        <item>Светлая</item>
-        <item>Темная</item>
-        <item>По умолчанию</item>
-    </string-array>
-    <string-array name="preference_theme_value_entries">
-        <item>Day</item>
-        <item>Night</item>
-        <item>Default</item>
-    </string-array>
 </resources>
