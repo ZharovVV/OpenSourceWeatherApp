@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.ListItemAboutAppBinding
 import com.github.zharovvv.open.source.weather.app.model.AboutAppParameter
+import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
 class AboutAppAdapter : ListAdapter<AboutAppParameter, AboutAppAdapter.AboutAppViewHolder>(
     diffUtilItemCallback
@@ -37,10 +39,16 @@ class AboutAppAdapter : ListAdapter<AboutAppParameter, AboutAppAdapter.AboutAppV
         private val binding: ListItemAboutAppBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            with(binding.aboutAppParameterValueTextView) {
+                movementMethod = LinkMovementMethod.getInstance()
+                setLinkTextColor(context.getColorFromAttr(R.attr.colorOnPrimarySurface))
+            }
+        }
+
         fun bind(model: AboutAppParameter) {
             with(binding) {
                 aboutAppParameterNameTextView.text = model.parameterName
-                aboutAppParameterValueTextView.movementMethod = LinkMovementMethod.getInstance()
                 aboutAppParameterValueTextView.text = model.parameterValue
             }
         }
