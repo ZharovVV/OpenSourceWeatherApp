@@ -48,4 +48,10 @@
     <string name="location_permission_error_description">Для работы приложения необходим доступ к геоданным. Предоставить доступ вы можете в настройках приложения.</string>
     <string name="unexpected_error_description">Произошла непредвиденная ошибка.</string>
     <string name="repeat">Повторить</string>
+
+    <string name="about_app_version_parameter_name">Версия приложения</string>
+    <string name="about_app_source_data_parameter_name">Источник данных</string>
+    <string name="about_app_source_data_parameter_value">&lt;a href="https://openweathermap.org/api">OpenWeatherMap&lt;/a></string>
+    <string name="about_app_source_code_parameter_name">Исходный код</string>
+    <string name="about_app_source_code_parameter_value">&lt;a href="https://github.com/ZharovVV/OpenSourceWeatherApp">GitHub&lt;/a></string>
 </resources>

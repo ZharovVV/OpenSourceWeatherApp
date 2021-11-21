@@ -4,18 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentAboutAppBinding
+import com.github.zharovvv.open.source.weather.app.model.AboutAppModel
 import com.github.zharovvv.open.source.weather.app.ui.view.BaseFragment
 
 class AboutAppFragment : BaseFragment() {
 
-    // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentAboutAppBinding? = null
     private val binding: FragmentAboutAppBinding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val aboutAppViewModel: AboutAppViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,15 +28,21 @@ class AboutAppFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
+        binding.fragmentAboutAppToolbar.setupWithNavController(navController)
+        val aboutAppLayoutManager = LinearLayoutManager(context)
+        val aboutAppAdapter = AboutAppAdapter()
+        with(binding.aboutAppRecyclerView) {
+            layoutManager = aboutAppLayoutManager
+            adapter = aboutAppAdapter
+        }
+        aboutAppViewModel.aboutAppData.observe(viewLifecycleOwner) { aboutAppModel: AboutAppModel ->
+            aboutAppAdapter.submitList(aboutAppModel.parameters)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }
