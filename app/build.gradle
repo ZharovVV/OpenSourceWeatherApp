@@ -25,10 +25,12 @@ android {
         }
         debug {
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
+            applicationIdSuffix ".debug"
+            debuggable true
         }
         release {
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
