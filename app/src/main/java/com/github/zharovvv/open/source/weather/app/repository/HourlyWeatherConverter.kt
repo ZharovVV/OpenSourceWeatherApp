@@ -29,8 +29,8 @@ class HourlyWeatherConverter :
             "13d" to R.drawable.ic_snow_24,
             "50d" to R.drawable.ic_clouds_24,
 
-            "01n" to R.drawable.ic_clear_sky_24,
-            "02n" to R.drawable.ic_few_clouds_24,
+            "01n" to R.drawable.ic_clear_sky_24_night,
+            "02n" to R.drawable.ic_few_clouds_24_night,
             "03n" to R.drawable.ic_clouds_24,
             "04n" to R.drawable.ic_clouds_24,
             "09n" to R.drawable.ic_rain_24,
@@ -50,8 +50,8 @@ class HourlyWeatherConverter :
             "13d" to R.drawable.ic_snow_24_dark,
             "50d" to R.drawable.ic_clouds_24_dark,
 
-            "01n" to R.drawable.ic_clear_sky_24,
-            "02n" to R.drawable.ic_few_clouds_24_dark,
+            "01n" to R.drawable.ic_clear_sky_24_night,
+            "02n" to R.drawable.ic_few_clouds_24_dark_night,
             "03n" to R.drawable.ic_clouds_24_dark,
             "04n" to R.drawable.ic_clouds_24_dark,
             "09n" to R.drawable.ic_rain_24_dark,

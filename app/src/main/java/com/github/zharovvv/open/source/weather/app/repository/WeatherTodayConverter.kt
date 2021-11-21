@@ -32,8 +32,8 @@ class WeatherTodayConverter :
             "13d" to R.drawable.ic_snow_60,
             "50d" to R.drawable.ic_clouds_60,
 
-            "01n" to R.drawable.ic_clear_sky_60,
-            "02n" to R.drawable.ic_few_clouds_60,
+            "01n" to R.drawable.ic_clear_sky_60_night,
+            "02n" to R.drawable.ic_few_clouds_60_night,
             "03n" to R.drawable.ic_clouds_60,
             "04n" to R.drawable.ic_clouds_60,
             "09n" to R.drawable.ic_rain_60,
