@@ -3,7 +3,6 @@ package com.github.zharovvv.open.source.weather.app
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.room.Room
@@ -24,11 +23,9 @@ class OpenSourceWeatherApp : Application() {
         private lateinit var WEATHER_API_SERVICE: WeatherApiService
         private lateinit var _appContext: Context
         private lateinit var APP_DATABASE: AppDatabase
-        private const val LOG_TAG = "ApplicationLifecycle"
     }
 
     override fun onCreate() {
-        Log.i(LOG_TAG, "OpenSourceWeatherApp#onCreate")
         _appContext = applicationContext
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         setUpDefaultPreferencesIfNotExists(sharedPreferences)
