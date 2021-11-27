@@ -12,8 +12,8 @@ android {
         applicationId "com.github.zharovvv.open.source.weather.app"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,7 +30,7 @@ android {
         }
         release {
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
