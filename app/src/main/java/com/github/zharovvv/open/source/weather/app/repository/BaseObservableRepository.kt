@@ -23,7 +23,14 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { behaviorSubject.onNext(DataState.Success(it)) },
-                {
+                {   // TODO Так как данная подписка должна работать на протяжении всей работы приложения
+                    //  должны использовать onErrorReturn.
+                    //  По умолчанию, когда ObservableSource обнаруживает ошибку,
+                    //  которая не позволяет ему передать ожидаемый элемент своему Observer'у,
+                    //  ObservableSource вызывает метод onError своего Observer'а,
+                    //  а затем завершает работу, не вызывая никаких дополнительных методов своего Observer'а.
+                    //  Метод onErrorReturn изменяет это поведение.
+                    //  Или использовать retry
                     it.printStackTrace()
                     behaviorSubject.onNext(
                         DataState.Error.buildUnexpectedError(
