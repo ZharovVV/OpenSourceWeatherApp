@@ -1,24 +1,28 @@
 package com.github.zharovvv.open.source.weather.app.database.entity
 
+import androidx.room.*
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.github.zharovvv.open.source.weather.app.util.between
 import com.github.zharovvv.open.source.weather.app.util.fromJson
 import com.github.zharovvv.open.source.weather.app.util.isFresh
 import com.github.zharovvv.open.source.weather.app.util.plus
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 @Entity(tableName = "week_weather_table")
 @TypeConverters(WeekWeatherItemPojoEntityConverter::class, DateConverter::class)
 data class WeekWeatherEntity(
     @PrimaryKey
+    @ColumnInfo(name = "id")
     override val id: Int,
+    @ColumnInfo(name = "latitude")
     val latitude: Float,
+    @ColumnInfo(name = "longitude")
     val longitude: Float,
+    @ColumnInfo(name = "update_time")
     val updateTime: Date,
+    @ColumnInfo(name = "items")
     val items: List<WeekWeatherItemPojoEntity>
 ) : PerishableEntity {
     override val isFresh: Boolean
@@ -31,9 +35,13 @@ data class WeekWeatherEntity(
 }
 
 data class WeekWeatherItemPojoEntity(
+    @SerializedName(value = "forecastDate")
     val forecastDate: Date,
+    @SerializedName(value = "iconId")
     val iconId: String,
+    @SerializedName(value = "maxTemperature")
     val maxTemperature: Int,
+    @SerializedName(value = "minTemperature")
     val minTemperature: Int
 )
 

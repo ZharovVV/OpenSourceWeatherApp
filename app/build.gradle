@@ -27,10 +27,12 @@ android {
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
             applicationIdSuffix ".debug"
             debuggable true
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
-            minifyEnabled true // TODO Вызывает проблемы с BuildConfig - перенести apiToken в Firebase
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -86,6 +88,6 @@ dependencies {
     //Apache Commons
     implementation "org.apache.commons:commons-text:$apache_commons_text_version"
     // debugImplementation because LeakCanary should only run in debug builds.
-//    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
 
 }

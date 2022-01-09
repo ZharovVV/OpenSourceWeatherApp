@@ -1,21 +1,25 @@
 package com.github.zharovvv.open.source.weather.app.database.entity
 
+import androidx.room.*
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.github.zharovvv.open.source.weather.app.util.*
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 @Entity(tableName = "hourly_weather_table")
 @TypeConverters(HourlyWeatherItemPojoEntityConverter::class, DateConverter::class)
 data class HourlyWeatherEntity(
     @PrimaryKey
+    @ColumnInfo(name = "id")
     override val id: Int,
+    @ColumnInfo(name = "latitude")
     val latitude: Float,
+    @ColumnInfo(name = "longitude")
     val longitude: Float,
+    @ColumnInfo(name = "update_time")
     val updateTime: Date,
+    @ColumnInfo(name = "items")
     val items: List<HourlyWeatherItemPojoEntity>
 ) : PerishableEntity {
     override val isFresh: Boolean
@@ -29,10 +33,15 @@ data class HourlyWeatherEntity(
 }
 
 data class HourlyWeatherItemPojoEntity(
+    @SerializedName(value = "now")
     val now: Boolean,
+    @SerializedName(value = "timeIndicator")
     val timeIndicator: TimeIndicator,
+    @SerializedName(value = "time")
     val time: Date,
+    @SerializedName(value = "iconId")
     val iconId: String,
+    @SerializedName(value = "value")
     val value: String
 )
 
