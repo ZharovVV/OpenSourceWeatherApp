@@ -11,8 +11,8 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.github.zharovvv.open.source.weather.app.ui.view.CustomBottomNavigationView
-import com.github.zharovvv.open.source.weather.app.ui.view.CustomNavigationView
+import com.github.zharovvv.open.source.weather.app.navigation.custom.view.CustomBottomNavigationView
+import com.github.zharovvv.open.source.weather.app.navigation.custom.view.CustomNavigationView
 import java.io.Serializable
 
 fun Toolbar.setUpWithNavControllerCustom(

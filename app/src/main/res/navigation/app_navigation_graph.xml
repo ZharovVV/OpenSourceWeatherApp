@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_weather_today"
-        android:name="com.github.zharovvv.open.source.weather.app.ui.weather.today.WeatherTodayFragment"
+        android:name="com.github.zharovvv.open.source.weather.app.presentation.today.weather.WeatherTodayFragment"
         tools:layout="@layout/fragment_weather_today">
         <action
             android:id="@+id/action_nav_weather_today_to_nav_week_weather"
@@ -17,22 +17,22 @@
 
     <dialog
         android:id="@+id/nav_location_permission_explanation"
-        android:name="com.github.zharovvv.open.source.weather.app.location.LocationPermissionExplanationDialogFragment"
+        android:name="com.github.zharovvv.open.source.weather.app.presentation.request.permission.location.LocationPermissionExplanationDialogFragment"
         tools:layout="@layout/dialog_fragment_location_permission_explanation" />
 
     <fragment
         android:id="@+id/nav_week_weather"
-        android:name="com.github.zharovvv.open.source.weather.app.ui.weather.week.WeekWeatherFragment"
+        android:name="com.github.zharovvv.open.source.weather.app.presentation.week.weather.WeekWeatherFragment"
         tools:layout="@layout/fragment_week_weather" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.github.zharovvv.open.source.weather.app.ui.settings.SettingsContainerFragment"
+        android:name="com.github.zharovvv.open.source.weather.app.presentation.settings.SettingsContainerFragment"
         tools:layout="@layout/fragment_settings_container" />
 
     <fragment
         android:id="@+id/nav_about_app"
-        android:name="com.github.zharovvv.open.source.weather.app.ui.about.app.AboutAppFragment"
+        android:name="com.github.zharovvv.open.source.weather.app.presentation.about.app.AboutAppFragment"
         tools:layout="@layout/fragment_about_app" />
 
 </navigation>

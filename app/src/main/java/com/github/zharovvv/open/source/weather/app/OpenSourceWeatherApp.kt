@@ -7,9 +7,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.room.Room
-import com.github.zharovvv.open.source.weather.app.database.AppDatabase
-import com.github.zharovvv.open.source.weather.app.network.WeatherApiService
-import com.github.zharovvv.open.source.weather.app.ui.settings.PreferencesKeyProvider
+import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
+import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,10 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 class OpenSourceWeatherApp : Application() {
 
     companion object {
-        val weatherApiService get() = WEATHER_API_SERVICE
+        val weatherApiService get() = weatherApiMapper
         val appContext get() = _appContext
         val appDatabase get() = APP_DATABASE
-        private lateinit var WEATHER_API_SERVICE: WeatherApiService
+        private lateinit var weatherApiMapper: WeatherApiMapper
         private lateinit var _appContext: Context
         private lateinit var APP_DATABASE: AppDatabase
         private const val LOG_TAG = "ApplicationLifecycle"
@@ -102,6 +102,6 @@ class OpenSourceWeatherApp : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-        WEATHER_API_SERVICE = retrofit.create(WeatherApiService::class.java)
+        weatherApiMapper = retrofit.create(WeatherApiMapper::class.java)
     }
 }

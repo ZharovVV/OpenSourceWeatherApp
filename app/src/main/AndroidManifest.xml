@@ -17,7 +17,7 @@
         android:theme="@style/Theme.OpenSourceWeatherApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
@@ -26,11 +26,11 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".location.LocationService" />
-        <service android:name=".widget.UpdateWeatherWidgetService" />
+        <service android:name=".domain.location.LocationService" />
+        <service android:name=".domain.auto.update.widget.UpdateWeatherWidgetService" />
 
         <receiver
-            android:name=".widget.WeatherAppWidgetProvider"
+            android:name=".presentation.widget.WeatherAppWidgetProvider"
             android:exported="true"
             android:icon="@drawable/ic_weather_app_icon"
             android:label="@string/widget_label">
