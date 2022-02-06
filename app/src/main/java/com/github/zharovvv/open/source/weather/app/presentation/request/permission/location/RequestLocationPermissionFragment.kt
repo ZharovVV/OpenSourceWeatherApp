@@ -29,7 +29,7 @@ import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 abstract class RequestLocationPermissionFragment : BaseFragment() {
 
     private var requestLocationPermissionLauncher: ActivityResultLauncher<String>? = null
-    protected val locationViewModel: LocationViewModel by activityViewModels()
+    protected val locationViewModel: LocationViewModel by activityViewModels { multiViewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -4,10 +4,11 @@ import android.text.Html
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.R
+import com.github.zharovvv.open.source.weather.app.domain.IAboutAppRepository
 import com.github.zharovvv.open.source.weather.app.models.presentation.AboutAppModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.AboutAppParameter
 
-class AboutAppRepository {
+class AboutAppRepository : IAboutAppRepository {
 
     companion object {
         private val aboutAppModel = AboutAppModel(
@@ -32,7 +33,7 @@ class AboutAppRepository {
         )
     }
 
-    fun requestData(): AboutAppModel {
+    override fun requestData(): AboutAppModel {
         return aboutAppModel
     }
 }

@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.data.repositories
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.WeatherTodayDao
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
 import com.github.zharovvv.open.source.weather.app.models.data.local.WeatherTodayEntity
 import com.github.zharovvv.open.source.weather.app.models.data.remote.CurrentWeatherResponse
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
@@ -17,7 +18,7 @@ class WeatherTodayRepository(
 ) : BaseObservableRepository<CurrentWeatherResponse, WeatherTodayEntity, WeatherTodayModel>(
     observableDataFromDatabase = weatherTodayDao.getWeatherToday(),
     converter = weatherTodayConverter
-) {
+), IWeatherTodayRepository {
 
     override fun getLastKnownDataFromDatabase(): WeatherTodayEntity? {
         return weatherTodayDao.getLastKnownWeatherToday()

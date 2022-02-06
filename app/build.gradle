@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.github.zharovvv.open.source.weather.app"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 4
         versionName "1.0.2"
 
@@ -62,8 +62,8 @@ dependencies {
     //for delegating ViewModel (by viewModels())
     implementation "androidx.activity:activity-ktx:1.3.1"
     //WorkManager
-    implementation "androidx.work:work-runtime:2.5.0"
-    implementation "androidx.work:work-runtime-ktx:2.5.0"
+    implementation "androidx.work:work-runtime:2.7.1"
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
     //Navigation AC
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
@@ -90,4 +90,8 @@ dependencies {
     // debugImplementation because LeakCanary should only run in debug builds.
     debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
 
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$dagger_2_version"
+    //Java annotationProcessor "..."
+    kapt "com.google.dagger:dagger-compiler:$dagger_2_version"
 }

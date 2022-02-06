@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.data.repositories
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.HourlyWeatherDao
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.domain.IHourlyWeatherRepository
 import com.github.zharovvv.open.source.weather.app.models.data.local.HourlyWeatherEntity
 import com.github.zharovvv.open.source.weather.app.models.data.remote.HourlyWeatherResponse
 import com.github.zharovvv.open.source.weather.app.models.presentation.HourlyWeatherModel
@@ -17,7 +18,7 @@ class HourlyWeatherRepository(
 ) : BaseObservableRepository<HourlyWeatherResponse, HourlyWeatherEntity, HourlyWeatherModel>(
     observableDataFromDatabase = hourlyWeatherDao.getHourlyWeather(),
     converter = hourlyWeatherConverter
-) {
+), IHourlyWeatherRepository {
 
     override fun getLastKnownDataFromDatabase(): HourlyWeatherEntity? {
         return hourlyWeatherDao.getLastKnownHourlyWeather()

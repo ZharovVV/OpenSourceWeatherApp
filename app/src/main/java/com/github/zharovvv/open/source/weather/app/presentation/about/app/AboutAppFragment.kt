@@ -16,7 +16,7 @@ class AboutAppFragment : BaseFragment() {
 
     private var _binding: FragmentAboutAppBinding? = null
     private val binding: FragmentAboutAppBinding get() = _binding!!
-    private val aboutAppViewModel: AboutAppViewModel by viewModels()
+    private val aboutAppViewModel: AboutAppViewModel by viewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,

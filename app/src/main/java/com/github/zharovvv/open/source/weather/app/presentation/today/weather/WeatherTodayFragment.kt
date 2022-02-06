@@ -26,8 +26,8 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentWeatherTodayBinding? = null
     private val binding: FragmentWeatherTodayBinding get() = _binding!!
-    private val weatherTodayViewModel: WeatherTodayViewModel by viewModels()
-    private val hourlyWeatherViewModel: HourlyWeatherViewModel by viewModels()
+    private val weatherTodayViewModel: WeatherTodayViewModel by viewModels { multiViewModelFactory }
+    private val hourlyWeatherViewModel: HourlyWeatherViewModel by viewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -22,7 +22,7 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentWeekWeatherBinding? = null
     private val binding: FragmentWeekWeatherBinding get() = _binding!!
-    private val weekWeatherViewModel: WeekWeatherViewModel by viewModels()
+    private val weekWeatherViewModel: WeekWeatherViewModel by viewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,

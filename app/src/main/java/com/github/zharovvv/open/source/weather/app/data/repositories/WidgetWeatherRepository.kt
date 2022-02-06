@@ -5,6 +5,7 @@ import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTo
 import com.github.zharovvv.open.source.weather.app.models.presentation.WidgetWeatherModel
 import io.reactivex.Observable
 
+//TODO Похоже что класс на самом деле является интерактором
 class WidgetWeatherRepository(
     private val locationRepository: LocationRepository,
     private val weatherTodayRepository: WeatherTodayRepository

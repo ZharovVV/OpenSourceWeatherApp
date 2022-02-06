@@ -9,6 +9,8 @@ import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.di.ApplicationComponent
+import com.github.zharovvv.open.source.weather.app.di.DaggerApplicationComponent
 import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,8 +29,13 @@ class OpenSourceWeatherApp : Application() {
         private const val LOG_TAG = "ApplicationLifecycle"
     }
 
+    lateinit var appComponent: ApplicationComponent
+
     override fun onCreate() {
         Log.i(LOG_TAG, "OpenSourceWeatherApp#onCreate")
+        appComponent = DaggerApplicationComponent.builder()
+            .withAppContext(appContext = this)
+            .build()
         _appContext = applicationContext
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         setUpDefaultPreferencesIfNotExists(sharedPreferences)
@@ -54,7 +61,8 @@ class OpenSourceWeatherApp : Application() {
                 .putString(PreferencesKeyProvider.preferenceThemeKey, defaultThemeCode)
                 .apply()
         }
-        val autoUpdateCodeArray = resources.getStringArray(R.array.preference_auto_update_value_entries)
+        val autoUpdateCodeArray =
+            resources.getStringArray(R.array.preference_auto_update_value_entries)
         val defaultAutoUpdateCode = autoUpdateCodeArray[0]
         val autoUpdatePreference =
             sharedPreferences.getString(PreferencesKeyProvider.preferenceAutoUpdateKey, null)
@@ -105,3 +113,9 @@ class OpenSourceWeatherApp : Application() {
         weatherApiMapper = retrofit.create(WeatherApiMapper::class.java)
     }
 }
+
+val Context.appComponent: ApplicationComponent
+    get() = when (this) {
+        is OpenSourceWeatherApp -> appComponent
+        else -> this.applicationContext.appComponent
+    }

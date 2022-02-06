@@ -5,14 +5,21 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.di.presentation.MultiViewModelFactory
+import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
+
+    @Inject
+    internal lateinit var multiViewModelFactory: MultiViewModelFactory
 
     private var _isRestoredFromBackStack = false
     protected val isRestoredFromBackStack get() = _isRestoredFromBackStack
     protected val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requireContext().appComponent.inject(this)
         super.onCreate(savedInstanceState)
         Log.d("FRAGMENT_LIFECYCLE", "$this#onCreate")
         _isRestoredFromBackStack = false

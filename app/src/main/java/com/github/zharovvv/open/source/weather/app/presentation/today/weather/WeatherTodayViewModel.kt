@@ -3,8 +3,8 @@ package com.github.zharovvv.open.source.weather.app.presentation.today.weather
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.zharovvv.open.source.weather.app.data.repositories.LocationRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.data.repositories.WeatherTodayRepositoryProvider
+import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
+import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTodayModel
@@ -15,10 +15,11 @@ import io.reactivex.internal.functions.Functions
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 
-class WeatherTodayViewModel : ViewModel() {
+class WeatherTodayViewModel(
+    private val locationRepository: ILocationRepository,
+    private val weatherRepository: IWeatherTodayRepository
+) : ViewModel() {
 
-    private val locationRepository = LocationRepositoryProvider.locationRepository
-    private val weatherRepository = WeatherTodayRepositoryProvider.weatherRepository
     private val _weatherTodayData = MutableLiveData<DataState<WeatherTodayModel>>()
     val weatherTodayData: LiveData<DataState<WeatherTodayModel>> get() = _weatherTodayData
 

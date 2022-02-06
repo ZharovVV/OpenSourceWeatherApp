@@ -1,17 +1,17 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
-import com.github.zharovvv.open.source.weather.app.OpenSourceWeatherApp
 import com.github.zharovvv.open.source.weather.app.data.local.LocationDao
+import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.models.data.local.LocationEntity
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.util.distanceBetween
 import io.reactivex.Flowable
 
-class LocationRepository {
+class LocationRepository(
+    private val locationDao: LocationDao
+) : ILocationRepository {
 
-    private val locationDao: LocationDao = OpenSourceWeatherApp.appDatabase.locationDao()
-
-    fun updateLocation(locationModel: LocationModel) {
+    override fun updateLocation(locationModel: LocationModel) {
         val lastKnownLocationEntity: LocationEntity? = locationDao.getLastKnownLocation()
         val newLocationEntity = LocationEntity(
             id = lastKnownLocationEntity?.id ?: 0,
@@ -45,7 +45,7 @@ class LocationRepository {
         return distance > 2000f
     }
 
-    fun locationObservable(): Flowable<LocationModel> {
+    override fun locationObservable(): Flowable<LocationModel> {
         return locationDao.getLocation()
             .map { locationEntity: LocationEntity ->
                 LocationModel(
@@ -58,7 +58,7 @@ class LocationRepository {
             .doOnError { it.printStackTrace() }
     }
 
-    fun getLastKnownLocation(): LocationModel? {
+    override fun getLastKnownLocation(): LocationModel? {
         return locationDao.getLastKnownLocation()?.let { locationEntity: LocationEntity ->
             LocationModel(
                 latitude = locationEntity.latitude,
