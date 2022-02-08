@@ -1,14 +1,12 @@
 package com.github.zharovvv.open.source.weather.app.domain.auto.update.widget
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.github.zharovvv.open.source.weather.app.data.repositories.WidgetWeatherRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.models.domain.DataState
-import com.github.zharovvv.open.source.weather.app.models.presentation.WidgetWeatherModel
-import com.github.zharovvv.open.source.weather.app.presentation.widget.updateWidget
+import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.presentation.widget.WeatherWidgetManager
+import javax.inject.Inject
 
 class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
@@ -23,15 +21,17 @@ class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
         Log.i(LOG_TAG, "CurrentWeatherWorker#<init>")
     }
 
+    @Inject
+    internal lateinit var weatherWidgetManager: WeatherWidgetManager
+
+    @Inject
+    internal lateinit var widgetWeatherInteractor: WidgetWeatherInteractor
+
     override fun doWork(): Result {
+        applicationContext.appComponent.inject(this)
         Log.i(LOG_TAG, "CurrentWeatherWorker#doWork")
-        val widgetWeatherRepository = WidgetWeatherRepositoryProvider.widgetWeatherRepository
-        val widgetModelDataState: DataState<WidgetWeatherModel> =
-            widgetWeatherRepository.requestDataSync()
-        updateWidget(
-            context = applicationContext,
-            widgetModelDataState = widgetModelDataState,
-            appWidgetManager = AppWidgetManager.getInstance(applicationContext)
+        weatherWidgetManager.updateWidget(
+            widgetModelDataState = widgetWeatherInteractor.requestDataSync()
         )
         return Result.success()
     }

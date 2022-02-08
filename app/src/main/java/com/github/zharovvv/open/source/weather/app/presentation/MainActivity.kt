@@ -1,6 +1,5 @@
 package com.github.zharovvv.open.source.weather.app.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -8,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.zharovvv.open.source.weather.app.R
-import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.UpdateWeatherWidgetService
 import com.github.zharovvv.open.source.weather.app.navigation.custom.view.CustomBottomNavigationView
 import com.github.zharovvv.open.source.weather.app.navigation.setUpWithNavControllerCustom
 
@@ -20,9 +18,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavControllerByFragmentManager()
         val bottomNavigationView = findViewById<CustomBottomNavigationView>(R.id.bottom_nav_view)
         bottomNavigationView.setUpWithNavControllerCustom(navController)
-        if (savedInstanceState == null) {
-            startAutoUpdateWidgetService()
-        }
     }
 
     /**
@@ -34,14 +29,5 @@ class MainActivity : AppCompatActivity() {
             R.id.nav_host_fragment
         ) as NavHostFragment
         return navHostFragment.navController
-    }
-
-    private fun startAutoUpdateWidgetService() {
-        startService(Intent(this, UpdateWeatherWidgetService::class.java))
-    }
-
-    override fun finish() {
-        stopService(Intent(this, UpdateWeatherWidgetService::class.java))
-        super.finish()
     }
 }

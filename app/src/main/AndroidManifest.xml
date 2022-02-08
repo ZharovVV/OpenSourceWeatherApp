@@ -27,7 +27,6 @@
         </activity>
 
         <service android:name=".domain.location.LocationService" />
-        <service android:name=".domain.auto.update.widget.UpdateWeatherWidgetService" />
 
         <receiver
             android:name=".presentation.widget.WeatherAppWidgetProvider"

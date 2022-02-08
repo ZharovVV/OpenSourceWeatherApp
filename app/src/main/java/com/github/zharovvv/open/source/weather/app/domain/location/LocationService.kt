@@ -10,13 +10,14 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.github.zharovvv.open.source.weather.app.data.repositories.LocationRepository
-import com.github.zharovvv.open.source.weather.app.data.repositories.LocationRepositoryProvider
+import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class LocationService : Service() {
 
@@ -25,11 +26,12 @@ class LocationService : Service() {
     private var _locationListener: LocationListener? = null
     private val locationListener: LocationListener get() = _locationListener!!
 
-    private val locationRepository: LocationRepository =
-        LocationRepositoryProvider.locationRepository
+    @Inject
+    internal lateinit var locationRepository: ILocationRepository
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate() {
+        appComponent.inject(this)
         Log.i("ServiceLifecycle", "$this#onCreate;")
         super.onCreate()
         locationManager = applicationContext.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -59,7 +61,6 @@ class LocationService : Service() {
                     )
                 }
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .subscribe(
                     { locationModel: LocationModel ->
                         locationRepository.updateLocation(locationModel)

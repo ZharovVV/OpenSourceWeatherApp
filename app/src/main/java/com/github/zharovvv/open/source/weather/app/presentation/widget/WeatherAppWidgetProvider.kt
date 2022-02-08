@@ -3,11 +3,28 @@ package com.github.zharovvv.open.source.weather.app.presentation.widget
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import com.github.zharovvv.open.source.weather.app.data.repositories.WidgetWeatherRepositoryProvider
-import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.cancelPeriodicWork
+import android.content.Intent
+import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
+import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.schedulePeriodicWork
+import javax.inject.Inject
 
 class WeatherAppWidgetProvider : AppWidgetProvider() {
+
+    @Inject
+    internal lateinit var widgetWeatherInteractor: WidgetWeatherInteractor
+
+    @Inject
+    internal lateinit var workManagerGateway: WorkManagerGateway
+
+    @Inject
+    internal lateinit var weatherWidgetManager: WeatherWidgetManager
+
+    override fun onReceive(context: Context?, intent: Intent?) {
+        requireNotNull(context).appComponent.inject(this)
+        super.onReceive(context, intent)
+    }
 
     override fun onUpdate(
         context: Context?,
@@ -15,29 +32,25 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidgetImmediately(context!!)
+        updateWidgetImmediately()
     }
 
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
+        workManagerGateway.schedulePeriodicWeatherWidgetUpdate()
         schedulePeriodicWork(context!!)
     }
 
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
-        cancelPeriodicWork(context!!)
+        workManagerGateway.cancelPeriodicWeatherWidgetUpdate()
     }
 
-    private fun updateWidgetImmediately(context: Context) {
+    private fun updateWidgetImmediately() {
         val pendingResult = goAsync()
         Thread {
-            val widgetWeatherRepository = WidgetWeatherRepositoryProvider.widgetWeatherRepository
-            val data = widgetWeatherRepository.requestDataSync()
-            updateWidget(
-                context = context,
-                widgetModelDataState = data,
-                appWidgetManager = AppWidgetManager.getInstance(context)
-            )
+            val data = widgetWeatherInteractor.requestDataSync()
+            weatherWidgetManager.updateWidget(widgetModelDataState = data)
             pendingResult.finish()
         }.start()
     }

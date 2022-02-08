@@ -6,26 +6,15 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import androidx.room.Room
-import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
-import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
 import com.github.zharovvv.open.source.weather.app.di.ApplicationComponent
 import com.github.zharovvv.open.source.weather.app.di.DaggerApplicationComponent
 import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class OpenSourceWeatherApp : Application() {
 
     companion object {
-        val weatherApiService get() = weatherApiMapper
         val appContext get() = _appContext
-        val appDatabase get() = APP_DATABASE
-        private lateinit var weatherApiMapper: WeatherApiMapper
         private lateinit var _appContext: Context
-        private lateinit var APP_DATABASE: AppDatabase
         private const val LOG_TAG = "ApplicationLifecycle"
     }
 
@@ -41,14 +30,6 @@ class OpenSourceWeatherApp : Application() {
         setUpDefaultPreferencesIfNotExists(sharedPreferences)
         setUpAppTheme(sharedPreferences)
         super.onCreate()
-        configureRetrofit()
-        APP_DATABASE = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "weather_app_database"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
     }
 
     private fun setUpDefaultPreferencesIfNotExists(sharedPreferences: SharedPreferences) {
@@ -92,25 +73,6 @@ class OpenSourceWeatherApp : Application() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }
-    }
-
-    private fun configureRetrofit() {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.NONE
-        }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-        weatherApiMapper = retrofit.create(WeatherApiMapper::class.java)
     }
 }
 

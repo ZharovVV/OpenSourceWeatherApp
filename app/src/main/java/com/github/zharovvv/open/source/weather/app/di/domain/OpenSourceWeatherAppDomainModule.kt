@@ -1,10 +1,15 @@
 package com.github.zharovvv.open.source.weather.app.di.domain
 
+import android.content.Context
+import androidx.work.WorkManager
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
 import com.github.zharovvv.open.source.weather.app.data.repositories.*
+import com.github.zharovvv.open.source.weather.app.di.AppContext
 import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
 import com.github.zharovvv.open.source.weather.app.domain.*
+import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
+import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
 import dagger.Module
 import dagger.Provides
 
@@ -13,7 +18,8 @@ class OpenSourceWeatherAppDomainModule {
 
     @Provides
     @ApplicationScope
-    fun provideAboutAppRepository(): IAboutAppRepository = AboutAppRepository()
+    fun provideAboutAppRepository(@AppContext context: Context): IAboutAppRepository =
+        AboutAppRepository(appContext = context)
 
     @Provides
     @ApplicationScope
@@ -53,5 +59,19 @@ class OpenSourceWeatherAppDomainModule {
         weekWeatherDao = appDatabase.weekWeatherDao(),
         weatherApiMapper = weatherApiMapper,
         weekWeatherConverter = WeekWeatherConverter()
+    )
+
+    @Provides
+    @ApplicationScope
+    fun provideWidgetWeatherInteractor(
+        locationRepository: ILocationRepository,
+        weatherTodayRepository: IWeatherTodayRepository
+    ) = WidgetWeatherInteractor(locationRepository, weatherTodayRepository)
+
+    @Provides
+    @ApplicationScope
+    fun provideWorkManagerGateway(@AppContext context: Context) = WorkManagerGateway(
+        applicationContext = context,
+        workManager = WorkManager.getInstance(context)
     )
 }

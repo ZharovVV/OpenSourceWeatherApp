@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.di.AppContext
 import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
 import dagger.Module
 import dagger.Provides
@@ -18,7 +19,7 @@ class OpenSourceWeatherAppDataModule {
 
     @Provides
     @ApplicationScope
-    fun provideAppDataBase(appContext: Context): AppDatabase {
+    fun provideAppDataBase(@AppContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,

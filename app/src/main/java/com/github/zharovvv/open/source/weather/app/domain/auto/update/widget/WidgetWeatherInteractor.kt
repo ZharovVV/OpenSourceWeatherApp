@@ -1,14 +1,15 @@
-package com.github.zharovvv.open.source.weather.app.data.repositories
+package com.github.zharovvv.open.source.weather.app.domain.auto.update.widget
 
+import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
+import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WidgetWeatherModel
 import io.reactivex.Observable
 
-//TODO Похоже что класс на самом деле является интерактором
-class WidgetWeatherRepository(
-    private val locationRepository: LocationRepository,
-    private val weatherTodayRepository: WeatherTodayRepository
+class WidgetWeatherInteractor(
+    private val locationRepository: ILocationRepository,
+    private val weatherTodayRepository: IWeatherTodayRepository
 ) {
 
     fun requestDataSync(): DataState<WidgetWeatherModel> {
