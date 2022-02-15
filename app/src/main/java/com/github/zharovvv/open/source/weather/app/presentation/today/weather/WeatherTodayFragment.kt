@@ -27,7 +27,6 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
     private var _binding: FragmentWeatherTodayBinding? = null
     private val binding: FragmentWeatherTodayBinding get() = _binding!!
     private val weatherTodayViewModel: WeatherTodayViewModel by viewModels { multiViewModelFactory }
-    private val hourlyWeatherViewModel: HourlyWeatherViewModel by viewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +61,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
         )
         bindHourlyWeatherWidget(
             viewBinding = binding,
-            data = hourlyWeatherViewModel.hourlyWeatherData
+            data = weatherTodayViewModel.hourlyWeatherData
         )
         with(binding.weatherTodaySwipeRefreshLayout) {
             setOnRefreshListener {
@@ -175,8 +174,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
     }
 
     private fun refreshData() {
-        weatherTodayViewModel.requestWeatherToday()
-        hourlyWeatherViewModel.requestHourlyWeather()
+        weatherTodayViewModel.requestTodayWeather()
     }
 
     override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {

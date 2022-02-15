@@ -9,7 +9,6 @@ import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.Wid
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
 import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.about.app.AboutAppViewModel
-import com.github.zharovvv.open.source.weather.app.presentation.today.weather.HourlyWeatherViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.today.weather.WeatherTodayViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.week.weather.WeekWeatherViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.widget.WeatherWidgetManager
@@ -40,23 +39,18 @@ class ViewModelModule {
     fun provideWeatherTodayViewModel(
         locationRepository: ILocationRepository,
         weatherTodayRepository: IWeatherTodayRepository,
+        hourlyWeatherRepository: IHourlyWeatherRepository,
         widgetWeatherInteractor: WidgetWeatherInteractor,
         workManagerGateway: WorkManagerGateway,
         weatherWidgetManager: WeatherWidgetManager
     ): ViewModel = WeatherTodayViewModel(
         locationRepository,
         weatherTodayRepository,
+        hourlyWeatherRepository,
         widgetWeatherInteractor,
         workManagerGateway,
         weatherWidgetManager
     )
-
-    @Provides
-    @[IntoMap ViewModelKey(HourlyWeatherViewModel::class)]
-    fun provideHourlyWeatherViewModel(
-        locationRepository: ILocationRepository,
-        hourlyWeatherRepository: IHourlyWeatherRepository
-    ): ViewModel = HourlyWeatherViewModel(locationRepository, hourlyWeatherRepository)
 
     @Provides
     @[IntoMap ViewModelKey(WeekWeatherViewModel::class)]
