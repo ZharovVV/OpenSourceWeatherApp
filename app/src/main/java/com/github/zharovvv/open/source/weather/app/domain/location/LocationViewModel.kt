@@ -39,7 +39,6 @@ class LocationViewModel(
     }
 
     fun requestLocation() {
-        //TODO После подключения DI при первой загрузке возникает проблема с отображением текущей локации
         if (!locationServiceStarted) {
             application.startService<LocationService>()
             locationServiceStarted = true

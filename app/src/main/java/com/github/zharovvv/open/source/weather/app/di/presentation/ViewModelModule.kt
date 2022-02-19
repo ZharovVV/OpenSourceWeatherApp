@@ -9,6 +9,7 @@ import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.Wid
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
 import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.about.app.AboutAppViewModel
+import com.github.zharovvv.open.source.weather.app.presentation.settings.SettingsViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.today.weather.WeatherTodayViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.week.weather.WeekWeatherViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.widget.WeatherWidgetManager
@@ -31,7 +32,7 @@ class ViewModelModule {
     fun provideLocationViewModel(
         @AppContext
         appContext: Context,
-        locationRepository: ILocationRepository
+        locationRepository: ILocationRepository,
     ): ViewModel = LocationViewModel(application = appContext as Application, locationRepository)
 
     @Provides
@@ -42,7 +43,7 @@ class ViewModelModule {
         hourlyWeatherRepository: IHourlyWeatherRepository,
         widgetWeatherInteractor: WidgetWeatherInteractor,
         workManagerGateway: WorkManagerGateway,
-        weatherWidgetManager: WeatherWidgetManager
+        weatherWidgetManager: WeatherWidgetManager,
     ): ViewModel = WeatherTodayViewModel(
         locationRepository,
         weatherTodayRepository,
@@ -56,8 +57,15 @@ class ViewModelModule {
     @[IntoMap ViewModelKey(WeekWeatherViewModel::class)]
     fun provideWeekWeatherViewModel(
         locationRepository: ILocationRepository,
-        weekWeatherRepository: IWeekWeatherRepository
+        weekWeatherRepository: IWeekWeatherRepository,
     ): ViewModel = WeekWeatherViewModel(locationRepository, weekWeatherRepository)
+
+    @Provides
+    @[IntoMap ViewModelKey(SettingsViewModel::class)]
+    fun provideSettingsViewModel(
+        preferencesRepository: IPreferencesRepository,
+        workManagerGateway: WorkManagerGateway,
+    ): ViewModel = SettingsViewModel(preferencesRepository, workManagerGateway)
 }
 
 @MustBeDocumented

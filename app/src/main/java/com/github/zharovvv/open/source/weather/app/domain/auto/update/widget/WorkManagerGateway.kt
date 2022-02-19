@@ -1,26 +1,22 @@
 package com.github.zharovvv.open.source.weather.app.domain.auto.update.widget
 
-import android.content.Context
-import androidx.preference.PreferenceManager
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider
+import com.github.zharovvv.open.source.weather.app.domain.IPreferencesRepository
 import java.util.concurrent.TimeUnit
 
 class WorkManagerGateway(
-    private val applicationContext: Context,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val preferencesRepository: IPreferencesRepository,
 ) {
 
     fun schedulePeriodicWeatherWidgetUpdate() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val repeatIntervalInHours =
-            sharedPreferences.getString(PreferencesKeyProvider.preferenceAutoUpdateKey, "1")
+        val repeatIntervalInHours = preferencesRepository.requestAutoUpdatePreference().value
         val uniqueWorkName = CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME
         val existingWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
         val periodicWorkRequest = PeriodicWorkRequestBuilder<CurrentWeatherWorker>(
-            repeatInterval = repeatIntervalInHours!!.toLong() * 60L,
+            repeatInterval = repeatIntervalInHours.toLong() * 60L,
             repeatIntervalTimeUnit = TimeUnit.MINUTES,
             flexTimeInterval = 5L,
             flexTimeIntervalUnit = TimeUnit.MINUTES

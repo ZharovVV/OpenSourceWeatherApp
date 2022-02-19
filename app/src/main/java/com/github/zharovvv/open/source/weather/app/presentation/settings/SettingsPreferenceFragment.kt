@@ -1,98 +1,63 @@
 package com.github.zharovvv.open.source.weather.app.presentation.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.zharovvv.open.source.weather.app.R
-import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.schedulePeriodicWork
-import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider.preferenceAutoUpdateKey
-import com.github.zharovvv.open.source.weather.app.presentation.settings.PreferencesKeyProvider.preferenceThemeKey
-import com.github.zharovvv.open.source.weather.app.util.associateWithAnother
+import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.di.presentation.MultiViewModelFactory
+import com.github.zharovvv.open.source.weather.app.models.domain.ThemeMode
+import javax.inject.Inject
 
-class SettingsPreferenceFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsPreferenceFragment : PreferenceFragmentCompat() {
+
+    @Inject
+    internal lateinit var multiViewModelFactory: MultiViewModelFactory
+    private val settingsViewModel: SettingsViewModel by viewModels { multiViewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requireContext().appComponent.inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_screen, rootKey)
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         configureThemePreference()
         configureAutoUpdatePreference()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences != null) {
-            when (key) {
-                preferenceThemeKey -> {
-                    handleOnThemePreferenceChange(sharedPreferences)
+        settingsViewModel.themeModeChanges.observe(viewLifecycleOwner) { themeMode: ThemeMode ->
+            AppCompatDelegate.setDefaultNightMode(
+                when (themeMode) {
+                    ThemeMode.DAY -> AppCompatDelegate.MODE_NIGHT_NO
+                    ThemeMode.NIGHT -> AppCompatDelegate.MODE_NIGHT_YES
+                    ThemeMode.DEFAULT -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
-                preferenceAutoUpdateKey -> {
-                    handleOnAutoUpdatePreferenceChange()
-                }
-            }
+            )
+            requireActivity().recreate()
         }
     }
 
+
+
     private fun configureThemePreference() {
-        val listPreference: ListPreference? =
-            findPreference(preferenceThemeKey) as ListPreference?
-        val themeCodeArray: Array<String> =
-            resources.getStringArray(R.array.preference_theme_value_entries)
-        val themeNameArray = resources.getStringArray(R.array.preference_theme_name_entries)
-        val codeNameMap: Map<String, String> =
-            themeCodeArray.associateWithAnother(valueArray = themeNameArray)
-        val defaultThemeCode = themeCodeArray[2]
-        val themeCode = preferenceManager.sharedPreferences.getString(
-            preferenceThemeKey,
-            defaultThemeCode
-        )
-        listPreference?.summary = codeNameMap[themeCode]
+        settingsViewModel.themePreference.observe(viewLifecycleOwner) { themePreferenceModel ->
+            val themeListPreference = findPreference(themePreferenceModel.key) as ListPreference?
+            themeListPreference?.summary = themePreferenceModel.name
+        }
     }
 
     private fun configureAutoUpdatePreference() {
-        val listPreference: ListPreference? =
-            findPreference(preferenceAutoUpdateKey) as ListPreference?
-        val autoUpdateCodeArray: Array<String> =
-            resources.getStringArray(R.array.preference_auto_update_value_entries)
-        val autoUpdateNameArray =
-            resources.getStringArray(R.array.preference_auto_update_name_entries)
-        val codeNameMap: Map<String, String> =
-            autoUpdateCodeArray.associateWithAnother(valueArray = autoUpdateNameArray)
-        val defaultAutoUpdateCode = autoUpdateCodeArray[0]
-        val autoUpdateCode = preferenceManager.sharedPreferences.getString(
-            preferenceAutoUpdateKey,
-            defaultAutoUpdateCode
-        )
-        listPreference?.summary = codeNameMap[autoUpdateCode]
-    }
-
-    private fun handleOnThemePreferenceChange(sharedPreferences: SharedPreferences) {
-        val themeCodeArray = resources.getStringArray(R.array.preference_theme_value_entries)
-        val dayThemeCode = themeCodeArray[0]
-        val nightThemeCode = themeCodeArray[1]
-        val defaultThemeCode = themeCodeArray[2]
-        when (sharedPreferences.getString(preferenceThemeKey, defaultThemeCode)) {
-            dayThemeCode -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            nightThemeCode -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-            else -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
+        settingsViewModel.autoUpdateWidgetPreference.observe(viewLifecycleOwner) { autoUpdatePreference ->
+            val autoUpdateListPreference =
+                findPreference(autoUpdatePreference.key) as ListPreference?
+            autoUpdateListPreference?.summary = autoUpdatePreference.name
         }
-        requireActivity().recreate()
-    }
-
-    private fun handleOnAutoUpdatePreferenceChange() {
-        configureAutoUpdatePreference()
-        schedulePeriodicWork(requireContext())
     }
 }

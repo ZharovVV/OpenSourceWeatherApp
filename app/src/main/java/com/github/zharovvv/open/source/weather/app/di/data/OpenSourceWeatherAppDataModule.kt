@@ -1,6 +1,8 @@
 package com.github.zharovvv.open.source.weather.app.di.data
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
@@ -48,4 +50,9 @@ class OpenSourceWeatherAppDataModule {
             .build()
         return retrofit.create(WeatherApiMapper::class.java)
     }
+
+    @Provides
+    @ApplicationScope
+    fun provideSharedPreferences(@AppContext context: Context): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
 }

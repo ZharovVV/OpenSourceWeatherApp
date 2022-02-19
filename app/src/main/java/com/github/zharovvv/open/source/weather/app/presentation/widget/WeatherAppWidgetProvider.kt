@@ -7,7 +7,6 @@ import android.content.Intent
 import com.github.zharovvv.open.source.weather.app.appComponent
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
-import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.schedulePeriodicWork
 import javax.inject.Inject
 
 class WeatherAppWidgetProvider : AppWidgetProvider() {
@@ -38,7 +37,6 @@ class WeatherAppWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
         workManagerGateway.schedulePeriodicWeatherWidgetUpdate()
-        schedulePeriodicWork(context!!)
     }
 
     override fun onDisabled(context: Context?) {
