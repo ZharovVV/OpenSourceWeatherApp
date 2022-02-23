@@ -17,6 +17,7 @@ import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTodayModel
+import com.github.zharovvv.open.source.weather.app.presentation.choose.city.navigateToChooseCity
 import com.github.zharovvv.open.source.weather.app.presentation.error.showError
 import com.github.zharovvv.open.source.weather.app.presentation.request.permission.location.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
@@ -31,7 +32,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentWeatherTodayBinding.inflate(inflater, container, false)
         with(binding.weatherTodaySwipeRefreshLayout) {
@@ -72,8 +73,11 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
 
     private fun bindHeader(
         viewBinding: FragmentWeatherTodayBinding,
-        data: LiveData<LocationModel>
+        data: LiveData<LocationModel>,
     ) {
+        viewBinding.weatherTodayHeaderContainer.setOnClickListener {
+            navigateToChooseCity()
+        }
         data.observe(viewLifecycleOwner) { locationModel: LocationModel ->
             with(viewBinding) {
                 cityNameTextView.text = getString(R.string.delimiter_comma, locationModel.cityName)
@@ -84,7 +88,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
 
     private fun bindWeatherTodayWidget(
         viewBinding: FragmentWeatherTodayBinding,
-        data: LiveData<DataState<WeatherTodayModel>>
+        data: LiveData<DataState<WeatherTodayModel>>,
     ) {
         val detailedWeatherParamsLayoutManager = GridLayoutManager(context, 2)
         val detailedWeatherParamsAdapter = DetailedWeatherParamsAdapter()
@@ -128,7 +132,7 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
 
     private fun bindHourlyWeatherWidget(
         viewBinding: FragmentWeatherTodayBinding,
-        data: LiveData<DataState<HourlyWeatherModel>>
+        data: LiveData<DataState<HourlyWeatherModel>>,
     ) {
         val navController = findNavController()
         val hourlyWeatherAdapter = HourlyWeatherAdapter()

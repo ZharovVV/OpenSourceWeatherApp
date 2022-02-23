@@ -20,25 +20,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/city_name_text_view"
+                <LinearLayout
+                    android:id="@+id/weather_today_header_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/indent_normal"
-                    android:gravity="start"
-                    android:textAppearance="@style/TextAppearance.Primary.Title"
+                    android:background="@drawable/ripple_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/country_name_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:gravity="start"
-                    android:textAppearance="@style/TextAppearance.Primary.Subtitle"
-                    app:layout_constraintBottom_toBottomOf="@id/city_name_text_view"
-                    app:layout_constraintStart_toEndOf="@id/city_name_text_view" />
+                    <TextView
+                        android:id="@+id/city_name_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textAppearance="@style/TextAppearance.Primary.Title" />
+
+                    <TextView
+                        android:id="@+id/country_name_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:textAppearance="@style/TextAppearance.Primary.Subtitle" />
+
+                </LinearLayout>
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/weather_today_card_layout_container"
@@ -49,7 +58,7 @@
                     android:padding="@dimen/indent_normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/city_name_text_view">
+                    app:layout_constraintTop_toBottomOf="@id/weather_today_header_container">
 
                     <ProgressBar
                         android:id="@+id/weather_today_progress_bar"

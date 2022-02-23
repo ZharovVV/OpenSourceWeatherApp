@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--Navigation View-->
     <style name="Theme.OpenSourceWeatherApp.NavigationView" parent="@style/Widget.MaterialComponents.NavigationView">
         <item name="itemIconTint">@color/navigation_item_color</item>
@@ -17,6 +17,19 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
         <item name="iconTint">?attr/colorOnPrimarySurface</item>
+    </style>
+
+    <!--EditText-->
+    <style name="Theme.OpenSourceWeatherApp.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:importantForAutofill" tools:targetApi="o">auto</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor</item>
+    </style>
+
+    <style name="Theme.OpenSourceWeatherApp.EditText.Address">
+        <item name="android:hint">@string/search</item>
+        <item name="android:inputType">text</item>
+        <item name="android:autofillHints" tools:targetApi="o">postalAddress</item>
     </style>
 
     <!--Text styles-->

@@ -17,7 +17,7 @@ import java.io.Serializable
 
 fun Toolbar.setUpWithNavControllerCustom(
     navController: NavController,
-    appBarConfiguration: AppBarConfiguration
+    appBarConfiguration: AppBarConfiguration,
 ) {
     //Переопределяем AppBarConfiguration
     //Drawer icon будет отображаться только для startDestination.
@@ -41,7 +41,7 @@ fun Toolbar.setUpWithNavControllerCustom(
 inline fun <reified T : Serializable> Fragment.setUpNavDialogResultCallback(
     navBackStackEntry: NavBackStackEntry,
     resultKey: String,
-    crossinline resultCallback: ((result: T) -> Unit)
+    crossinline resultCallback: ((result: T) -> Unit),
 ) {
     val observer = LifecycleEventObserver { _, event: Lifecycle.Event ->
         if (event == Lifecycle.Event.ON_RESUME
@@ -64,7 +64,7 @@ inline fun <reified T : Serializable> Fragment.setUpNavDialogResultCallback(
 
 fun <T : Serializable> NavController.setResultForPreviousDestination(
     resultKey: String,
-    result: T
+    result: T,
 ) {
     previousBackStackEntry?.savedStateHandle?.set(resultKey, result)
 }
@@ -104,3 +104,18 @@ fun CustomBottomNavigationView.setUpWithNavControllerCustom(navController: NavCo
         }
     }
 }
+
+
+///**
+// * Следует использовать данный метод вместо [findNavController], когда представление фрагмента
+// * недоступно в момент вызова (например в Activity#onCreate).
+// */
+//fun FragmentActivity.findNavControllerByFragmentManager(): NavController {
+//    return findNavHostFragmentByFragmentManger().navController
+//}
+//
+//fun FragmentActivity.findNavHostFragmentByFragmentManger(): NavHostFragment {
+//    return supportFragmentManager.findFragmentById(
+//        R.id.nav_host_fragment
+//    ) as NavHostFragment
+//}

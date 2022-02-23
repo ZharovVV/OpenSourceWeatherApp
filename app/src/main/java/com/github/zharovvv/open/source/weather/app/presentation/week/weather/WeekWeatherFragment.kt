@@ -13,6 +13,7 @@ import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeekWeatherBinding
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
+import com.github.zharovvv.open.source.weather.app.presentation.choose.city.navigateToChooseCity
 import com.github.zharovvv.open.source.weather.app.presentation.error.showError
 import com.github.zharovvv.open.source.weather.app.presentation.request.permission.location.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
@@ -27,7 +28,7 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentWeekWeatherBinding.inflate(inflater, container, false)
         with(binding.weekWeatherSwipeRefreshLayout) {
@@ -49,6 +50,9 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
         super.onViewCreated(view, savedInstanceState)
         val navController = findNavController()
         binding.fragmentWeekWeatherToolbar.setupWithNavController(navController)
+        binding.fragmentWeekWeatherToolbarTitleTextView.setOnClickListener {
+            navigateToChooseCity()
+        }
         val weekWeatherLayoutManager = LinearLayoutManager(context)
         val weekWeatherAdapter = WeekWeatherAdapter()
         with(binding.weekWeatherRecyclerView) {
@@ -56,7 +60,7 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
             adapter = weekWeatherAdapter
         }
         locationViewModel.locationData.observe(viewLifecycleOwner) { locationModel: LocationModel ->
-            binding.fragmentWeekWeatherToolbar.title =
+            binding.fragmentWeekWeatherToolbarTitleTextView.text =
                 "${locationModel.cityName}, ${locationModel.countryName}"
         }
         weekWeatherViewModel.weatherTodayData.observe(viewLifecycleOwner) { dataState ->

@@ -54,4 +54,6 @@
     <string name="about_app_source_data_parameter_value">&lt;a href="https://openweathermap.org/api">OpenWeatherMap&lt;/a></string>
     <string name="about_app_source_code_parameter_name">Исходный код</string>
     <string name="about_app_source_code_parameter_value">&lt;a href="https://github.com/ZharovVV/OpenSourceWeatherApp">GitHub&lt;/a></string>
+    <string name="search">Поиск</string>
+    <string name="choose_city">Выбор местоположения</string>
 </resources>

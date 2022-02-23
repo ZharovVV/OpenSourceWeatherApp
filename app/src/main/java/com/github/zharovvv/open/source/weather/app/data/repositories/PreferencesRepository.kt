@@ -12,7 +12,7 @@ import io.reactivex.disposables.Disposables
 
 class PreferencesRepository(
     private val sharedPreferences: SharedPreferences,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
 ) : IPreferencesRepository {
 
     //----------------------------------Тема-------------------------------------------------
@@ -47,17 +47,19 @@ class PreferencesRepository(
                         preferenceThemeKey -> requestThemePreference()
                         else -> requestAutoUpdatePreference()
                     }
-                    emitter.onNext(preferenceModel)
+                    if (!emitter.isDisposed) {
+                        emitter.onNext(preferenceModel)
+                    }
                 }
-            sharedPreferences.registerOnSharedPreferenceChangeListener(
-                onSharedPreferenceChangeListener
-            )
             emitter.setDisposable(
                 Disposables.fromAction {
                     sharedPreferences.unregisterOnSharedPreferenceChangeListener(
                         onSharedPreferenceChangeListener
                     )
                 }
+            )
+            sharedPreferences.registerOnSharedPreferenceChangeListener(
+                onSharedPreferenceChangeListener
             )
         }
     }

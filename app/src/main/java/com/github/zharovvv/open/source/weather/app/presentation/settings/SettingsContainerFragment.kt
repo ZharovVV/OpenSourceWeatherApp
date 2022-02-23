@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentSettingsContainerBinding
@@ -18,7 +20,7 @@ class SettingsContainerFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentSettingsContainerBinding.inflate(inflater, container, false)
         return binding.root
@@ -27,10 +29,9 @@ class SettingsContainerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val navController = findNavController()
         binding.fragmentSettingsContainerToolbar.setupWithNavController(navController)
-        parentFragmentManager
-            .beginTransaction()
-            .replace(binding.preferenceFragmentContainer.id, SettingsPreferenceFragment())
-            .commit()
+        childFragmentManager.commit {
+            replace<SettingsPreferenceFragment>(binding.preferenceFragmentContainer.id)
+        }
     }
 
     override fun onDestroyView() {
