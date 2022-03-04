@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/mtrl_btn_text_btn_ripple_color">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/mtrl_btn_text_btn_ripple_color"
+    tools:ignore="PrivateResource">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/white" />

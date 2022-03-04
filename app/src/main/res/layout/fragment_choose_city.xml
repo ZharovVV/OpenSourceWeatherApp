@@ -30,4 +30,18 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_choose_city_toolbar"
         tools:ignore="Autofill,LabelFor" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/choose_city_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/indent_normal"
+        android:paddingTop="@dimen/indent_small"
+        android:paddingEnd="@dimen/indent_normal"
+        android:paddingBottom="@dimen/indent_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_city_edit_text" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

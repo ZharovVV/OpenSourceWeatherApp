@@ -54,7 +54,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/indent_normal"
-                    android:background="@drawable/shape_background_weather_today_card"
+                    android:background="@drawable/shape_background_main_banner"
                     android:padding="@dimen/indent_normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

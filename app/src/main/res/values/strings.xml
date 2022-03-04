@@ -56,4 +56,5 @@
     <string name="about_app_source_code_parameter_value">&lt;a href="https://github.com/ZharovVV/OpenSourceWeatherApp">GitHub&lt;/a></string>
     <string name="search">Поиск</string>
     <string name="choose_city">Выбор местоположения</string>
+    <string name="auto_update_location_banner_description">Для автоматического определения местоположения необходим доступ к геоданным.</string>
 </resources>

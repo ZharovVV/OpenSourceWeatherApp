@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentChooseCityBinding
 import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
+import com.github.zharovvv.open.source.weather.app.util.adapter.CompositeAdapter
 
 class ChooseCityFragment : BaseFragment() {
 
@@ -31,6 +33,13 @@ class ChooseCityFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val compositeAdapter = CompositeAdapter.Builder()
+            .add(ChooseCityAdapter())
+            .add(ChooseCityAutoUpdateBannerAdapter())
+            .build()
+        binding.chooseCityRecyclerView.adapter = compositeAdapter
+        binding.chooseCityRecyclerView.layoutManager = LinearLayoutManager(context)
+
         if (binding.searchCityEditText.requestFocus()) {
             val inputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
