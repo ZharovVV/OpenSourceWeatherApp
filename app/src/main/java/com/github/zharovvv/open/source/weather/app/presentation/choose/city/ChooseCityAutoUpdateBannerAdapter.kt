@@ -28,6 +28,5 @@ class ChooseCityAutoUpdateBannerAdapter :
     override fun bindViewHolder(
         model: ChooseCityAutoUpdateBannerItem,
         viewHolder: ChooseCityAutoUpdateBannerViewHolder,
-    ) {
-    }
+    ) = Unit
 }

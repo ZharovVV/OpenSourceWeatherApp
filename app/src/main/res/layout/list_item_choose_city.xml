@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/indent_small"
-    android:layout_marginBottom="@dimen/indent_small"
     android:background="@drawable/ripple_selector"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:paddingTop="@dimen/indent_small"
+    android:paddingBottom="@dimen/indent_small">
 
     <TextView
         android:id="@+id/choose_city_item_city_name_text_view"

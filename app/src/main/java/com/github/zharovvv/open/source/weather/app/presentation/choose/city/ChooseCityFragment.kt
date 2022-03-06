@@ -11,6 +11,9 @@ import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentChooseCityBinding
+import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityAutoUpdateBannerItem
+import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityItem
+import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 import com.github.zharovvv.open.source.weather.app.util.adapter.CompositeAdapter
 
@@ -39,6 +42,34 @@ class ChooseCityFragment : BaseFragment() {
             .build()
         binding.chooseCityRecyclerView.adapter = compositeAdapter
         binding.chooseCityRecyclerView.layoutManager = LinearLayoutManager(context)
+        val testChooseCityList = mutableListOf(
+            ChooseCityAutoUpdateBannerItem(),
+            ChooseCityItem(
+                locationModel = LocationModel(
+                    latitude = 0.0f,
+                    longitude = 0.0f,
+                    cityName = "Екатеринбург",
+                    countryName = "Росиия"
+                )
+            ),
+            ChooseCityItem(
+                locationModel = LocationModel(
+                    latitude = 0.0f,
+                    longitude = 0.0f,
+                    cityName = "Париж",
+                    countryName = "Франция"
+                )
+            ),
+            ChooseCityItem(
+                locationModel = LocationModel(
+                    latitude = 0.0f,
+                    longitude = 0.0f,
+                    cityName = "Нью-Йорк",
+                    countryName = "США"
+                )
+            )
+        )
+        compositeAdapter.submitList(testChooseCityList)
 
         if (binding.searchCityEditText.requestFocus()) {
             val inputMethodManager =
