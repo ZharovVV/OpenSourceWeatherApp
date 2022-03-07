@@ -14,7 +14,7 @@ import io.reactivex.rxkotlin.plusAssign
 
 class SettingsViewModel(
     private val preferencesRepository: IPreferencesRepository,
-    private val workManagerGateway: WorkManagerGateway
+    private val workManagerGateway: WorkManagerGateway,
 ) : ViewModel() {
 
     private val _themePreference = MutableLiveData(preferencesRepository.requestThemePreference())
@@ -43,6 +43,7 @@ class SettingsViewModel(
                         _autoUpdateWidgetPreference.value = preferenceModel
                         workManagerGateway.schedulePeriodicWeatherWidgetUpdate()
                     }
+                    else -> {}
                 }
             }
     }

@@ -1,7 +1,10 @@
 package com.github.zharovvv.open.source.weather.app.di.domain
 
+import android.app.Service
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Geocoder
+import android.location.LocationManager
 import androidx.work.WorkManager
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
@@ -11,6 +14,10 @@ import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
 import com.github.zharovvv.open.source.weather.app.domain.*
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
+import com.github.zharovvv.open.source.weather.app.domain.location.ChooseCityInteractor
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRemoteRepository
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
+import com.github.zharovvv.open.source.weather.app.domain.location.IMutableLocationRepository
 import com.github.zharovvv.open.source.weather.app.resource.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -36,10 +43,32 @@ class OpenSourceWeatherAppDomainModule {
 
     @Provides
     @ApplicationScope
-    fun provideLocationRepository(appDatabase: AppDatabase): ILocationRepository =
-        LocationRepository(
-            locationDao = appDatabase.locationDao()
+    fun provideLocationRemoteRepository(@AppContext context: Context): ILocationRemoteRepository =
+        LocationRemoteRepository(
+            locationManager = context.getSystemService(Service.LOCATION_SERVICE) as LocationManager,
+            geocoder = Geocoder(context),
+            applicationContext = context
         )
+
+    @Provides
+    @ApplicationScope
+    fun provideMutableLocationRepository(
+        appDatabase: AppDatabase,
+        locationRemoteRepository: ILocationRemoteRepository,
+        preferencesRepository: IPreferencesRepository,
+    ): IMutableLocationRepository = LocationRepository(
+        locationLocalRepository = LocationLocalRepository(
+            locationDao = appDatabase.locationDao()
+        ),
+        locationRemoteRepository = locationRemoteRepository,
+        preferencesRepository = preferencesRepository
+    )
+
+    @Provides
+    @ApplicationScope
+    fun bindLocationRepository(
+        mutableLocationRepository: IMutableLocationRepository,
+    ): ILocationRepository = mutableLocationRepository
 
     @Provides
     @ApplicationScope
@@ -69,6 +98,20 @@ class OpenSourceWeatherAppDomainModule {
         locationRepository: ILocationRepository,
         weatherTodayRepository: IWeatherTodayRepository,
     ) = WidgetWeatherInteractor(locationRepository, weatherTodayRepository)
+
+    @Provides
+    @ApplicationScope
+    fun provideChooseCityInteractor(
+        mutableLocationRepository: IMutableLocationRepository,
+        locationRemoteRepository: ILocationRemoteRepository,
+        preferencesRepository: IPreferencesRepository,
+        @AppContext applicationContext: Context,
+    ) = ChooseCityInteractor(
+        mutableLocationRepository,
+        locationRemoteRepository,
+        preferencesRepository,
+        applicationContext
+    )
 
     @Provides
     @ApplicationScope

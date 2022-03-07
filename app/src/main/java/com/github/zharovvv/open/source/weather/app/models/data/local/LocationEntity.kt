@@ -16,5 +16,7 @@ data class LocationEntity(
     @ColumnInfo(name = "city_name")
     val cityName: String,
     @ColumnInfo(name = "country_name")
-    val countryName: String
+    val countryName: String,
+    @ColumnInfo(name = "is_real_location")
+    val isRealLocation: Boolean,
 )

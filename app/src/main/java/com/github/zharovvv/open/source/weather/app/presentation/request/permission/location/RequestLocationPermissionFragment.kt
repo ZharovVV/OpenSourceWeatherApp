@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.github.zharovvv.open.source.weather.app.R
-import com.github.zharovvv.open.source.weather.app.domain.location.LocationService
 import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel

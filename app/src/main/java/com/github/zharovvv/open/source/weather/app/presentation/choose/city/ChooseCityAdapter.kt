@@ -24,7 +24,7 @@ class ChooseCityAdapter : DelegateAdapter<ChooseCityItem, ChooseCityAdapter.Choo
                     context.getString(R.string.delimiter_comma, model.locationModel.cityName)
                 chooseCityItemCountryNameTextView.text = model.locationModel.countryName
                 chooseCityItemCurrentRealLocationMarkerImageView.isVisible =
-                    model.isCurrentRealLocation
+                    model.locationModel.isRealLocation
             }
         }
     }

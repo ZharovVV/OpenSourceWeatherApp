@@ -1,14 +1,14 @@
 package com.github.zharovvv.open.source.weather.app.di.presentation
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.github.zharovvv.open.source.weather.app.di.AppContext
 import com.github.zharovvv.open.source.weather.app.domain.*
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
+import com.github.zharovvv.open.source.weather.app.domain.location.ChooseCityInteractor
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.about.app.AboutAppViewModel
+import com.github.zharovvv.open.source.weather.app.presentation.choose.city.ChooseCityViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.settings.SettingsViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.today.weather.WeatherTodayViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.week.weather.WeekWeatherViewModel
@@ -30,10 +30,9 @@ class ViewModelModule {
     @Provides
     @[IntoMap ViewModelKey(LocationViewModel::class)]
     fun provideLocationViewModel(
-        @AppContext
-        appContext: Context,
         locationRepository: ILocationRepository,
-    ): ViewModel = LocationViewModel(application = appContext as Application, locationRepository)
+        preferencesRepository: IPreferencesRepository,
+    ): ViewModel = LocationViewModel(locationRepository, preferencesRepository)
 
     @Provides
     @[IntoMap ViewModelKey(WeatherTodayViewModel::class)]
@@ -66,6 +65,12 @@ class ViewModelModule {
         preferencesRepository: IPreferencesRepository,
         workManagerGateway: WorkManagerGateway,
     ): ViewModel = SettingsViewModel(preferencesRepository, workManagerGateway)
+
+    @Provides
+    @[IntoMap ViewModelKey(ChooseCityViewModel::class)]
+    fun provideChooseCityViewModel(
+        chooseCityInteractor: ChooseCityInteractor,
+    ): ViewModel = ChooseCityViewModel(chooseCityInteractor)
 }
 
 @MustBeDocumented

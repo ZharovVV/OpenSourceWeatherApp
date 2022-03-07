@@ -3,8 +3,8 @@ package com.github.zharovvv.open.source.weather.app.presentation.week.weather
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.domain.IWeekWeatherRepository
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeekWeatherModel

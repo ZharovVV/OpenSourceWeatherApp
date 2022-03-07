@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.zharovvv.open.source.weather.app.domain.IHourlyWeatherRepository
-import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel

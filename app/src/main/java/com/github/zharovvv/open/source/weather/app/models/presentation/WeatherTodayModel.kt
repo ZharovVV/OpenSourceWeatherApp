@@ -22,5 +22,8 @@ data class WeatherTodayModel(
     /**
      * Данные о местоположении, для которого была определена текущая погода.
      */
-    val locationModel: LocationModel
+    val latitude: Float,
+    val longitude: Float,
+    val cityName: String,
+    val countryName: String,
 )

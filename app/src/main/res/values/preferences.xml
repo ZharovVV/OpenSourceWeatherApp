@@ -28,4 +28,6 @@
         <item>12</item>
         <item>24</item>
     </string-array>
+    <!--Автообновление местоположения-->
+    <string name="preference_location_auto_update_key">location_auto_update_key</string>
 </resources>

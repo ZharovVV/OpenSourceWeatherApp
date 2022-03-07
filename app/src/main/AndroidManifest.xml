@@ -25,9 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".domain.location.LocationService" />
-
         <receiver
             android:name=".presentation.widget.WeatherAppWidgetProvider"
             android:exported="true"

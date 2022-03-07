@@ -11,4 +11,8 @@ interface IPreferencesRepository {
 
     fun requestAutoUpdatePreference(): PreferenceModel.AutoUpdatePreferenceModel
 
+    fun requestSimplePreference(key: String): PreferenceModel.SimplePreferenceModel?
+
+    fun updateSimplePreference(key: String, value: String)
+
 }

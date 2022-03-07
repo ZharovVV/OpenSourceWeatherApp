@@ -1,6 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.domain.IPreferencesRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.PreferenceModel
@@ -10,6 +11,7 @@ import com.github.zharovvv.open.source.weather.app.util.associateWithAnother
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 
+//TODO Переделать (очень сложная логика)
 class PreferencesRepository(
     private val sharedPreferences: SharedPreferences,
     private val resourceProvider: ResourceProvider,
@@ -35,6 +37,10 @@ class PreferencesRepository(
     private val autoUpdateValueNameMap: Map<String, String> =
         possibleAutoUpdateValues.associateWithAnother(valueArray = possibleAutoUpdateNames)
 
+    //---------------------Автообновление местоположения----------------------------------------------
+    private val preferenceLocationAutoUpdateKey: String =
+        resourceProvider.getString(R.string.preference_location_auto_update_key)
+
     init {
         setDefaultValuesIfNone()
     }
@@ -43,12 +49,18 @@ class PreferencesRepository(
         return Observable.create { emitter ->
             val onSharedPreferenceChangeListener =
                 SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                    val preferenceModel: PreferenceModel = when (key) {
+                    val preferenceModel: PreferenceModel? = when (key) {
                         preferenceThemeKey -> requestThemePreference()
-                        else -> requestAutoUpdatePreference()
+                        preferenceAutoUpdateKey -> requestAutoUpdatePreference()
+                        preferenceAutoUpdateKey -> PreferenceModel.SimplePreferenceModel(
+                            key = key,
+                            name = "",
+                            value = sharedPreferences.getString(key, null)!!
+                        )
+                        else -> null
                     }
                     if (!emitter.isDisposed) {
-                        emitter.onNext(preferenceModel)
+                        preferenceModel?.let { emitter.onNext(it) }
                     }
                 }
             emitter.setDisposable(
@@ -91,6 +103,23 @@ class PreferencesRepository(
             value = autoUpdatePreferenceValue,
             repeatIntervalInHours = autoUpdatePreferenceValue.toLong()
         )
+    }
+
+    override fun requestSimplePreference(key: String): PreferenceModel.SimplePreferenceModel? {
+        val value: String? = sharedPreferences.getString(key, null)
+        return value?.let {
+            PreferenceModel.SimplePreferenceModel(
+                key = key,
+                name = it,
+                value = value
+            )
+        }
+    }
+
+    override fun updateSimplePreference(key: String, value: String) {
+        sharedPreferences.edit {
+            putString(key, value)
+        }
     }
 
     private fun setDefaultValuesIfNone() {

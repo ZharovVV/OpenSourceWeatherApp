@@ -12,11 +12,12 @@ class WorkManagerGateway(
 ) {
 
     fun schedulePeriodicWeatherWidgetUpdate() {
-        val repeatIntervalInHours = preferencesRepository.requestAutoUpdatePreference().value
+        val repeatIntervalInHours =
+            preferencesRepository.requestAutoUpdatePreference().repeatIntervalInHours
         val uniqueWorkName = CurrentWeatherWorker.AUTO_UPDATE_WEATHER_UNIQUE_WORK_NAME
         val existingWorkPolicy = ExistingPeriodicWorkPolicy.REPLACE
         val periodicWorkRequest = PeriodicWorkRequestBuilder<CurrentWeatherWorker>(
-            repeatInterval = repeatIntervalInHours.toLong() * 60L,
+            repeatInterval = repeatIntervalInHours * 60L,
             repeatIntervalTimeUnit = TimeUnit.MINUTES,
             flexTimeInterval = 5L,
             flexTimeIntervalUnit = TimeUnit.MINUTES

@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentChooseCityBinding
-import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityAutoUpdateBannerItem
-import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityItem
-import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 import com.github.zharovvv.open.source.weather.app.util.adapter.CompositeAdapter
 
@@ -21,6 +19,7 @@ class ChooseCityFragment : BaseFragment() {
 
     private var _binding: FragmentChooseCityBinding? = null
     private val binding: FragmentChooseCityBinding get() = _binding!!
+    private val chooseCityViewModel: ChooseCityViewModel by viewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,34 +41,9 @@ class ChooseCityFragment : BaseFragment() {
             .build()
         binding.chooseCityRecyclerView.adapter = compositeAdapter
         binding.chooseCityRecyclerView.layoutManager = LinearLayoutManager(context)
-        val testChooseCityList = mutableListOf(
-            ChooseCityAutoUpdateBannerItem(),
-            ChooseCityItem(
-                locationModel = LocationModel(
-                    latitude = 0.0f,
-                    longitude = 0.0f,
-                    cityName = "Екатеринбург",
-                    countryName = "Росиия"
-                )
-            ),
-            ChooseCityItem(
-                locationModel = LocationModel(
-                    latitude = 0.0f,
-                    longitude = 0.0f,
-                    cityName = "Париж",
-                    countryName = "Франция"
-                )
-            ),
-            ChooseCityItem(
-                locationModel = LocationModel(
-                    latitude = 0.0f,
-                    longitude = 0.0f,
-                    cityName = "Нью-Йорк",
-                    countryName = "США"
-                )
-            )
-        )
-        compositeAdapter.submitList(testChooseCityList)
+        chooseCityViewModel.chooseCityData.observe(viewLifecycleOwner) {
+            compositeAdapter.submitList(it)
+        }
 
         if (binding.searchCityEditText.requestFocus()) {
             val inputMethodManager =

@@ -126,19 +126,17 @@ class WeatherTodayConverter :
                     value = weatherParamPojoEntity.value
                 )
             },
-            locationModel = LocationModel(
-                latitude = entity.latitude,
-                longitude = entity.longitude,
-                cityName = entity.cityName,
-                countryName = entity.countryName
-            )
+            latitude = entity.latitude,
+            longitude = entity.longitude,
+            cityName = entity.cityName,
+            countryName = entity.countryName
         )
     }
 
     override fun convertToEntity(
         entityId: Int,
         locationModel: LocationModel,
-        response: CurrentWeatherResponse
+        response: CurrentWeatherResponse,
     ): WeatherTodayEntity {
         val updateTime = Date()
         val weather = response.weather.first()

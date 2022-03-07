@@ -1,7 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.domain.auto.update.widget
 
-import com.github.zharovvv.open.source.weather.app.domain.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
+import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTodayModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WidgetWeatherModel
@@ -26,7 +26,7 @@ class WidgetWeatherInteractor(
                     data = WidgetWeatherModel(
                         weatherIconId = weatherModel.iconId,
                         temperature = weatherModel.temperature,
-                        locationDescription = weatherModel.locationModel.cityName,
+                        locationDescription = weatherModel.cityName,
                         forecastDateString = weatherModel.shortDateString
                     )
                 )
@@ -55,7 +55,7 @@ class WidgetWeatherInteractor(
                     data = WidgetWeatherModel(
                         weatherIconId = weatherModel.iconId,
                         temperature = weatherModel.temperature,
-                        locationDescription = weatherModel.locationModel.cityName,
+                        locationDescription = weatherModel.cityName,
                         forecastDateString = weatherModel.shortDateString
                     )
                 )
