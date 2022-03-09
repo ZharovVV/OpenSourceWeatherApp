@@ -9,15 +9,26 @@ import com.github.zharovvv.open.source.weather.app.databinding.ListItemChooseCit
 import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityItem
 import com.github.zharovvv.open.source.weather.app.util.adapter.DelegateAdapter
 
-class ChooseCityAdapter : DelegateAdapter<ChooseCityItem, ChooseCityAdapter.ChooseCityViewHolder>(
+class ChooseCityAdapter(
+    private val onItemClickListener: (ChooseCityItem) -> Unit,
+) : DelegateAdapter<ChooseCityItem, ChooseCityAdapter.ChooseCityViewHolder>(
     modelClass = ChooseCityItem::class.java
 ) {
 
     class ChooseCityViewHolder(
         private val binding: ListItemChooseCityBinding,
+        private val onItemClickListener: (ChooseCityItem) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
+        private var currentItem: ChooseCityItem? = null
+
+        init {
+            binding.root.setOnClickListener {
+                currentItem?.let { onItemClickListener.invoke(it) }
+            }
+        }
 
         fun bind(model: ChooseCityItem) {
+            currentItem = model
             val context = binding.root.context
             with(binding) {
                 chooseCityItemCityNameTextView.text =
@@ -35,7 +46,8 @@ class ChooseCityAdapter : DelegateAdapter<ChooseCityItem, ChooseCityAdapter.Choo
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            onItemClickListener = onItemClickListener
         )
     }
 

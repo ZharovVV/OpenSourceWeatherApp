@@ -44,6 +44,8 @@ class LocationRemoteRepository(
         maxResults: Int,
     ): Single<List<LocationModel>> {
         return Single.fromCallable {
+            //TODO использовать вместо гео-кодера другой инструмент
+            //Place Autocomplete??
             geocoder.getFromLocationName(locationName, maxResults)
                 .map { address ->
                     LocationModel(
@@ -51,7 +53,7 @@ class LocationRemoteRepository(
                         longitude = address.longitude.toFloat(),
                         cityName = address.locality,
                         countryName = address.countryName,
-                        isRealLocation = true
+                        isRealLocation = false
                     )
                 }
         }.subscribeOn(Schedulers.io())

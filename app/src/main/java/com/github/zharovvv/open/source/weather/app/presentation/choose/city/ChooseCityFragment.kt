@@ -14,12 +14,17 @@ import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentChooseCityBinding
 import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 import com.github.zharovvv.open.source.weather.app.util.adapter.CompositeAdapter
+import com.github.zharovvv.open.source.weather.app.util.textObservable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import java.util.concurrent.TimeUnit
 
 class ChooseCityFragment : BaseFragment() {
 
     private var _binding: FragmentChooseCityBinding? = null
     private val binding: FragmentChooseCityBinding get() = _binding!!
     private val chooseCityViewModel: ChooseCityViewModel by viewModels { multiViewModelFactory }
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +41,14 @@ class ChooseCityFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val compositeAdapter = CompositeAdapter.Builder()
-            .add(ChooseCityAdapter())
+            .add(
+                ChooseCityAdapter(
+                    onItemClickListener = { chooseCityItem ->
+                        chooseCityViewModel.chooseCity(chooseCityItem)
+                        parentFragmentManager.popBackStack()
+                    }
+                )
+            )
             .add(ChooseCityAutoUpdateBannerAdapter())
             .build()
         binding.chooseCityRecyclerView.adapter = compositeAdapter
@@ -51,10 +63,17 @@ class ChooseCityFragment : BaseFragment() {
             inputMethodManager.showSoftInput(binding.searchCityEditText,
                 InputMethodManager.SHOW_IMPLICIT)
         }
+        binding.searchCityEditText.textObservable()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .filter { it.isNotBlank() }
+            .distinctUntilChanged()
+            .subscribe { chooseCityViewModel.findCitiesByName(it) }
+            .addTo(compositeDisposable)
     }
 
     override fun onDestroyView() {
         _binding = null
+        compositeDisposable.clear()
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         if (inputMethodManager.isActive && requireActivity().currentFocus != null) {
