@@ -2,24 +2,64 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/indent_normal">
 
-    <Button
-        android:id="@+id/choose_city_button"
+    <ImageView
+        android:id="@+id/select_location_mode_icon_image_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/indent_normal"
+        android:contentDescription="@string/empty"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_room_24"
+        app:layout_constraintBottom_toTopOf="@id/select_location_mode_title_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="?attr/colorPrimary" />
+
+    <TextView
+        android:id="@+id/select_location_mode_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выбрать город"
+        android:gravity="center"
+        android:text="@string/choose_city"
+        android:textAppearance="@style/TextAppearance.Primary.Title"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/auto_update_location_button"
+    <TextView
+        android:id="@+id/select_location_mode_description_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Автоматически"
+        android:gravity="center"
+        android:text="@string/select_location_mode_description"
+        android:textAppearance="@style/TextAppearance.Primary.Subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choose_city_button" />
+        app:layout_constraintTop_toBottomOf="@id/select_location_mode_title_text_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/auto_update_location_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/automatically"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_location_mode_description_text_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/choose_city_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manually"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/auto_update_location_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

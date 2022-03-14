@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/layout/dialog_fragment_location_permission_explanation.xml" value="0.29444444444444445" />
         <entry key="app/src/main/res/layout/fragment_choose_city.xml" value="0.3254441634468411" />
+        <entry key="app/src/main/res/layout/fragment_error.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_select_location_mode.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_weather_today.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_week_weather.xml" value="0.1" />
