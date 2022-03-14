@@ -1,13 +1,16 @@
 package com.github.zharovvv.open.source.weather.app.presentation.choose.city
 
+import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.add
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
@@ -24,6 +27,7 @@ class ChooseCityFragment : BaseFragment() {
     private var _binding: FragmentChooseCityBinding? = null
     private val binding: FragmentChooseCityBinding get() = _binding!!
     private val chooseCityViewModel: ChooseCityViewModel by viewModels { multiViewModelFactory }
+    private var requestLocationPermissionLauncher: ActivityResultLauncher<String>? = null
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -35,6 +39,13 @@ class ChooseCityFragment : BaseFragment() {
         binding.fragmentChooseCityToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         binding.fragmentChooseCityToolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+        requestLocationPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                chooseCityViewModel.enableAutoUpdateLocation()
+            }
         }
         return binding.root
     }
@@ -49,7 +60,15 @@ class ChooseCityFragment : BaseFragment() {
                     }
                 )
             )
-            .add(ChooseCityAutoUpdateBannerAdapter())
+            .add(
+                ChooseCityAutoUpdateBannerAdapter(
+                    onItemClickListener = {
+                        requestLocationPermissionLauncher?.launch(
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    }
+                )
+            )
             .build()
         binding.chooseCityRecyclerView.adapter = compositeAdapter
         binding.chooseCityRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -73,6 +92,7 @@ class ChooseCityFragment : BaseFragment() {
 
     override fun onDestroyView() {
         _binding = null
+        requestLocationPermissionLauncher = null
         compositeDisposable.clear()
         val inputMethodManager =
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -86,11 +106,9 @@ class ChooseCityFragment : BaseFragment() {
 
 fun BaseFragment.navigateToChooseCity() {
     val mainActivity = requireActivity()
-    val mainFragment = mainActivity.supportFragmentManager.findFragmentByTag("mainFragment")!!
     mainActivity.supportFragmentManager.commit {
         setReorderingAllowed(true)
-        remove(mainFragment)
-        add<ChooseCityFragment>(
+        replace<ChooseCityFragment>(
             containerViewId = R.id.main_fragment_container
         )
         addToBackStack(null)

@@ -6,8 +6,7 @@
     android:background="@drawable/ripple_selector"
     android:clickable="true"
     android:focusable="true"
-    android:paddingTop="@dimen/indent_small"
-    android:paddingBottom="@dimen/indent_small">
+    android:padding="@dimen/indent_small">
 
     <TextView
         android:id="@+id/choose_city_item_city_name_text_view"

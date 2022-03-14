@@ -30,7 +30,8 @@ class LocationRepository(
         )
         var remoteLocationDisposable: Disposable? = null
         if (locationAutoUpdatePreference != null && locationAutoUpdatePreference.value.toBoolean()) {
-            remoteLocationDisposable = locationRemoteRepository.requestRealLocation()
+            remoteLocationDisposable = locationRemoteRepository
+                .requestRealLocation(safeRequest = true)
                 .subscribe { locationLocalRepository.updateLocation(it) }
                 .addTo(compositeDisposable)
         }

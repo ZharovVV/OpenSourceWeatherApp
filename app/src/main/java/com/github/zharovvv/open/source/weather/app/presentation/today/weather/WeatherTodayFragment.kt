@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
@@ -13,21 +14,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeatherTodayBinding
+import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeatherTodayModel
+import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 import com.github.zharovvv.open.source.weather.app.presentation.choose.city.navigateToChooseCity
 import com.github.zharovvv.open.source.weather.app.presentation.error.showError
-import com.github.zharovvv.open.source.weather.app.presentation.request.permission.location.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
-class WeatherTodayFragment : RequestLocationPermissionFragment() {
+class WeatherTodayFragment : BaseFragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentWeatherTodayBinding? = null
     private val binding: FragmentWeatherTodayBinding get() = _binding!!
     private val weatherTodayViewModel: WeatherTodayViewModel by viewModels { multiViewModelFactory }
+    private val locationViewModel: LocationViewModel by activityViewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -179,15 +182,6 @@ class WeatherTodayFragment : RequestLocationPermissionFragment() {
 
     private fun refreshData() {
         weatherTodayViewModel.requestTodayWeather()
-    }
-
-    override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
-        handler.postDelayed({
-            showError(
-                errorModel = errorModel,
-                errorContainerId = binding.fragmentWeatherTodayErrorContainer.id
-            )
-        }, 300L)
     }
 
     override fun onDestroyView() {

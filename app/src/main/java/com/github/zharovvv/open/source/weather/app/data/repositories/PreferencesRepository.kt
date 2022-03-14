@@ -37,10 +37,6 @@ class PreferencesRepository(
     private val autoUpdateValueNameMap: Map<String, String> =
         possibleAutoUpdateValues.associateWithAnother(valueArray = possibleAutoUpdateNames)
 
-    //---------------------Автообновление местоположения----------------------------------------------
-    private val preferenceLocationAutoUpdateKey: String =
-        resourceProvider.getString(R.string.preference_location_auto_update_key)
-
     init {
         setDefaultValuesIfNone()
     }
@@ -49,18 +45,13 @@ class PreferencesRepository(
         return Observable.create { emitter ->
             val onSharedPreferenceChangeListener =
                 SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                    val preferenceModel: PreferenceModel? = when (key) {
+                    val preferenceModel: PreferenceModel = when (key) {
                         preferenceThemeKey -> requestThemePreference()
                         preferenceAutoUpdateKey -> requestAutoUpdatePreference()
-                        preferenceAutoUpdateKey -> PreferenceModel.SimplePreferenceModel(
-                            key = key,
-                            name = "",
-                            value = sharedPreferences.getString(key, null)!!
-                        )
-                        else -> null
+                        else -> requestSimplePreference(key)!!
                     }
                     if (!emitter.isDisposed) {
-                        preferenceModel?.let { emitter.onNext(it) }
+                        emitter.onNext(preferenceModel)
                     }
                 }
             emitter.setDisposable(

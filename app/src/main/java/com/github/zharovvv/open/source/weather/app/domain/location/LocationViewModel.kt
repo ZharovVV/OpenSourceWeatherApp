@@ -3,16 +3,13 @@ package com.github.zharovvv.open.source.weather.app.domain.location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.zharovvv.open.source.weather.app.domain.IPreferencesRepository
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
 class LocationViewModel(
-    private val locationRepository: ILocationRepository,
-    //TODO тест (удалить!!!)
-    private val preferencesRepository: IPreferencesRepository,
+    locationRepository: ILocationRepository,
 ) : ViewModel() {
 
     private val _locationLiveData = MutableLiveData<LocationModel>()
@@ -31,11 +28,6 @@ class LocationViewModel(
                     throwable.printStackTrace()
                 }
             )
-    }
-
-    fun requestLocation() {
-        //TODO тест (удалить!!!)
-        preferencesRepository.updateSimplePreference("location_auto_update_key", "true")
     }
 
     override fun onCleared() {

@@ -7,13 +7,22 @@ import com.github.zharovvv.open.source.weather.app.databinding.ListItemAutoUpdat
 import com.github.zharovvv.open.source.weather.app.models.presentation.ChooseCityAutoUpdateBannerItem
 import com.github.zharovvv.open.source.weather.app.util.adapter.DelegateAdapter
 
-class ChooseCityAutoUpdateBannerAdapter :
-    DelegateAdapter<ChooseCityAutoUpdateBannerItem, ChooseCityAutoUpdateBannerAdapter.ChooseCityAutoUpdateBannerViewHolder>(
-        modelClass = ChooseCityAutoUpdateBannerItem::class.java
-    ) {
+class ChooseCityAutoUpdateBannerAdapter(
+    private val onItemClickListener: () -> Unit,
+) : DelegateAdapter<ChooseCityAutoUpdateBannerItem, ChooseCityAutoUpdateBannerAdapter.ChooseCityAutoUpdateBannerViewHolder>(
+    modelClass = ChooseCityAutoUpdateBannerItem::class.java
+) {
 
-    class ChooseCityAutoUpdateBannerViewHolder(binding: ListItemAutoUpdateLocationBannerBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class ChooseCityAutoUpdateBannerViewHolder(
+        binding: ListItemAutoUpdateLocationBannerBinding,
+        onItemClickListener: () -> Unit,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onItemClickListener.invoke()
+            }
+        }
+    }
 
     override fun createViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return ChooseCityAutoUpdateBannerViewHolder(
@@ -21,7 +30,8 @@ class ChooseCityAutoUpdateBannerAdapter :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            onItemClickListener = onItemClickListener
         )
     }
 

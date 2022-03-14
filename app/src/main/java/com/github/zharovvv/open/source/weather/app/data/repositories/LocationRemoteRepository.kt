@@ -19,8 +19,8 @@ class LocationRemoteRepository(
     private val applicationContext: Context,
 ) : ILocationRemoteRepository {
 
-    override fun requestRealLocation(): Observable<LocationModel> {
-        return createObservable()
+    override fun requestRealLocation(safeRequest: Boolean): Observable<LocationModel> {
+        return createObservable(safeCreate = safeRequest)
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(Schedulers.io())
             .map { location ->
@@ -59,37 +59,39 @@ class LocationRemoteRepository(
         }.subscribeOn(Schedulers.io())
     }
 
-    private fun checkLocationPermission() {
-        if (
-            ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
+    private fun createObservable(safeCreate: Boolean): Observable<Location> {
+        if (checkLocationPermission()) {
+            return Observable.create { emitter ->
+                val locationListener = LocationListener { location: Location ->
+                    if (!emitter.isDisposed) {
+                        emitter.onNext(location)
+                    }
+                }
+                emitter.setDisposable(Disposables.fromAction {
+                    locationManager.removeUpdates(locationListener)
+                })
+                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)?.let {
+                    locationListener.onLocationChanged(it)
+                }
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    600_000L,
+                    2000f,
+                    locationListener
+                )
+            }
+        }
+        if (safeCreate) {
+            return Observable.empty()
+        } else {
             throw IllegalStateException("Has no ACCESS_COARSE_LOCATION permission!")
         }
     }
 
-    private fun createObservable(): Observable<Location> {
-        checkLocationPermission()
-        return Observable.create { emitter ->
-            val locationListener = LocationListener { location: Location ->
-                if (!emitter.isDisposed) {
-                    emitter.onNext(location)
-                }
-            }
-            emitter.setDisposable(Disposables.fromAction {
-                locationManager.removeUpdates(locationListener)
-            })
-            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)?.let {
-                locationListener.onLocationChanged(it)
-            }
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                600_000L,
-                2000f,
-                locationListener
-            )
-        }
+    private fun checkLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }

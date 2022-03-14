@@ -25,6 +25,7 @@ import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
  * Для корректной работы при переопределении методов [onViewCreated] и [onDestroyView] в классах наследниках
  * необходимо вызывать методы супер-класса.
  */
+//TODO УДАЛИТЬ!!!
 abstract class RequestLocationPermissionFragment : BaseFragment() {
 
     private var requestLocationPermissionLauncher: ActivityResultLauncher<String>? = null
@@ -76,7 +77,6 @@ abstract class RequestLocationPermissionFragment : BaseFragment() {
      */
     private fun requestLocation() {
         if (checkLocationPermission()) {
-            locationViewModel.requestLocation()
         }
     }
 

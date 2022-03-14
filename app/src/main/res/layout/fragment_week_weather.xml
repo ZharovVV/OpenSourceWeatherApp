@@ -31,10 +31,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="2dp"
                     android:background="@drawable/ripple_selector"
                     android:clickable="true"
                     android:focusable="true"
+                    android:padding="@dimen/indent_small"
                     android:textStyle="normal" />
             </com.google.android.material.appbar.MaterialToolbar>
 

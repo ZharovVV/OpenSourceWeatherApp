@@ -14,10 +14,7 @@ import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
 import com.github.zharovvv.open.source.weather.app.domain.*
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
-import com.github.zharovvv.open.source.weather.app.domain.location.ChooseCityInteractor
-import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRemoteRepository
-import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
-import com.github.zharovvv.open.source.weather.app.domain.location.IMutableLocationRepository
+import com.github.zharovvv.open.source.weather.app.domain.location.*
 import com.github.zharovvv.open.source.weather.app.resource.ResourceProvider
 import dagger.Module
 import dagger.Provides
@@ -112,6 +109,12 @@ class OpenSourceWeatherAppDomainModule {
         preferencesRepository,
         applicationContext
     )
+
+    @Provides
+    @ApplicationScope
+    fun provideSelectLocationModeInteractor(
+        preferencesRepository: IPreferencesRepository,
+    ) = SelectLocationModeInteractor(preferencesRepository)
 
     @Provides
     @ApplicationScope

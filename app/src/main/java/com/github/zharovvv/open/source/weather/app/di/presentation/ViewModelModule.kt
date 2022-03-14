@@ -7,8 +7,10 @@ import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.Wor
 import com.github.zharovvv.open.source.weather.app.domain.location.ChooseCityInteractor
 import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
 import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
+import com.github.zharovvv.open.source.weather.app.domain.location.SelectLocationModeInteractor
 import com.github.zharovvv.open.source.weather.app.presentation.about.app.AboutAppViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.choose.city.ChooseCityViewModel
+import com.github.zharovvv.open.source.weather.app.presentation.select.location.mode.SelectLocationModeViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.settings.SettingsViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.today.weather.WeatherTodayViewModel
 import com.github.zharovvv.open.source.weather.app.presentation.week.weather.WeekWeatherViewModel
@@ -31,8 +33,7 @@ class ViewModelModule {
     @[IntoMap ViewModelKey(LocationViewModel::class)]
     fun provideLocationViewModel(
         locationRepository: ILocationRepository,
-        preferencesRepository: IPreferencesRepository,
-    ): ViewModel = LocationViewModel(locationRepository, preferencesRepository)
+    ): ViewModel = LocationViewModel(locationRepository)
 
     @Provides
     @[IntoMap ViewModelKey(WeatherTodayViewModel::class)]
@@ -71,6 +72,12 @@ class ViewModelModule {
     fun provideChooseCityViewModel(
         chooseCityInteractor: ChooseCityInteractor,
     ): ViewModel = ChooseCityViewModel(chooseCityInteractor)
+
+    @Provides
+    @[IntoMap ViewModelKey(SelectLocationModeViewModel::class)]
+    fun provideSelectLocationModeViewModel(
+        selectLocationModeInteractor: SelectLocationModeInteractor,
+    ): ViewModel = SelectLocationModeViewModel(selectLocationModeInteractor)
 }
 
 @MustBeDocumented

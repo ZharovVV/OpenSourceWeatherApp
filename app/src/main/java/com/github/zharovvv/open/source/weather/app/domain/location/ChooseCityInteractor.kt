@@ -22,6 +22,13 @@ class ChooseCityInteractor(
         mutableLocationRepository.updateLocation(chooseCityItem.locationModel)
     }
 
+    fun enableAutoUpdateLocation() {
+        preferencesRepository.updateSimplePreference(
+            key = "location_auto_update_key",
+            value = true.toString()
+        )
+    }
+
     fun findCitiesByName(cityName: String): Single<List<ChooseCityItem>> {
         return locationRemoteRepository
             .findLocationByName(

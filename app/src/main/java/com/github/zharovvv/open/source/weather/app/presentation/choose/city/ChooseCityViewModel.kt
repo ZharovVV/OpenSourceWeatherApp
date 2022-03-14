@@ -40,6 +40,10 @@ class ChooseCityViewModel(
             .addTo(compositeDisposable)
     }
 
+    fun enableAutoUpdateLocation() {
+        chooseCityInteractor.enableAutoUpdateLocation()
+    }
+
     fun findCitiesByName(cityName: String) {
         chooseCityInteractor.findCitiesByName(cityName)
             .map { it.apply { _citiesFoundByName = it } }

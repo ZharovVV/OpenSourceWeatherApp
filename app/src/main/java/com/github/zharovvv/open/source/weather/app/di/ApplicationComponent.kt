@@ -7,6 +7,7 @@ import com.github.zharovvv.open.source.weather.app.di.presentation.OpenSourceWea
 import com.github.zharovvv.open.source.weather.app.domain.IPreferencesRepository
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.CurrentWeatherWorker
 import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
+import com.github.zharovvv.open.source.weather.app.presentation.MainActivity
 import com.github.zharovvv.open.source.weather.app.presentation.settings.SettingsPreferenceFragment
 import com.github.zharovvv.open.source.weather.app.presentation.widget.WeatherAppWidgetProvider
 import dagger.Binds
@@ -38,6 +39,8 @@ interface ApplicationComponent {
 
     //TODO переделать (возможно стоит объеденить SettingsContainerFragment и SettingsPreferenceFragment)
     fun inject(settingsPreferenceFragment: SettingsPreferenceFragment)
+
+    fun inject(mainActivity: MainActivity)
 
     fun inject(currentWeatherWorker: CurrentWeatherWorker)
 

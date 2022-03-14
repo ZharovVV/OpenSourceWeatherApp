@@ -5,25 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.zharovvv.open.source.weather.app.R
 import com.github.zharovvv.open.source.weather.app.databinding.FragmentWeekWeatherBinding
+import com.github.zharovvv.open.source.weather.app.domain.location.LocationViewModel
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
+import com.github.zharovvv.open.source.weather.app.presentation.BaseFragment
 import com.github.zharovvv.open.source.weather.app.presentation.choose.city.navigateToChooseCity
 import com.github.zharovvv.open.source.weather.app.presentation.error.showError
-import com.github.zharovvv.open.source.weather.app.presentation.request.permission.location.RequestLocationPermissionFragment
 import com.github.zharovvv.open.source.weather.app.util.getColorFromAttr
 
-class WeekWeatherFragment : RequestLocationPermissionFragment() {
+class WeekWeatherFragment : BaseFragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentWeekWeatherBinding? = null
     private val binding: FragmentWeekWeatherBinding get() = _binding!!
     private val weekWeatherViewModel: WeekWeatherViewModel by viewModels { multiViewModelFactory }
+    private val locationViewModel: LocationViewModel by activityViewModels { multiViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,15 +100,6 @@ class WeekWeatherFragment : RequestLocationPermissionFragment() {
 
     private fun refreshData() {
         weekWeatherViewModel.requestWeatherToday()
-    }
-
-    override fun onLocationPermissionIsNotGranted(errorModel: DataState.Error<LocationModel>) {
-        handler.postDelayed({
-            showError(
-                errorModel = errorModel,
-                errorContainerId = binding.fragmentWeekWeatherErrorContainer.id
-            )
-        }, 300L)
     }
 
     override fun onDestroyView() {
