@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -19,11 +20,11 @@ android {
     }
 
     buildTypes {
-        Properties properties = new Properties()
-        if (project.rootProject.file("local.properties").canRead()) {
-            properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        }
         debug {
+            Properties properties = new Properties()
+            if (project.rootProject.file("local.properties").canRead()) {
+                properties.load(project.rootProject.file("local.properties").newDataInputStream())
+            }
             buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
             applicationIdSuffix ".debug"
             debuggable true
@@ -31,7 +32,7 @@ android {
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            buildConfigField "String", "WEATHER_API_KEY", properties.getProperty("openweathermap.org.api.keys", "")
+            buildConfigField "String", "WEATHER_API_KEY", ""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -94,4 +95,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_2_version"
     //Java annotationProcessor "..."
     kapt "com.google.dagger:dagger-compiler:$dagger_2_version"
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:29.2.0')
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

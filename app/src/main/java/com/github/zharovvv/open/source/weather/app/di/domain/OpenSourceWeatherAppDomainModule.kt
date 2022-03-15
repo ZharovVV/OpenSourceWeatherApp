@@ -7,7 +7,7 @@ import android.location.Geocoder
 import android.location.LocationManager
 import androidx.work.WorkManager
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
-import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiGateway
 import com.github.zharovvv.open.source.weather.app.data.repositories.*
 import com.github.zharovvv.open.source.weather.app.di.AppContext
 import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
@@ -31,10 +31,10 @@ class OpenSourceWeatherAppDomainModule {
     @ApplicationScope
     fun provideHourlyWeatherRepository(
         appDatabase: AppDatabase,
-        weatherApiMapper: WeatherApiMapper,
+        weatherApiGateway: WeatherApiGateway,
     ): IHourlyWeatherRepository = HourlyWeatherRepository(
         hourlyWeatherDao = appDatabase.hourlyWeatherDao(),
-        weatherApiMapper = weatherApiMapper,
+        weatherApiGateway = weatherApiGateway,
         hourlyWeatherConverter = HourlyWeatherConverter()
     )
 
@@ -71,10 +71,10 @@ class OpenSourceWeatherAppDomainModule {
     @ApplicationScope
     fun provideWeatherTodayRepository(
         appDatabase: AppDatabase,
-        weatherApiMapper: WeatherApiMapper,
+        weatherApiGateway: WeatherApiGateway,
     ): IWeatherTodayRepository = WeatherTodayRepository(
         weatherTodayDao = appDatabase.weatherTodayDao(),
-        weatherApiMapper = weatherApiMapper,
+        weatherApiGateway = weatherApiGateway,
         weatherTodayConverter = WeatherTodayConverter()
     )
 
@@ -82,10 +82,10 @@ class OpenSourceWeatherAppDomainModule {
     @ApplicationScope
     fun provideWeekWeatherRepository(
         appDatabase: AppDatabase,
-        weatherApiMapper: WeatherApiMapper,
+        weatherApiGateway: WeatherApiGateway,
     ): IWeekWeatherRepository = WeekWeatherRepository(
         weekWeatherDao = appDatabase.weekWeatherDao(),
-        weatherApiMapper = weatherApiMapper,
+        weatherApiGateway = weatherApiGateway,
         weekWeatherConverter = WeekWeatherConverter()
     )
 

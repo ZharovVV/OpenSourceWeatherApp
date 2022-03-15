@@ -1,8 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
-import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.WeatherTodayDao
-import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiGateway
 import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepository
 import com.github.zharovvv.open.source.weather.app.models.data.local.WeatherTodayEntity
 import com.github.zharovvv.open.source.weather.app.models.data.remote.CurrentWeatherResponse
@@ -13,8 +12,8 @@ import retrofit2.Call
 
 class WeatherTodayRepository(
     private val weatherTodayDao: WeatherTodayDao,
-    private val weatherApiMapper: WeatherApiMapper,
-    weatherTodayConverter: WeatherTodayConverter
+    private val weatherApiGateway: WeatherApiGateway,
+    weatherTodayConverter: WeatherTodayConverter,
 ) : BaseObservableRepository<CurrentWeatherResponse, WeatherTodayEntity, WeatherTodayModel>(
     observableDataFromDatabase = weatherTodayDao.getWeatherToday(),
     converter = weatherTodayConverter
@@ -26,7 +25,7 @@ class WeatherTodayRepository(
 
     override fun shouldFetchData(
         lastKnownEntity: WeatherTodayEntity?,
-        newLocationModel: LocationModel
+        newLocationModel: LocationModel,
     ): Boolean {
         return lastKnownEntity == null || distanceBetween(
             oldLat = lastKnownEntity.latitude,
@@ -37,11 +36,7 @@ class WeatherTodayRepository(
     }
 
     override fun callApiService(lat: Float, lon: Float): Call<CurrentWeatherResponse> {
-        return weatherApiMapper.getCurrentWeatherByCoordinates(
-            lat,
-            lon,
-            BuildConfig.WEATHER_API_KEY
-        )
+        return weatherApiGateway.getCurrentWeatherByCoordinates(lat, lon)
     }
 
     override fun insertDataToDatabase(newEntity: WeatherTodayEntity) {

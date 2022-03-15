@@ -1,8 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
-import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.WeekWeatherDao
-import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiGateway
 import com.github.zharovvv.open.source.weather.app.domain.IWeekWeatherRepository
 import com.github.zharovvv.open.source.weather.app.models.data.local.WeekWeatherEntity
 import com.github.zharovvv.open.source.weather.app.models.data.remote.WeekWeatherResponse
@@ -13,8 +12,8 @@ import retrofit2.Call
 
 class WeekWeatherRepository(
     private val weekWeatherDao: WeekWeatherDao,
-    private val weatherApiMapper: WeatherApiMapper,
-    weekWeatherConverter: WeekWeatherConverter
+    private val weatherApiGateway: WeatherApiGateway,
+    weekWeatherConverter: WeekWeatherConverter,
 ) : BaseObservableRepository<WeekWeatherResponse, WeekWeatherEntity, WeekWeatherModel>(
     observableDataFromDatabase = weekWeatherDao.getWeekWeather(),
     converter = weekWeatherConverter
@@ -26,7 +25,7 @@ class WeekWeatherRepository(
 
     override fun shouldFetchData(
         lastKnownEntity: WeekWeatherEntity?,
-        newLocationModel: LocationModel
+        newLocationModel: LocationModel,
     ): Boolean {
         return lastKnownEntity == null || distanceBetween(
             oldLat = lastKnownEntity.latitude,
@@ -37,11 +36,7 @@ class WeekWeatherRepository(
     }
 
     override fun callApiService(lat: Float, lon: Float): Call<WeekWeatherResponse> {
-        return weatherApiMapper.getWeekWeatherByCoordinates(
-            lat,
-            lon,
-            BuildConfig.WEATHER_API_KEY
-        )
+        return weatherApiGateway.getWeekWeatherByCoordinates(lat, lon)
     }
 
     override fun insertDataToDatabase(newEntity: WeekWeatherEntity) {

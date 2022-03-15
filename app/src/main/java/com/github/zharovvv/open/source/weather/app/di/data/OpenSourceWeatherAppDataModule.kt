@@ -6,9 +6,11 @@ import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.github.zharovvv.open.source.weather.app.BuildConfig
 import com.github.zharovvv.open.source.weather.app.data.local.AppDatabase
-import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiMapper
+import com.github.zharovvv.open.source.weather.app.data.remote.*
 import com.github.zharovvv.open.source.weather.app.di.AppContext
 import com.github.zharovvv.open.source.weather.app.di.ApplicationScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -22,11 +24,7 @@ class OpenSourceWeatherAppDataModule {
     @Provides
     @ApplicationScope
     fun provideAppDataBase(@AppContext appContext: Context): AppDatabase {
-        return Room.databaseBuilder(
-            appContext,
-            AppDatabase::class.java,
-            "weather_app_database"
-        )
+        return Room.databaseBuilder(appContext, AppDatabase::class.java, "weather_app_database")
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -55,4 +53,21 @@ class OpenSourceWeatherAppDataModule {
     @ApplicationScope
     fun provideSharedPreferences(@AppContext context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
+
+    @Provides
+    @ApplicationScope
+    fun provideWeatherApiKeyProvider(): WeatherApiKeyProvider {
+        return if (BuildConfig.DEBUG) {
+            WeatherApiKeyProviderDebugImpl()
+        } else {
+            WeatherApiKeyProviderProdImpl(Firebase.remoteConfig)
+        }
+    }
+
+    @Provides
+    @ApplicationScope
+    fun provideWeatherApiGateway(
+        weatherApiMapper: WeatherApiMapper,
+        weatherApiKeyProvider: WeatherApiKeyProvider,
+    ) = WeatherApiGateway(weatherApiMapper, weatherApiKeyProvider)
 }
