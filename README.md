@@ -28,17 +28,18 @@
 
 ## OpenApi
 
-* В качестве источника данных о погоде
-  используется [OpenWeatherMap API](https://openweathermap.org/api).\
-  Для локальной сборки приложения, чтобы получить доступ к API, требуется добавить свой api key
+В качестве источника данных о погоде
+используется [OpenWeatherMap API](https://openweathermap.org/api).\
+
+* Для локальной сборки приложения, чтобы получить доступ к API, требуется добавить свой api key
   в `local.properties`
 
 ```
 openweathermap.org.api.keys="YOUR_API_KEY"
 ```
 
-Для release-сборки необходимо добавить в project/app/ файл `google-services.json`, т.к. api key \
-будет запрашиваться через __Firebase Remote Config__.
+* Для release-сборки необходимо добавить в project/app/ файл `google-services.json`, т.к. api key \
+  будет запрашиваться через __Firebase Remote Config__.
 
 ## Preview
 
