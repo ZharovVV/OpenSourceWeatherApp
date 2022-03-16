@@ -29,7 +29,7 @@
 ## OpenApi
 
 В качестве источника данных о погоде
-используется [OpenWeatherMap API](https://openweathermap.org/api).\
+используется [OpenWeatherMap API](https://openweathermap.org/api).
 
 * Для локальной сборки приложения, чтобы получить доступ к API, требуется добавить свой api key
   в `local.properties`
