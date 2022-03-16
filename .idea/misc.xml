@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/list_item_autoupdate_location_banner.xml" value="0.292755126953125" />
         <entry key="app/src/main/res/layout/list_item_choose_city.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_item_week_weather.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/weather_widget.xml" value="0.29444444444444445" />
       </map>
     </option>
   </component>
