@@ -2,6 +2,8 @@ package com.github.zharovvv.open.source.weather.app.logger
 
 object Logger {
 
+    val APP_TAG = "OpenSourceWeatherApp"
+
     private var _logDelegate: LoggerDelegate? = null
 
     fun setDelegate(loggerDelegate: LoggerDelegate) {

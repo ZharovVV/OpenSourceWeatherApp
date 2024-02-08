@@ -1,5 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
+import com.github.zharovvv.open.source.weather.app.logger.Logger
+import com.github.zharovvv.open.source.weather.app.logger.Logger.APP_TAG
 import com.github.zharovvv.open.source.weather.app.models.data.local.PerishableEntity
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
@@ -10,7 +12,7 @@ import retrofit2.Call
 
 abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Model>(
     observableDataFromDatabase: Observable<Entity>,
-    private val converter: BaseConverter<Response, Entity, Model>
+    private val converter: BaseConverter<Response, Entity, Model>,
 ) {
 
     private val behaviorSubject: BehaviorSubject<DataState<Model>> =
@@ -18,7 +20,12 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
 
     init {
         @Suppress("UNUSED_VARIABLE") val connection = observableDataFromDatabase
-            .filter { entity -> entity.isFresh }
+            .filter { entity ->
+                if (entity.isFresh.not()) {
+                    Logger.w(APP_TAG, "entity is not fresh!; entity = $entity")
+                }
+                entity.isFresh
+            }
             .map { entity -> converter.convertToModel(entity) }
             .observeOn(AndroidSchedulers.mainThread())
             .retry()
@@ -32,7 +39,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                     //  а затем завершает работу, не вызывая никаких дополнительных методов своего Observer'а.
                     //  Метод onErrorReturn изменяет это поведение.
                     //  Или использовать retry
-                    it.printStackTrace()
+                    Logger.e("OpenSourceWeatherApp", "Ошибка", it)
                     behaviorSubject.onNext(
                         DataState.Error.buildUnexpectedError(
                             errorMessage = it.message ?: ""
@@ -63,7 +70,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
             try {
                 fetchData(lastKnownEntity, locationModel)
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e("OpenSourceWeatherApp", "Ошибка", e)
                 behaviorSubject.onNext(
                     DataState.Error.buildNetworkError(errorMessage = e.message ?: "")
                 )
@@ -80,7 +87,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
 
     protected abstract fun shouldFetchData(
         lastKnownEntity: Entity?,
-        newLocationModel: LocationModel
+        newLocationModel: LocationModel,
     ): Boolean
 
     private fun fetchData(lastKnownEntity: Entity?, locationModel: LocationModel) {
@@ -100,6 +107,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
                 updateDataInDatabase(newEntity)
             }
         } else {
+            Logger.w("OpenSourceWeatherApp", "Неуспешный ответ")
             behaviorSubject.onNext(
                 DataState.Error.buildNetworkError(errorMessage = retrofitResponse.message())
             )
@@ -124,7 +132,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
             try {
                 fetchDataSync(lastKnownEntity, locationModel)
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e("OpenSourceWeatherApp", "Ошибка", e)
                 DataState.Error.buildNetworkError(errorMessage = e.message ?: "")
             }
         } else {
@@ -135,7 +143,7 @@ abstract class BaseObservableRepository<Response, Entity : PerishableEntity, Mod
 
     private fun fetchDataSync(
         lastKnownEntity: Entity?,
-        locationModel: LocationModel
+        locationModel: LocationModel,
     ): DataState<Model> {
         val result: DataState<Model>
         val retrofitResponse: retrofit2.Response<Response> =

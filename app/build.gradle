@@ -32,7 +32,7 @@ android {
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            buildConfigField "String", "WEATHER_API_KEY", ""
+            buildConfigField "String", "WEATHER_API_KEY", "\"\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -97,7 +97,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_2_version"
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.7.1')
+    implementation platform('com.google.firebase:firebase-bom:29.2.0')
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 }

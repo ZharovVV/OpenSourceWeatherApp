@@ -3,6 +3,8 @@ package com.github.zharovvv.open.source.weather.app.data.repositories
 import com.github.zharovvv.open.source.weather.app.data.local.WeekWeatherDao
 import com.github.zharovvv.open.source.weather.app.data.remote.WeatherApiGateway
 import com.github.zharovvv.open.source.weather.app.domain.IWeekWeatherRepository
+import com.github.zharovvv.open.source.weather.app.logger.Logger
+import com.github.zharovvv.open.source.weather.app.logger.Logger.APP_TAG
 import com.github.zharovvv.open.source.weather.app.models.data.local.WeekWeatherEntity
 import com.github.zharovvv.open.source.weather.app.models.data.remote.WeekWeatherResponse
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
@@ -40,10 +42,12 @@ class WeekWeatherRepository(
     }
 
     override fun insertDataToDatabase(newEntity: WeekWeatherEntity) {
+        Logger.i(APP_TAG, "WeekWeatherRepository#insertDataToDatabase; newEntity = $newEntity")
         weekWeatherDao.insertWeekWeather(newEntity)
     }
 
     override fun updateDataInDatabase(entity: WeekWeatherEntity) {
+        Logger.i(APP_TAG, "WeekWeatherRepository#updateDataInDatabase; entity = $entity")
         weekWeatherDao.updateWeekWeather(entity)
     }
 }

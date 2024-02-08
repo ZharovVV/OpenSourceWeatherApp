@@ -1,6 +1,7 @@
 package com.github.zharovvv.open.source.weather.app.data.repositories
 
 import com.github.zharovvv.open.source.weather.app.data.local.LocationDao
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import com.github.zharovvv.open.source.weather.app.models.data.local.LocationEntity
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.util.distanceBetween
@@ -56,7 +57,13 @@ class LocationLocalRepository(
                     isRealLocation = locationEntity.isRealLocation
                 )
             }
-            .doOnError { it.printStackTrace() }
+            .doOnError {
+                Logger.e(
+                    "OpenSourceWeatherApp",
+                    "LocationLocalRepository#locationObservable",
+                    it
+                )
+            }
     }
 
     fun getLastKnownLocation(): LocationModel? {

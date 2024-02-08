@@ -3,6 +3,7 @@ package com.github.zharovvv.open.source.weather.app.domain.location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -25,7 +26,7 @@ class LocationViewModel(
                     _locationLiveData.value = locationModel
                 },
                 { throwable: Throwable ->
-                    throwable.printStackTrace()
+                    Logger.e("OpenSourceWeatherApp", "Ошибка при получении геолокации", throwable)
                 }
             )
     }

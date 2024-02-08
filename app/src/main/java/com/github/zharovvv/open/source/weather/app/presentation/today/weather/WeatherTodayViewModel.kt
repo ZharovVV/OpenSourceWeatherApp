@@ -8,6 +8,7 @@ import com.github.zharovvv.open.source.weather.app.domain.IWeatherTodayRepositor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WidgetWeatherInteractor
 import com.github.zharovvv.open.source.weather.app.domain.auto.update.widget.WorkManagerGateway
 import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.HourlyWeatherModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
@@ -26,7 +27,7 @@ class WeatherTodayViewModel(
     private val hourlyWeatherRepository: IHourlyWeatherRepository,
     private val widgetWeatherInteractor: WidgetWeatherInteractor,
     private val workManagerGateway: WorkManagerGateway,
-    private val weatherWidgetManager: WeatherWidgetManager
+    private val weatherWidgetManager: WeatherWidgetManager,
 ) : ViewModel() {
 
     private val _weatherTodayData = MutableLiveData<DataState<WeatherTodayModel>>()
@@ -85,7 +86,10 @@ class WeatherTodayViewModel(
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Functions.emptyConsumer(), { it.printStackTrace() })
+            .subscribe(
+                Functions.emptyConsumer(),
+                { Logger.e("OpenSourceWeatherApp", "Ошибка на экране WeatherToday", it) }
+            )
     }
 
     override fun onCleared() {

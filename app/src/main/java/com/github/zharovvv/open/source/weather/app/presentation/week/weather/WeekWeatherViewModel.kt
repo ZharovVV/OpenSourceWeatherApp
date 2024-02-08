@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.zharovvv.open.source.weather.app.domain.IWeekWeatherRepository
 import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRepository
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import com.github.zharovvv.open.source.weather.app.models.domain.DataState
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
 import com.github.zharovvv.open.source.weather.app.models.presentation.WeekWeatherModel
@@ -17,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 
 class WeekWeatherViewModel(
     private val locationRepository: ILocationRepository,
-    private val weekWeatherRepository: IWeekWeatherRepository
+    private val weekWeatherRepository: IWeekWeatherRepository,
 ) : ViewModel() {
 
     private val _weatherTodayData = MutableLiveData<DataState<WeekWeatherModel>>()
@@ -52,7 +53,10 @@ class WeekWeatherViewModel(
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Functions.emptyConsumer(), { it.printStackTrace() })
+            .subscribe(
+                Functions.emptyConsumer(),
+                { Logger.e("OpenSourceWeatherApp", "Ошибка на экране WeekWeather", it) }
+            )
     }
 
     override fun onCleared() {
