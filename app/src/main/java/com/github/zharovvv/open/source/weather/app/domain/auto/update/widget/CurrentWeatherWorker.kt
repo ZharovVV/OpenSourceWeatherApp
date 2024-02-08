@@ -1,10 +1,10 @@
 package com.github.zharovvv.open.source.weather.app.domain.auto.update.widget
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.github.zharovvv.open.source.weather.app.appComponent
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import com.github.zharovvv.open.source.weather.app.presentation.widget.WeatherWidgetManager
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
     }
 
     init {
-        Log.i(LOG_TAG, "CurrentWeatherWorker#<init>")
+        Logger.i(LOG_TAG, "CurrentWeatherWorker#<init>")
     }
 
     @Inject
@@ -29,7 +29,7 @@ class CurrentWeatherWorker(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
         applicationContext.appComponent.inject(this)
-        Log.i(LOG_TAG, "CurrentWeatherWorker#doWork")
+        Logger.i(LOG_TAG, "CurrentWeatherWorker#doWork")
         weatherWidgetManager.updateWidget(
             widgetModelDataState = widgetWeatherInteractor.requestDataSync()
         )

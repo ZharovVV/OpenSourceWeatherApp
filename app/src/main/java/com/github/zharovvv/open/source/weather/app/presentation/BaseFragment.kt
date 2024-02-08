@@ -3,10 +3,10 @@ package com.github.zharovvv.open.source.weather.app.presentation
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.github.zharovvv.open.source.weather.app.appComponent
 import com.github.zharovvv.open.source.weather.app.di.presentation.MultiViewModelFactory
+import com.github.zharovvv.open.source.weather.app.logger.Logger
 import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
@@ -21,7 +21,7 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         requireContext().appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onCreate")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onCreate")
         _isRestoredFromBackStack = false
     }
 
@@ -31,33 +31,33 @@ abstract class BaseFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onStart")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onResume")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onPause")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onStop")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onDestroyView")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onDestroyView")
         _isRestoredFromBackStack = true
         handler.removeCallbacksAndMessages(null)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("FRAGMENT_LIFECYCLE", "$this#onDestroy")
+        Logger.d("FRAGMENT_LIFECYCLE", "$this#onDestroy")
     }
 }

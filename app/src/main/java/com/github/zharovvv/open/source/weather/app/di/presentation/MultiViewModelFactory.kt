@@ -2,6 +2,7 @@ package com.github.zharovvv.open.source.weather.app.di.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -14,7 +15,7 @@ class MultiViewModelFactory
     val viewModelClasses: Set<Class<out ViewModel>> get() = viewModelFactoriesMap.keys
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return viewModelFactoriesMap.getValue(modelClass as Class<ViewModel>).get() as T
     }
 }

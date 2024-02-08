@@ -3,7 +3,11 @@ package com.github.zharovvv.open.source.weather.app.data.repositories
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.*
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import com.github.zharovvv.open.source.weather.app.domain.location.ILocationRemoteRepository
 import com.github.zharovvv.open.source.weather.app.models.presentation.LocationModel
@@ -26,7 +30,7 @@ class LocationRemoteRepository(
             .map { location ->
                 val latitude = location.latitude
                 val longitude = location.longitude
-                geocoder.getFromLocation(latitude, longitude, 1)
+                geocoder.getFromLocation(latitude, longitude, 1)!!
                     .map { address: Address ->
                         LocationModel(
                             latitude = latitude.toFloat(),
@@ -46,7 +50,7 @@ class LocationRemoteRepository(
         return Single.fromCallable {
             //TODO использовать вместо гео-кодера другой инструмент
             //Place Autocomplete??
-            geocoder.getFromLocationName(locationName, maxResults)
+            geocoder.getFromLocationName(locationName, maxResults)!!
                 .map { address ->
                     LocationModel(
                         latitude = address.latitude.toFloat(),

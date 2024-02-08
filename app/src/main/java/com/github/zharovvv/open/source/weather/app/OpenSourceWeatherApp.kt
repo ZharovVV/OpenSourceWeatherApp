@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.github.zharovvv.open.source.weather.app.di.ApplicationComponent
 import com.github.zharovvv.open.source.weather.app.di.DaggerApplicationComponent
+import com.github.zharovvv.open.source.weather.app.logger.Logger
+import com.github.zharovvv.open.source.weather.app.logger.LoggerDelegateDebugImpl
 import com.github.zharovvv.open.source.weather.app.models.domain.PreferenceModel
 import com.github.zharovvv.open.source.weather.app.models.domain.ThemeMode
 
@@ -23,6 +25,9 @@ class OpenSourceWeatherApp : Application() {
             .build()
         _appContext = applicationContext
         setUpAppTheme()
+        if (BuildConfig.DEBUG) {
+            Logger.setDelegate(LoggerDelegateDebugImpl())
+        }
         super.onCreate()
     }
 
