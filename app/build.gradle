@@ -13,8 +13,8 @@ android {
         applicationId "com.github.zharovvv.open.source.weather.app"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 5
-        versionName "1.1.0"
+        versionCode 6
+        versionName "1.1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

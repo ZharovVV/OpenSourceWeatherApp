@@ -9,7 +9,7 @@ import com.github.zharovvv.open.source.weather.app.models.data.local.WeekWeather
 
 @Database(
     entities = [LocationEntity::class, WeatherTodayEntity::class, HourlyWeatherEntity::class, WeekWeatherEntity::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
